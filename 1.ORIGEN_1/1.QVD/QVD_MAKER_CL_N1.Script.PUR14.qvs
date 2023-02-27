@@ -1,16 +1,1 @@
-﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
-PUR14:
-LOAD 
-	[0TARG_QBU] as [Cantidad prevista en unidad de medida base], 
-	[0TARG_QTY] as [Cantidad prevista], 
-	[0TARG_VLC] as [Valor previsto en moneda local];
-
-SELECT	
-	[0TARG_QBU],	// Cantidad prevista en unidad de medida base
-	[0TARG_QTY],	// Cantidad prevista
-	[0TARG_VLC]	// Valor previsto en moneda local
-
-FROM /IMO/D_PUR14;
-STORE PUR14 INTO  [C:\Users\imoran\Documents\QVD\1.ORIGEN_1\1.QVD\PUR14.qvd];
-
-DROP Table PUR14;
+﻿HOLA
