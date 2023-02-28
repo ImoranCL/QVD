@@ -1,0 +1,78 @@
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+CCA20:
+LOAD
+    RowNum,
+    "Clase de actividad" as [ACTTYPE],
+    "Centro de coste eliminación de costes interiores" as [CCTR_IBV],
+    "Tipo de corrección" as [CORRTYPE],
+    "Clase de coste" as [COSTELMNT],
+    "Sociedad CO" as [CO_AREA],
+    "CO: Clave" as [CO_HRKFT],
+    "CO: Número de objeto" as [CO_OBJNR],
+    "CO: Objeto interlocutor" as [CO_PAROB],
+    "CO: Objeto fuente" as [CO_USPOB],
+    "CO: Tipo valor (ERP)" as [CO_WRTTP],
+    "Clave de moneda de moneda de la transacción" as [CURKEY_TC],
+    "Clave de moneda" as [CURRENCY],
+    "Tipo de moneda" as [CURTYPE],
+    "Paquete de datos" as [DATAPAKID],
+    "Indicador emisor/receptor" as [DB_CR_IND],
+    "Contabilización en el Haber/Debe (H/D)" as [DEB_CRED],
+    "Ejercicio/Período" as [FISCPER],
+    "Período contable" as [FISCPER3],
+    "Variante de ejercicio" as [FISCVARNT],
+    Ejercicio as [FISCYEAR],
+    "Operación empresarial" as [FI_RACTIV],
+    "Entidad CP" as [FM_AREA],
+    "Área funcional" as [FUNC_AREA],
+    Fondos as [FUND],
+    "Sistema fuente de la entidad (2 posiciones)" as [GN_R3_SSY],
+    Subvención as [GRANT_NBR],
+    "Tipo de ratio" as [METYPE],
+    "Proceso empresarial interlocutor" as [PART_ABCPR],
+    "Clase de actividad del centro de coste interlocutor" as [PART_ACTTY],
+    "Centro de coste de interlocutor" as [PART_CCTR],
+    "Orden interlocutor" as [PART_COORD],
+    "Elemento PEP interlocutor" as [PART_WBSEL],
+    "Período de presupuesto de interlocutor" as [PBDGTID],
+    "División del interlocutor comercial" as [PBUS_AREA],
+    "Número de sociedad GL asociada" as [PCOMPANY],
+    "Área de funciones del interlocutor" as [PFUNC_AREA],
+    "Fondos de interlocutor" as [PFUND],
+    "Fomento de interlocutor" as [PGRANT_NBR],
+    "Tipo objeto interlocutor" as [PIOBJSV],
+    "Objeto del interlocutor" as [PIOVALUE],
+    Per.presupuesto as [PU_BDGTID],
+    "Número registro datos" as [RECORD],
+    "BW procedimiento delta: Modo de actualización" as [RECORDMODE],
+    "Número de transacción consecutivo de solicitud" as [REQTSN],
+    "ID sistema fuente" as [SOURSYSTEM],
+    "Unidad medida" as [UNIT],
+    "Fecha de actualización" as [UPD_DATE],
+    "Vista de valoración" as [VALUATION],
+    Vers. as [VERSION],
+    "Detalle del tipo de valor" as [VTDETAIL],
+    "Indicador estadística para tipo valor" as [VTSTAT],
+    "Tipo valor para informes" as [VTYPE],
+    "Sociedad CO_1" as CLC_CAREA,
+    "Centro de coste" as CLC_OSTCE,
+    Importe as [AMOUNT],
+    "Importe fijo" as [AMOUNTFX],
+    "Importe variable" as [AMOUNTVR],
+    Cantidad as [QUANTITY],
+    "Cantidad fija" as [QUANTITYFX],
+    "Cantidad variable" as [QUANTITYVR],
+    UniqueKey
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_CCA20.qvd]
+(qvd);
+
+[COSTELMNT_TEXTS]: LEFT JOIN LOAD [CO_AREA], [COSTELMNT], [TXTMD] AS [COSTELMNT_TEXT], [TXTSH] AS [COSTELMNT_TEXT_S]; SELECT CO_AREA, COSTELMNT, TXTMD, TXTSH FROM /BI0/TCOSTELMNT WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[FM_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FM_AREA], [TXTMD] AS [FM_AREA_TEXT]; SELECT SOURSYSTEM, FM_AREA, TXTMD FROM /BI0/TFM_AREA WHERE LANGU = 'S';
+[FUNC_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FUNC_AREA], [TXTMD] AS [FUNC_AREA_TEXT]; SELECT SOURSYSTEM, FUNC_AREA, TXTMD FROM /BI0/TFUNC_AREA WHERE LANGU = 'S';
+[CLC_CAREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CAREA] AS [CLC_CAREA], [TXTMD] AS [CLC_CAREA_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, TXTMD FROM /BIC/TCLC_CAREA;
+[CLC_OSTCE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CAREA] AS [CLC_CAREA], [/BIC/CLC_OSTCE] AS [CLC_OSTCE], [TXTMD] AS [CLC_OSTCE_TEXT], [TXTSH] AS [CLC_OSTCE_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, /BIC/CLC_OSTCE, TXTMD, TXTSH FROM /BIC/TCLC_OSTCE WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+
+STORE CCA20 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CCA20.qvd;
+
+DROP Table CCA20;

@@ -1,0 +1,228 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+PUR14:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0CALDAY] as [CALDAY], 
+	[0CONTRACT] as [CONTRACT], 
+	[0CONT_ITEM] as [CONT_ITEM], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0DOC_CAT] as [DOC_CAT], 
+	[0ENTRY_DATE] as [ENTRY_DATE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_PUR] as [GN_CAT_PUR], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0ITM_CAT] as [ITM_CAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0LOG_SYS_BE] as [LOG_SYS_BE], 
+	[0ORDER_CURR] as [ORDER_CURR], 
+	[0PO_STATUS] as [PO_STATUS], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_DESCR] as [PROD_DESCR], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0PURCH_ORG] as [PURCH_ORG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VAL_END] as [VAL_END], 
+	[0VAL_START] as [VAL_START], 
+	CLC_HIERH, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_PLANT, 
+	CLC_PROFG, 
+	CLC_PSPN, 
+	CLC_URSRC, 
+	CLC_VEND, 
+	[0CONTR_ITEM] as [CONTR_ITEM], 
+	[0OUTAGTARGT] as [OUTAGTARGT], 
+	[0RELSD_QBU] as [RELSD_QBU], 
+	[0RELSD_VLC] as [RELSD_VLC], 
+	[0RELSD_VOC] as [RELSD_VOC], 
+	[0SCH_AGR_IT] as [SCH_AGR_IT], 
+	[0TARG_QBU] as [TARG_QBU], 
+	[0TARG_QTY] as [TARG_QTY], 
+	[0TARG_VLC] as [TARG_VLC],
+    [0SOURSYSTEM]&[0CONTRACT]&[0CONT_ITEM] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0CALDAY],	// Fecha del documento
+	[0CONTRACT],	// Número del contrato superior
+	[0CONT_ITEM],	// Posición del contrato superior
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_PUR],	// Categoría de compras
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0ITEM_DEL],	// Posición borrada
+	[0ITM_CAT],	// Tipo de posición del documento de compras
+	[0LOC_CURRCY],	// Moneda local
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PO_STATUS],	// Status del documento de compras
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRODUCT],	// Producto
+	[0PROD_DESCR],	// Descripción de producto
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UPD_DATE],	// Fecha de actualización
+	[0VAL_END],	// Fin per.val.
+	[0VAL_START],	// Inicio del período de validez
+	[CLC_HIERH],	// Jerarquía de productos
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_PSPN],	// Elemento PEP
+	[CLC_URSRC],	// Campo de usuario codigo externo (CKIS)
+	[CLC_VEND],	// Proveedor_1
+	[0CONTR_ITEM],	// Cantidad de posiciones de pedido abierto
+	[0OUTAGTARGT],	// Valor previsto en moneda documento
+	[0RELSD_QBU],	// Cantidad solicitada en unidad de medida base
+	[0RELSD_VLC],	// Valor solicitado en moneda local
+	[0RELSD_VOC],	// Valor solicitado en moneda de pedido
+	[0SCH_AGR_IT],	// Cantidad de posiciones de plan de entrega
+	[0TARG_QBU],	// Cantidad prevista en unidad de medida base
+	[0TARG_QTY],	// Cantidad prevista
+	[0TARG_VLC]	// Valor previsto en moneda local
+
+FROM /IMO/D_PUR14;
+
+STORE PUR14 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_PUR14.qvd;
+
+
+
+
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+PUR14:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0CALDAY] as [CALDAY], 
+	[0CONTRACT] as [CONTRACT], 
+	[0CONT_ITEM] as [CONT_ITEM], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0DOC_CAT] as [DOC_CAT], 
+	[0ENTRY_DATE] as [ENTRY_DATE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_PUR] as [GN_CAT_PUR], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0ITM_CAT] as [ITM_CAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0LOG_SYS_BE] as [LOG_SYS_BE], 
+	[0ORDER_CURR] as [ORDER_CURR], 
+	[0PO_STATUS] as [PO_STATUS], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_DESCR] as [PROD_DESCR], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0PURCH_ORG] as [PURCH_ORG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VAL_END] as [VAL_END], 
+	[0VAL_START] as [VAL_START], 
+	CLC_HIERH, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_PLANT, 
+	CLC_PROFG, 
+	CLC_PSPN, 
+	CLC_URSRC, 
+	CLC_VEND, 
+	[0CONTR_ITEM] as [CONTR_ITEM], 
+	[0OUTAGTARGT] as [OUTAGTARGT], 
+	[0RELSD_QBU] as [RELSD_QBU], 
+	[0RELSD_VLC] as [RELSD_VLC], 
+	[0RELSD_VOC] as [RELSD_VOC], 
+	[0SCH_AGR_IT] as [SCH_AGR_IT], 
+	[0TARG_QBU] as [TARG_QBU], 
+	[0TARG_QTY] as [TARG_QTY], 
+	[0TARG_VLC] as [TARG_VLC],
+    [0SOURSYSTEM]&[0CONTRACT]&[0CONT_ITEM] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0CALDAY],	// Fecha del documento
+	[0CONTRACT],	// Número del contrato superior
+	[0CONT_ITEM],	// Posición del contrato superior
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_PUR],	// Categoría de compras
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0ITEM_DEL],	// Posición borrada
+	[0ITM_CAT],	// Tipo de posición del documento de compras
+	[0LOC_CURRCY],	// Moneda local
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PO_STATUS],	// Status del documento de compras
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRODUCT],	// Producto
+	[0PROD_DESCR],	// Descripción de producto
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UPD_DATE],	// Fecha de actualización
+	[0VAL_END],	// Fin per.val.
+	[0VAL_START],	// Inicio del período de validez
+	[CLC_HIERH],	// Jerarquía de productos
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_PSPN],	// Elemento PEP
+	[CLC_URSRC],	// Campo de usuario codigo externo (CKIS)
+	[CLC_VEND],	// Proveedor_1
+	[0CONTR_ITEM],	// Cantidad de posiciones de pedido abierto
+	[0OUTAGTARGT],	// Valor previsto en moneda documento
+	[0RELSD_QBU],	// Cantidad solicitada en unidad de medida base
+	[0RELSD_VLC],	// Valor solicitado en moneda local
+	[0RELSD_VOC],	// Valor solicitado en moneda de pedido
+	[0SCH_AGR_IT],	// Cantidad de posiciones de plan de entrega
+	[0TARG_QBU],	// Cantidad prevista en unidad de medida base
+	[0TARG_QTY],	// Cantidad prevista
+	[0TARG_VLC]	// Valor previsto en moneda local
+
+FROM /IMO/D_PUR14;
+
+STORE PUR14 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_PUR14.qvd;
+
+
+
+

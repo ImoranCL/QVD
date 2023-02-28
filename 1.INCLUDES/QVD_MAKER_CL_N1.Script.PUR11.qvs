@@ -1,0 +1,317 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.PUR11.qvs
+// TABLA:     	/IMO/D_PUR11
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: MM-PUR: Posición del documento de compras
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		PUR11	   	 ;
+TRACE ###############################;
+
+//Obtenemos el campo fecha
+Fecha:
+LOAD [UPD_DATE]
+
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/PUR11.qvd] (qvd);
+
+//Seleccionamos la fecha máxima
+MaxOldQVD:
+
+LOAD
+
+Max([UPD_DATE]) as Max0UPD_DATE
+
+Resident Fecha;
+
+LET LastExecTime = Date(Peek('Max0UPD_DATE',-1,MaxOldQVD),'YYYYMMDD');
+
+DROP Table Fecha;
+
+DROP Table MaxOldQVD;
+
+// Let ThisExecTime =date(today(), 'YYYYMMDD');
+
+//Cargamos los datos con carga incremental
+PUR11:
+LOAD RowNum, 
+	[0AEDAT] as [AEDAT], 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0CALDAY] as [CALDAY], 
+	[0COMPL_DEL] as [COMPL_DEL], 
+	[0CONTRACT] as [CONTRACT], 
+	[0CONT_ITEM] as [CONT_ITEM], 
+	[0CT_FLAG] as [CT_FLAG], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0DOC_CAT] as [DOC_CAT], 
+	[0ENTRY_DATE] as [ENTRY_DATE], 
+	[0EVAL_R_S] as [EVAL_R_S], 
+	[0FINAL_INV] as [FINAL_INV], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR],
+	[0GN_CAT_PUR] as [GN_CAT_PUR], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0GR_BASE_IV] as [GR_BASE_IV], 
+	[0GR_RE_IND] as [GR_RE_IND], 
+	[0INFO_REC] as [INFO_REC] , 
+	[0INV_RE_IND] as [INV_RE_IND], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0ITM_CAT] as [ITM_CAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0LOG_SYS_BE] as [LOG_SYS_BE], 
+	[0MATL_TYPE] as [MATL_TYPE], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0ORDER_CURR] as [ORDER_CURR], 
+	[0PO_STATUS] as [PO_STATUS], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRODUCT] as [PRODUCT],
+	[0PROD_DESCR] as [PROD_DESCR], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0PURCH_ORG] as [PURCH_ORG], 
+	[0PUR_REASON] as [PUR_REASON], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0REQUISIT] as [REQUISIT], 
+	[0RET_ITM] as [RET_ITM], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0UNLIMDLVTL] as [UNLIMDLVTL], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VAL_END] as [VAL_END], 
+	[0VAL_START] as [VAL_START], 
+	CLC_BANFN, 
+	CLC_BNFPO, 
+	CLC_CAREA, 
+	Text(CLC_COMPC) AS CLC_COMPC, 
+	CLC_HIERH, 
+	Text(CLC_MATER) AS CLC_MATER, 
+	Text(CLC_MATLG) AS CLC_MATLG,  
+	CLC_NV_PA, 
+	Text(CLC_PLANT) AS CLC_PLANT, 
+	CLC_PROFG, 
+	CLC_PROFI, 
+	CLC_PSPN, 
+	CLC_SUPP, 
+	CLC_SUPPL, 
+	CLC_SUPVE, 
+	CLC_UPP_P, 
+	CLC_URSRC, 
+	CLC_VEND, 
+	[0DENOMINTR] as [DENOMINTR], 
+	[0EXCHG_RATE] as [EXCHG_RATE], 
+	[0NETPRICE] as [NETPRICE], 
+	[0NET_PO_VAL] as [NET_PO_VAL], 
+	[0NO_POS] as [NO_POS], 
+	[0NUMERATOR] as [NUMERATOR], 
+	[0ORDER_QUAN] as [ORDER_QUAN], 
+	[0PRICE_UNIT] as [PRICE_UNIT],
+	[0UPPR_BND] as [UPPR_BND],
+    [0SOURSYSTEM]&[0OI_EBELN]&[0OI_EBELP] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0AEDAT],	// Fecha modificación
+	[0BASE_UOM],	// Unidad de medida base
+	[0CALDAY],	// Fecha de documento de compras
+	[0COMPL_DEL],	// Indicador de entrega final
+	[0CONTRACT],	// Número del contrato superior
+	[0CONT_ITEM],	// Posición del contrato superior
+	[0CT_FLAG],	// Indicador para pedidos abiertos
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0EVAL_R_S],	// Autofacturación
+	[0FINAL_INV],	// Indicador de factura final
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_PUR],	// Categoría de compras
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0GR_BASE_IV],	// Verific.de fact.referida a EM
+	[0GR_RE_IND],	// Indicador de entrada de mercancías
+	[0INFO_REC],	// Número del registro info de compras
+	[0INV_RE_IND],	// Indicador de recepción de factura
+	[0ITEM_DEL],	// Posición borrada
+	[0ITM_CAT],	// Tipo de posición del documento de compras
+	[0LOC_CURRCY],	// Moneda local
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0MATL_TYPE],	// Tipo de material
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PO_STATUS],	// Status del documento de compras
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRODUCT],	// Producto
+	[0PROD_DESCR],	// Descripción de producto
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0PUR_REASON],	// Motivo de pedido
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0REQUISIT],	// Nombre del solicitante
+	[0RET_ITM],	// Posición de devoluciones
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOR_LOC],	// Almacén
+	[0UNLIMDLVTL],	// Ind.: Exceso ilimitado suministro
+	[0UPD_DATE],	// Fecha de actualización
+	[0VAL_END],	// Fin per.val.
+	[0VAL_START],	// Inicio del período de validez
+	[CLC_BANFN],	// Número de la solicitud de pedido
+	[CLC_BNFPO],	// Número de posición de la solicitud de pedido
+	[CLC_CAREA],	// Sociedad CO
+	[CLC_COMPC],	// Sociedad
+	[CLC_HIERH],	// Jerarquía de productos
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_NV_PA],	// Emisor de la factura
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_PROFI],	// Centro de beneficio
+	[CLC_PSPN],	// Elemento PEP
+	[CLC_SUPP],	// Ce.sumin.que tiene asignadas funciones interlocutor
+	[CLC_SUPPL],	// Proveedor de mercancías
+	[CLC_SUPVE],	// Proveedor para entrega
+	[CLC_UPP_P],	// Centro suministrador
+	[CLC_URSRC],	// Campo de usuario codigo externo (CKIS)
+	[CLC_VEND],	// Proveedor_1
+	[0DENOMINTR],	// Denominador(divisor) para conversión ctd.vta.en UMA
+	[0EXCHG_RATE],	// Tp.cambio para la determinación de precios y estadísticas
+	[0NETPRICE],	// Precio neto
+	[0NET_PO_VAL],	// Valor neto de pedido
+	[0NO_POS],	// Contador para posiciones
+	[0NUMERATOR],	// Contador (factor) para conversión cantidad venta en UME
+	[0ORDER_QUAN],	// Cantidad de pedido
+	[0PRICE_UNIT],	// Cantidad base
+	[0UPPR_BND]	// Lím.tolerancia p.exceso de suministro en %
+
+FROM /IMO/D_PUR11
+WHERE (
+[0UPD_DATE]  >= $(LastExecTime)
+);
+
+[PURCH_ORG_TEXTS]: LEFT JOIN LOAD [PURCH_ORG], [TXTSH] AS [PURCH_ORG_TEXT]; SELECT PURCH_ORG, TXTSH FROM /BI0/TPURCH_ORG;
+[STOR_LOC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [STOR_LOC], [TXTMD] AS [STOR_LOC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, STOR_LOC, TXTMD FROM /BI0/TSTOR_LOC;
+[CLC_CAREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CAREA] AS [CLC_CAREA], [TXTMD] AS [CLC_CAREA_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, TXTMD FROM /BIC/TCLC_CAREA;
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_HIERH_TEXTS]: LEFT JOIN LOAD [/BIC/CLC_HIERH] AS [CLC_HIERH], [TXTLG] AS [CLC_HIERH_TEXT_L], [TXTMD] AS [CLC_HIERH_TEXT], [TXTSH] AS [CLC_HIERH_TEXT_S]; SELECT /BIC/CLC_HIERH, TXTLG, TXTMD, TXTSH FROM /BIC/TCLC_HIERH;
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATER]) AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_MATLG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATLG]) AS [CLC_MATLG], [TXTSH] AS [CLC_MATLG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATLG, TXTSH FROM /BIC/TCLC_MATLG WHERE LANGU = 'S';
+[CLC_PLANT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [TXTMD] AS [CLC_PLANT_TEXT], [TXTSH] AS [CLC_PLANT_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, TXTMD, TXTSH FROM /BIC/TCLC_PLANT;
+[CLC_PROFG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_PROFG] AS [CLC_PROFG], [TXTSH] AS [CLC_PROFG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PROFG, TXTSH FROM /BIC/TCLC_PROFG;
+[CLC_PROFI_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CAREA] AS [CLC_CAREA], [/BIC/CLC_PROFI] AS [CLC_PROFI], [TXTMD] AS [CLC_PROFI_TEXT], [TXTSH] AS [CLC_PROFI_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, /BIC/CLC_PROFI, TXTMD, TXTSH FROM /BIC/TCLC_PROFI WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CLC_VEND_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_VEND] AS [CLC_VEND], [TXTMD] AS [CLC_VEND_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_VEND, TXTMD FROM /BIC/TCLC_VEND;
+
+Concatenate
+LOAD
+    SOURSYSTEM,
+    CLC_VEND,
+    CLC_CAREA,
+    CLC_PROFI,
+    CLC_PROFG,
+    CLC_PLANT,
+    CLC_MATLG,
+    CLC_MATER,
+    CLC_HIERH,
+    CLC_COMPC,
+    STOR_LOC,
+    PURCH_ORG,
+    RowNum,
+    AEDAT,
+    BASE_UOM,
+    CALDAY,
+    COMPL_DEL,
+    CONTRACT,
+    CONT_ITEM,
+    CT_FLAG,
+    DATAPAKID,
+    DOCTYPE,
+    DOC_CAT,
+    ENTRY_DATE,
+    EVAL_R_S,
+    FINAL_INV,
+    FISCPER,
+    FISCVARNT,
+    FISCYEAR,
+    GN_CAT_PUR,
+    GN_LOCATIO,
+    GN_R3_SSY,
+    GN_VENDOR,
+    GR_BASE_IV,
+    GR_RE_IND,
+    INFO_REC,
+    INV_RE_IND,
+    ITEM_DEL,
+    ITM_CAT,
+    LOC_CURRCY,
+    LOG_SYS_BE,
+    MATL_TYPE,
+    OI_EBELN,
+    OI_EBELP,
+    ORDER_CURR,
+    PO_STATUS,
+    PO_UNIT,
+    PRODUCT,
+    PROD_DESCR,
+    PSTNG_DATE,
+    PUR_REASON,
+    "RECORD",
+    RECORDMODE,
+    REQTSN,
+    REQUISIT,
+    RET_ITM,
+    UNLIMDLVTL,
+    UPD_DATE,
+    VAL_END,
+    VAL_START,
+    CLC_BANFN,
+    CLC_BNFPO,
+    CLC_NV_PA,
+    CLC_PSPN,
+    CLC_SUPP,
+    CLC_SUPPL,
+    CLC_SUPVE,
+    CLC_UPP_P,
+    CLC_URSRC,
+    DENOMINTR,
+    EXCHG_RATE,
+    NETPRICE,
+    NET_PO_VAL,
+    NO_POS,
+    NUMERATOR,
+    ORDER_QUAN,
+    PRICE_UNIT,
+    UPPR_BND,
+    UniqueKey,
+    PURCH_ORG_TEXT,
+    STOR_LOC_TEXT,
+    CLC_CAREA_TEXT,
+    CLC_COMPC_TEXT,
+    CLC_HIERH_TEXT_L,
+    CLC_HIERH_TEXT,
+    CLC_HIERH_TEXT_S,
+    CLC_MATER_TEXT,
+    CLC_MATLG_TEXT,
+    CLC_PLANT_TEXT,
+    CLC_PLANT_TEXT_S,
+    CLC_PROFG_TEXT,
+    CLC_PROFI_TEXT,
+    CLC_PROFI_TEXT_S,
+    CLC_VEND_TEXT
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/PUR11.qvd](qvd)
+Where not Exists(UniqueKey);
+
+
+// Se almacena en QVD la tabla PUR11 y posteriormente se elimina
+STORE PUR11 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/PUR11.qvd];
+
+DROP Table PUR11;
+

@@ -1,0 +1,113 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+CCA30:
+LOAD RowNum, 
+	[0COSTELMNT] as [Clase de coste], 
+	[0CO_AREA] as [Sociedad CO], 
+	[0CO_ITEM_TX] as [Texto del apunte contable de CO], 
+	[0CURRENCY] as [Clave de moneda], 
+	[0CURTYPE] as [Tipo de moneda], 
+	[0DATAPAKID] as [Paquete de datos], 
+	[0DB_CR_IND] as [Indicador emisor/receptor], 
+	[0DOC_DATE] as [Fecha del documento], 
+	[0FISCPER] as [Ejercicio/Período], 
+	[0FISCPER3] as [Período contable], 
+	[0FISCVARNT] as [Variante de ejercicio], 
+	[0FISCYEAR] as Ejercicio, 
+	[0FM_AREA] as [Entidad CP], 
+	[0FUNC_AREA] as [Área funcional], 
+	[0FUND] as Fondos, 
+	[0GN_R3_SSY] as [Sistema fuente de la entidad (2 posiciones)], 
+	[0GRANT_NBR] as [Subvención], 
+	[0METYPE] as [Tipo de ratio], 
+	[0PBDGTID] as [Período de presupuesto de interlocutor], 
+	[0PBUS_AREA] as [División del interlocutor comercial], 
+	[0PCOMPANY] as [Número de sociedad GL asociada], 
+	[0PFUNC_AREA] as [Área de funciones del interlocutor], 
+	[0PFUND] as [Fondos de interlocutor], 
+	[0PGRANT_NBR] as [Fomento de interlocutor], 
+	[0PSTNG_DATE] as [Fecha de contabilización en el documento], 
+	[0PU_BDGTID] as [Per.presupuesto], 
+	[0RECORD] as [Número registro datos], 
+	[0RECORDMODE] as [BW procedimiento delta: Modo de actualización], 
+	[0REF_DOC_AA] as [Documento referencia: Número imputación], 
+	[0REF_DOC_CT] as [Documento de referencia: Tipo], 
+	[0REF_DOC_DI] as [Documento de referencia: Posición de fecha], 
+	[0REF_DOC_IT] as [Posición del documento de referencia], 
+	[0REF_DOC_NR] as [Número documento de referencia], 
+	[0REF_DOC_TY] as [Documento de referencia: Clase], 
+	[0REQTSN] as [Número de transacción consecutivo de solicitud], 
+	[0RES_DEL] as [Indicador: Posición de documento borrada], 
+	[0SOURSYSTEM] as [ID sistema fuente], 
+	[0UNIT] as [Unidad medida], 
+	[0UPD_DATE] as [Fecha de actualización], 
+	[0USERNAME] as [Nombre de usuario], 
+	[0VERSION] as [Vers.], 
+	[0VTDETAIL] as [Detalle del tipo de valor], 
+	[0VTSTAT] as [Indicador estadística para tipo valor], 
+	[0VTYPE] as [Tipo valor para informes], 
+	CLC_CAREA as [Sociedad CO_1], 
+	CLC_COMPC as Sociedad, 
+	CLC_MATER as Material, 
+	CLC_MATLG as [Grupo artículos], 
+	CLC_OSTCE as [Centro de coste], 
+	CLC_VEND as Proveedor, 
+	[0AMOUNT] as Importe, 
+	[0QUANTITY] as Cantidad,
+    [0SOURSYSTEM]&[0REF_DOC_AA]&[0REF_DOC_CT]&[0REF_DOC_DI]&[0REF_DOC_IT]&[0REF_DOC_NR]&[0REF_DOC_TY]&[0CURTYPE]&[0METYPE]&[0VTYPE]&[0FISCVARNT] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0COSTELMNT],	// Clase de coste
+	[0CO_AREA],	// Sociedad CO
+	[0CO_ITEM_TX],	// Texto del apunte contable de CO
+	[0CURRENCY],	// Clave de moneda
+	[0CURTYPE],	// Tipo de moneda
+	[0DATAPAKID],	// Paquete de datos
+	[0DB_CR_IND],	// Indicador emisor/receptor
+	[0DOC_DATE],	// Fecha del documento
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCPER3],	// Período contable
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0FM_AREA],	// Entidad CP
+	[0FUNC_AREA],	// Área funcional
+	[0FUND],	// Fondos
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GRANT_NBR],	// Subvención
+	[0METYPE],	// Tipo de ratio
+	[0PBDGTID],	// Período de presupuesto de interlocutor
+	[0PBUS_AREA],	// División del interlocutor comercial
+	[0PCOMPANY],	// Número de sociedad GL asociada
+	[0PFUNC_AREA],	// Área de funciones del interlocutor
+	[0PFUND],	// Fondos de interlocutor
+	[0PGRANT_NBR],	// Fomento de interlocutor
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PU_BDGTID],	// Per.presupuesto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REF_DOC_AA],	// Documento referencia: Número imputación
+	[0REF_DOC_CT],	// Documento de referencia: Tipo
+	[0REF_DOC_DI],	// Documento de referencia: Posición de fecha
+	[0REF_DOC_IT],	// Posición del documento de referencia
+	[0REF_DOC_NR],	// Número documento de referencia
+	[0REF_DOC_TY],	// Documento de referencia: Clase
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0RES_DEL],	// Indicador: Posición de documento borrada
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UNIT],	// Unidad medida
+	[0UPD_DATE],	// Fecha de actualización
+	[0USERNAME],	// Nombre de usuario
+	[0VERSION],	// Vers.
+	[0VTDETAIL],	// Detalle del tipo de valor
+	[0VTSTAT],	// Indicador estadística para tipo valor
+	[0VTYPE],	// Tipo valor para informes
+	[CLC_CAREA],	// Sociedad CO_1
+	[CLC_COMPC],	// Sociedad
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_OSTCE],	// Centro de coste
+	[CLC_VEND],	// Proveedor
+	[0AMOUNT],	// Importe
+	[0QUANTITY]	// Cantidad
+
+FROM /IMO/D_CCA30;
+STORE CCA30 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CCA30.qvd;

@@ -1,0 +1,243 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.WBS20.qvs
+// TABLA:     	/IMO/D_WBS20
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: CO-OM WBS: Totales plan
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		WBS20	   	 ;
+TRACE ###############################;
+
+//Obtenemos el campo fecha
+Fecha:
+LOAD [UPD_DATE]
+
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/WBS20.qvd] (qvd);
+
+//Seleccionamos la fecha máxima
+MaxOldQVD:
+
+LOAD
+
+Max([UPD_DATE]) as Max0UPD_DATE
+
+Resident Fecha;
+
+LET LastExecTime = Date(Peek('Max0UPD_DATE',-1,MaxOldQVD),'YYYYMMDD');
+
+DROP Table Fecha;
+
+DROP Table MaxOldQVD;
+
+// Let ThisExecTime =date(today(), 'YYYYMMDD');
+
+//Cargamos los datos con carga incremental
+WBS20:
+LOAD RowNum, 
+	[0COSTELMNT] as [COSTELMNT], 
+	Text([0CO_AREA]) as [CO_AREA], 
+	[0CO_HRKFT] as [CO_HRKFT], 
+	[0CO_OBJNR] as [CO_OBJNR], 
+	[0CO_PAROB] as [CO_PAROB], 
+	[0CO_USPOB] as [CO_USPOB], 
+	[0CO_WRTTP] as [CO_WRTTP], 
+	[0CPR_GUID] as [CPR_GUID], 
+	[0CURKEY_TC] as [CURKEY_TC], 
+	[0CURRENCY] as [CURRENCY], 
+	[0CURTYPE] as [CURTYPE], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DB_CR_IND] as [DB_CR_IND], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCPER3] as [FISCPER3], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0FI_RACTIV] as [FI_RACTIV], 
+	[0FM_AREA] as [FM_AREA], 
+	[0FUNC_AREA] as [FUNC_AREA], 
+	[0FUND] as [FUND], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GRANT_NBR] as [GRANT_NBR], 
+	[0METYPE] as [METYPE], 
+	[0NEW_OLD] as [NEW_OLD], 
+	[0PART_ABCPR] as [PART_ABCPR], 
+	[0PART_ACTTY] as [PART_ACTTY], 
+	[0PART_CCTR] as [PART_CCTR], 
+	[0PART_COORD] as [PART_COORD], 
+	[0PART_WBSEL] as [PART_WBSEL], 
+	[0PBDGTID] as [PBDGTID], 
+	[0PBUS_AREA] as [PBUS_AREA], 
+	[0PCOMPANY] as [PCOMPANY], 
+	[0PFUNC_AREA] as [PFUNC_AREA], 
+	[0PFUND] as [PFUND], 
+	[0PGRANT_NBR] as [PGRANT_NBR], 
+	[0PIOBJSV] as [PIOBJSV], 
+	[0PIOVALUE] as [PIOVALUE], 
+	[0PROJECT] as [PROJECT], 
+	[0PSGUID] as [PSGUID], 
+	[0PU_BDGTID] as [PU_BDGTID], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0UNIT] as [UNIT], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VALUATION] as [VALUATION], 
+	[0VERSION] as [VERSION], 
+	[0VTDETAIL] as [VTDETAIL], 
+	[0VTSTAT] as [VTSTAT], 
+	[0VTYPE] as [VTYPE], 
+	CLC_WBSP, 
+	[0AMOUNT] as [AMOUNT], 
+	[0AMOUNTPP] as [AMOUNTPP], 
+	[0QUANTITY] as [QUANTITY],
+    [0SOURSYSTEM]&[0FISCVARNT]&[0FISCPER]&[0CO_PAROB]&[0CO_AREA]&[0CO_USPOB]&[0NEW_OLD]&[0CO_WRTTP]&[0CO_HRKFT]&[0VERSION]&[0DEB_CRED]&[0COSTELMNT]&[0VALUATION]&[0CURTYPE]&[0PBUS_AREA]&[0CO_OBJNR]&[0FI_RACTIV]&[0PCOMPANY]&[0CURKEY_TC] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0COSTELMNT],	// Clase de coste
+	[0CO_AREA],	// Sociedad CO
+	[0CO_HRKFT],	// CO: Clave
+	[0CO_OBJNR],	// CO: Número de objeto
+	[0CO_PAROB],	// CO: Objeto interlocutor
+	[0CO_USPOB],	// CO: Objeto fuente
+	[0CO_WRTTP],	// CO: Tipo valor (ERP)
+	[0CPR_GUID],	// Jerarquía de gestión de proyectos
+	[0CURKEY_TC],	// Clave de moneda de moneda de la transacción
+	[0CURRENCY],	// Clave de moneda
+	[0CURTYPE],	// Tipo de moneda
+	[0DATAPAKID],	// Paquete de datos
+	[0DB_CR_IND],	// Indicador emisor/receptor
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCPER3],	// Período contable
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0FI_RACTIV],	// Operación empresarial
+	[0FM_AREA],	// Entidad CP
+	[0FUNC_AREA],	// Área funcional
+	[0FUND],	// Fondos
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GRANT_NBR],	// Subvención
+	[0METYPE],	// Tipo de ratio
+	[0NEW_OLD],	// Indicador arrastre/actual/previsto
+	[0PART_ABCPR],	// Proceso empresarial interlocutor
+	[0PART_ACTTY],	// Clase de actividad del centro de coste interlocutor
+	[0PART_CCTR],	// Centro de coste de interlocutor
+	[0PART_COORD],	// Orden interlocutor
+	[0PART_WBSEL],	// Elemento PEP interlocutor
+	[0PBDGTID],	// Período de presupuesto de interlocutor
+	[0PBUS_AREA],	// División del interlocutor comercial
+	[0PCOMPANY],	// Número de sociedad GL asociada
+	[0PFUNC_AREA],	// Área de funciones del interlocutor
+	[0PFUND],	// Fondos de interlocutor
+	[0PGRANT_NBR],	// Fomento de interlocutor
+	[0PIOBJSV],	// Tipo objeto interlocutor
+	[0PIOVALUE],	// Objeto del interlocutor
+	[0PROJECT],	// Definición del proyecto
+	[0PSGUID],	// UID de un objeto PS
+	[0PU_BDGTID],	// Per.presupuesto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UNIT],	// Unidad medida
+	[0UPD_DATE],	// Fecha de actualización
+	[0VALUATION],	// Vista de valoración
+	[0VERSION],	// Vers.
+	[0VTDETAIL],	// Detalle del tipo de valor
+	[0VTSTAT],	// Indicador estadística para tipo valor
+	[0VTYPE],	// Tipo valor para informes
+	[CLC_WBSP],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[0AMOUNT],	// Importe
+	[0AMOUNTPP],	// Plan proyectos
+	[0QUANTITY]	// Cantidad
+
+FROM /IMO/D_WBS20
+WHERE (
+[0UPD_DATE]  >= $(LastExecTime)
+);
+
+[COSTELMNT_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) AS [CO_AREA], [COSTELMNT], [TXTMD] AS [COSTELMNT_TEXT], [TXTSH] AS [COSTELMNT_TEXT_S]; SELECT CO_AREA, COSTELMNT, TXTMD, TXTSH FROM /BI0/TCOSTELMNT WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) AS [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[FM_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FM_AREA], [TXTMD] AS [FM_AREA_TEXT]; SELECT SOURSYSTEM, FM_AREA, TXTMD FROM /BI0/TFM_AREA WHERE LANGU = 'S';
+[FUNC_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FUNC_AREA], [TXTMD] AS [FUNC_AREA_TEXT]; SELECT SOURSYSTEM, FUNC_AREA, TXTMD FROM /BI0/TFUNC_AREA WHERE LANGU = 'S';
+[PROJECT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [PROJECT], [TXTMD] AS [PROJECT_TEXT]; SELECT SOURSYSTEM, PROJECT, TXTMD FROM /BI0/TPROJECT WHERE LANGU = 'S';
+[CLC_WBSP_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_WBSP] AS [CLC_WBSP], [TXTMD] AS [CLC_WBSP_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_WBSP, TXTMD FROM /BIC/TCLC_WBSP WHERE LANGU = 'S';
+
+Concatenate
+LOAD
+    RowNum, 
+	SOURSYSTEM,
+    CLC_WBSP,
+    PROJECT,
+    FUNC_AREA,
+    FM_AREA,
+    CO_AREA,
+    COSTELMNT,
+    CO_HRKFT,
+    CO_OBJNR,
+    CO_PAROB,
+    CO_USPOB,
+    CO_WRTTP,
+    CPR_GUID,
+    CURKEY_TC,
+    CURRENCY,
+    CURTYPE,
+    DATAPAKID,
+    DB_CR_IND,
+    DEB_CRED,
+    FISCPER,
+    FISCPER3,
+    FISCVARNT,
+    FISCYEAR,
+    FI_RACTIV,
+    FUND,
+    GN_R3_SSY,
+    GRANT_NBR,
+    METYPE,
+    NEW_OLD,
+    PART_ABCPR,
+    PART_ACTTY,
+    PART_CCTR,
+    PART_COORD,
+    PART_WBSEL,
+    PBDGTID,
+    PBUS_AREA,
+    PCOMPANY,
+    PFUNC_AREA,
+    PFUND,
+    PGRANT_NBR,
+    PIOBJSV,
+    PIOVALUE,
+    PSGUID,
+    PU_BDGTID,
+    "RECORD",
+    RECORDMODE,
+    REQTSN,
+    UNIT,
+    UPD_DATE,
+    VALUATION,
+    VERSION,
+    VTDETAIL,
+    VTSTAT,
+    VTYPE,
+    AMOUNT,
+    AMOUNTPP,
+    QUANTITY,
+    COSTELMNT_TEXT,
+    COSTELMNT_TEXT_S,
+    CO_AREA_TEXT,
+    FM_AREA_TEXT,
+    FUNC_AREA_TEXT,
+    PROJECT_TEXT,
+    CLC_WBSP_TEXT,
+    UniqueKey
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/WBS20.qvd] (qvd)
+Where not Exists(UniqueKey);
+
+// Se almacena en QVD la tabla WBS20 y posteriormente se elimina
+STORE WBS20 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/WBS20.qvd];
+
+DROP Table WBS20;
+

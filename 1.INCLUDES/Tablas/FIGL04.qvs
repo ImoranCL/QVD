@@ -1,0 +1,98 @@
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+FIGL04:
+LOAD
+    LOAD
+    RowNum, 
+    "Clase de cuenta" as [ACCT_TYPE], 
+    "Número de un documento contable" as [AC_DOC_NO], 
+    "Clase de documento" as [AC_DOC_TYP], 
+    "Número de asignación" as [ALLOC_NMBR], 
+    Text(División) as [BUS_AREA], 
+    "Business Transaction" as [BUS_TRXN], 
+    "Plan de cuentas" as [CHRT_ACCTS], 
+    "Fecha de la compensación" as [CLEAR_DATE], 
+    "Número de documento de compensación" as [CLR_DOC_NO], 
+    Text(Sociedad) as [COMP_CODE], 
+    "Número de orden" as [COORDER], 
+    "Centro de coste" as [COSTCENTER], 
+    Text("Sociedad CO") as [CO_AREA], 
+    "Fecha de creación del registro" as [CREATEDON], 
+    "Paquete de datos" as [DATAPAKID], 
+    "Moneda del documento" as [DOC_CURRCY], 
+    "Fecha del documento" as [DOC_DATE], 
+    "Document Header Text" as [DOC_HD_TXT], 
+    Empleados as [EMPLOYEE], 
+    "Ejercicio/Período" as [FISCPER], 
+    "Período contable" as [FISCPER3], 
+    "Variante de ejercicio" as [FISCVARNT], 
+    Ejercicio as [FISCYEAR], 
+    "Status de partida" as [FI_DOCSTAT], 
+    "Entidad CP" as [FM_AREA], 
+    "Área funcional" as [FUNC_AREA], 
+    Fondos as [FUND], 
+    Text("Cuenta de mayor") as [GL_ACCOUNT], 
+    "Sistema fuente de la entidad (2 posiciones)" as [GN_R3_SSY], 
+    "Número de apunte contable dentro del documento contable" as [ITEM_NUM], 
+    "Segunda moneda local" as [LOC_CURRC2], 
+    "Tercera moneda local" as [LOC_CURRC3], 
+    "Moneda local" as [LOC_CURRCY], 
+    "Tipo moneda de segunda moneda local" as [LOC_CURTP2], 
+    "Tipo moneda de tercera moneda local" as [LOC_CURTP3], 
+    "Sociedad para el número documento original" as [ORG_DOC_CC], 
+    "Sociedad CO para el número de documento original" as [ORG_DOC_CO], 
+    "Nº documento de documento de origen" as [ORG_DOC_NO], 
+    "Ejercicio para el número de documento original" as [ORG_DOC_YR], 
+    "Centro de beneficio interlocutor" as [PART_PRCTR], 
+    "División del interlocutor comercial" as [PBUS_AREA], 
+    "Número de sociedad GL asociada" as [PCOMPANY], 
+    Text(Ctro) as [PLANT], 
+    "Texto posición" as [POSTXT], 
+    "Clave de contabilización" as [POST_KEY], 
+    "Centro de beneficio" as [PROFIT_CTR], 
+    "Fecha de contabilización en el documento" as [PSTNG_DATE], 
+    "Número registro datos" as [RECORD], 
+    "BW procedimiento delta: Modo de actualización" as [RECORDMODE], 
+    "Número de documento de referencia" as [REF_DOC_NO], 
+    "Clave referencia 3" as [REF_KEY3], 
+    "Número de transacción consecutivo de solicitud" as [REQTSN], 
+    "ID sistema fuente" as [SOURSYSTEM], 
+    "Indicador de operación en cuenta de mayor especial" as [SP_GL_IND], 
+    "Transaction key" as [TRXN_KEY], 
+    "Fecha de actualización" as [UPD_DATE], 
+    "Fecha valor" as [VALUE_DATE], 
+    "Elemento del plan de estructura de proyecto (elemento PEP)" as [WBS_ELEMT], 
+    "Importe en el Haber en moneda extranjera" as [CREDIT_DC], 
+    "Importe en el Haber en moneda local" as [CREDIT_LC], 
+    "Importe de haber en segunda moneda local" as [CREDIT_LC2], 
+    "Importe de haber en tercera moneda local" as [CREDIT_LC3], 
+    "Importe en el Debe en moneda extranjera" as [DEBIT_DC], 
+    "Importe en el Debe en moneda local" as [DEBIT_LC], 
+    "Importe en el debe en segunda moneda local" as [DEBIT_LC2], 
+    "Importe en el debe en la tercera moneda local" as [DEBIT_LC3], 
+    "Importe en moneda extranjera con signo +/-" as [DEB_CRE_DC], 
+    "Importe en la segunda moneda local con signo" as [DEB_CRE_L2], 
+    "Importe en tercera moneda local con signo +/-" as [DEB_CRE_L3], 
+    "Importe en moneda local con signo +/-" as [DEB_CRE_LC], 
+    UniqueKey
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_FIGL04.qvd]
+(qvd);
+
+[ACCT_TYPE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [ACCT_TYPE], [TXTLG] AS [ACCT_TYPE_TEXT]; SELECT SOURSYSTEM, ACCT_TYPE, TXTLG FROM /BI0/TACCT_TYPE WHERE LANGU = 'S';
+[BUS_AREA_TEXTS]: LEFT JOIN LOAD Text([BUS_AREA]) as [BUS_AREA], [TXTMD] AS [BUS_AREA_TEXT]; SELECT BUS_AREA, TXTMD FROM /BI0/TBUS_AREA WHERE LANGU = 'S';
+[CHRT_ACCTS_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [CHRT_ACCTS], [TXTLG] AS [CHRT_ACCTS_TEXT]; SELECT SOURSYSTEM, CHRT_ACCTS, TXTLG FROM /BI0/TCHRT_ACCTS WHERE LANGU = 'S';
+[COMP_CODE_TEXTS]: LEFT JOIN LOAD Text([COMP_CODE]) as [COMP_CODE], [TXTMD] AS [COMP_CODE_TEXT]; SELECT COMP_CODE, TXTMD FROM /BI0/TCOMP_CODE;
+[COORDER_TEXTS]: LEFT JOIN LOAD [COORDER], [TXTMD] AS [COORDER_TEXT]; SELECT COORDER, TXTMD FROM /BI0/TCOORDER;
+[COSTCENTER_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) as [CO_AREA], [COSTCENTER], [TXTMD] AS [COSTCENTER_TEXT], [TXTSH] AS [COSTCENTER_TEXT_S]; SELECT CO_AREA, COSTCENTER, TXTMD, TXTSH FROM /BI0/TCOSTCENTER WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) as [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[EMPLOYEE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [EMPLOYEE], [TXTMD] AS [EMPLOYEE_TEXT]; SELECT SOURSYSTEM, EMPLOYEE, TXTMD FROM /BI0/TEMPLOYEE WHERE DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[FM_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FM_AREA], [TXTMD] AS [FM_AREA_TEXT]; SELECT SOURSYSTEM, FM_AREA, TXTMD FROM /BI0/TFM_AREA WHERE LANGU = 'S';
+[FUNC_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FUNC_AREA], [TXTMD] AS [FUNC_AREA_TEXT]; SELECT SOURSYSTEM, FUNC_AREA, TXTMD FROM /BI0/TFUNC_AREA WHERE LANGU = 'S';
+[GL_ACCOUNT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [CHRT_ACCTS], Text([GL_ACCOUNT]) as [GL_ACCOUNT], [TXTLG] AS [GL_ACCOUNT_TEXT], [TXTSH] AS [GL_ACCOUNT_TEXT_S]; SELECT SOURSYSTEM, CHRT_ACCTS, GL_ACCOUNT, TXTLG, TXTSH FROM /BI0/TGL_ACCOUNT WHERE LANGU = 'S';
+[PLANT_TEXTS]: LEFT JOIN LOAD Text([PLANT]) as [PLANT], [TXTMD] AS [PLANT_TEXT], [TXTSH] AS [PLANT_TEXT_S]; SELECT PLANT, TXTMD, TXTSH FROM /BI0/TPLANT;
+[PROFIT_CTR_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) as [CO_AREA], [PROFIT_CTR], [TXTMD] AS [PROFIT_CTR_TEXT], [TXTSH] AS [PROFIT_CTR_TEXT_S]; SELECT CO_AREA, PROFIT_CTR, TXTMD, TXTSH FROM /BI0/TPROFIT_CTR WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+
+
+// Se almacena en QVD la tabla FIGL04 y posteriormente se elimina
+STORE FIGL04 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/FIGL04.qvd];
+
+DROP Table FIGL04;

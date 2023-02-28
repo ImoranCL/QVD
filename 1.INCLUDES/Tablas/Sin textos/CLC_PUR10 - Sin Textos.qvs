@@ -1,0 +1,71 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+CLC_PUR10:
+LOAD RowNum, 
+	[0CALDAY] as [Fecha de documento de compras], 
+	[0DATAPAKID] as [Paquete de datos], 
+	[0DOCTYPE] as [Clase de documento de compras], 
+	[0DOC_CAT] as [Tipo documento de compras], 
+	[0ENTRY_DATE] as [Fecha de registro del documento de compras], 
+	[0FISCPER] as [Ejercicio/Período], 
+	[0FISCVARNT] as [Variante de ejercicio], 
+	[0FISCYEAR] as Ejercicio, 
+	[0GN_R3_SSY] as [Sistema fuente de la entidad (2 posiciones)], 
+	[0GN_VENDOR] as Proveedor, 
+	[0LOG_SYS_BE] as [Sistema lógico back end], 
+	[0OI_EBELN] as [Número del documento de compras], 
+	[0ORDER_CURR] as [Moneda de pedido], 
+	[0PO_STATUS] as [Status del documento de compras], 
+	[0PSTNG_DATE] as [Fecha de contabilización en el documento], 
+	[0PURCH_ORG] as [Organización de compras], 
+	[0RECORD] as [Número registro datos], 
+	[0RECORDMODE] as [BW procedimiento delta: Modo de actualización], 
+	[0REQTSN] as [Número de transacción consecutivo de solicitud], 
+	[0SOURSYSTEM] as [ID sistema fuente], 
+	[0UPD_DATE] as [Fecha de actualización], 
+	[0VAL_END] as [Fin per.val.], 
+	[0VAL_START] as [Inicio del período de validez], 
+	CLC_NV_PA as [Emisor de la factura], 
+	CLC_PROFG as [Grupo de compras], 
+	CLC_UPP_P as [Centro suministrador], 
+	CLC_VEND as Proveedor_1, 
+	[0DELIVERIES] as [Cantidad entregas], 
+	[0EXCHG_RATE] as [Tp.cambio para la determinación de precios y estadísticas], 
+	[0INVOICES] as [Cantidad facturas], 
+	[0NO_HDR] as [Contador para documentos],
+    [0SOURSYSTEM]&[0OI_EBELN] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0CALDAY],	// Fecha de documento de compras
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0OI_EBELN],	// Número del documento de compras
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PO_STATUS],	// Status del documento de compras
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UPD_DATE],	// Fecha de actualización
+	[0VAL_END],	// Fin per.val.
+	[0VAL_START],	// Inicio del período de validez
+	[CLC_NV_PA],	// Emisor de la factura
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_UPP_P],	// Centro suministrador
+	[CLC_VEND],	// Proveedor_1
+	[0DELIVERIES],	// Cantidad entregas
+	[0EXCHG_RATE],	// Tp.cambio para la determinación de precios y estadísticas
+	[0INVOICES],	// Cantidad facturas
+	[0NO_HDR]	// Contador para documentos
+
+FROM CLC_PUR10;
+STORE CLC_PUR10 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CLC_PUR10.qvd;

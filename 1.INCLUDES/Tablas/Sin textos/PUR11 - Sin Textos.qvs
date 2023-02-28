@@ -1,0 +1,164 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+PUR11:
+LOAD RowNum, 
+	[0AEDAT] as [AEDAT], 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0CALDAY] as [CALDAY], 
+	[0COMPL_DEL] as [COMPL_DEL], 
+	[0CONTRACT] as [CONTRACT], 
+	[0CONT_ITEM] as [CONT_ITEM], 
+	[0CT_FLAG] as [CT_FLAG], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0DOC_CAT] as [DOC_CAT], 
+	[0ENTRY_DATE] as [ENTRY_DATE], 
+	[0EVAL_R_S] as [EVAL_R_S], 
+	[0FINAL_INV] as [FINAL_INV], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR],
+	[0GN_CAT_PUR] as [GN_CAT_PUR], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0GR_BASE_IV] as [GR_BASE_IV], 
+	[0GR_RE_IND] as [GR_RE_IND], 
+	[0INFO_REC] as [INFO_REC] , 
+	[0INV_RE_IND] as [INV_RE_IND], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0ITM_CAT] as [ITM_CAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0LOG_SYS_BE] as [LOG_SYS_BE], 
+	[0MATL_TYPE] as [MATL_TYPE], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0ORDER_CURR] as [ORDER_CURR], 
+	[0PO_STATUS] as [PO_STATUS], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRODUCT] as [PRODUCT],
+	[0PROD_DESCR] as [PROD_DESCR], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0PURCH_ORG] as [PURCH_ORG], 
+	[0PUR_REASON] as [PUR_REASON], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0REQUISIT] as [REQUISIT], 
+	[0RET_ITM] as [RET_ITM], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0UNLIMDLVTL] as [UNLIMDLVTL], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VAL_END] as [VAL_END], 
+	[0VAL_START] as [VAL_START], 
+	CLC_BANFN, 
+	CLC_BNFPO, 
+	CLC_CAREA, 
+	CLC_COMPC, 
+	CLC_HIERH, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_NV_PA, 
+	CLC_PLANT, 
+	CLC_PROFG, 
+	CLC_PROFI, 
+	CLC_PSPN, 
+	CLC_SUPP, 
+	CLC_SUPPL, 
+	CLC_SUPVE, 
+	CLC_UPP_P, 
+	CLC_URSRC, 
+	CLC_VEND, 
+	[0DENOMINTR] as [DENOMINTR], 
+	[0EXCHG_RATE] as [EXCHG_RATE], 
+	[0NETPRICE] as [NETPRICE], 
+	[0NET_PO_VAL] as [NET_PO_VAL], 
+	[0NO_POS] as [NO_POS], 
+	[0NUMERATOR] as [NUMERATOR], 
+	[0ORDER_QUAN] as [ORDER_QUAN], 
+	[0PRICE_UNIT] as [PRICE_UNIT],
+	[0UPPR_BND] as [UPPR_BND],
+    [0SOURSYSTEM]&[0OI_EBELN]&[0OI_EBELP] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0AEDAT],	// Fecha modificación
+	[0BASE_UOM],	// Unidad de medida base
+	[0CALDAY],	// Fecha de documento de compras
+	[0COMPL_DEL],	// Indicador de entrega final
+	[0CONTRACT],	// Número del contrato superior
+	[0CONT_ITEM],	// Posición del contrato superior
+	[0CT_FLAG],	// Indicador para pedidos abiertos
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0EVAL_R_S],	// Autofacturación
+	[0FINAL_INV],	// Indicador de factura final
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_PUR],	// Categoría de compras
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0GR_BASE_IV],	// Verific.de fact.referida a EM
+	[0GR_RE_IND],	// Indicador de entrada de mercancías
+	[0INFO_REC],	// Número del registro info de compras
+	[0INV_RE_IND],	// Indicador de recepción de factura
+	[0ITEM_DEL],	// Posición borrada
+	[0ITM_CAT],	// Tipo de posición del documento de compras
+	[0LOC_CURRCY],	// Moneda local
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0MATL_TYPE],	// Tipo de material
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PO_STATUS],	// Status del documento de compras
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRODUCT],	// Producto
+	[0PROD_DESCR],	// Descripción de producto
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0PUR_REASON],	// Motivo de pedido
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0REQUISIT],	// Nombre del solicitante
+	[0RET_ITM],	// Posición de devoluciones
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOR_LOC],	// Almacén
+	[0UNLIMDLVTL],	// Ind.: Exceso ilimitado suministro
+	[0UPD_DATE],	// Fecha de actualización
+	[0VAL_END],	// Fin per.val.
+	[0VAL_START],	// Inicio del período de validez
+	[CLC_BANFN],	// Número de la solicitud de pedido
+	[CLC_BNFPO],	// Número de posición de la solicitud de pedido
+	[CLC_CAREA],	// Sociedad CO
+	[CLC_COMPC],	// Sociedad
+	[CLC_HIERH],	// Jerarquía de productos
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_NV_PA],	// Emisor de la factura
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_PROFI],	// Centro de beneficio
+	[CLC_PSPN],	// Elemento PEP
+	[CLC_SUPP],	// Ce.sumin.que tiene asignadas funciones interlocutor
+	[CLC_SUPPL],	// Proveedor de mercancías
+	[CLC_SUPVE],	// Proveedor para entrega
+	[CLC_UPP_P],	// Centro suministrador
+	[CLC_URSRC],	// Campo de usuario codigo externo (CKIS)
+	[CLC_VEND],	// Proveedor_1
+	[0DENOMINTR],	// Denominador(divisor) para conversión ctd.vta.en UMA
+	[0EXCHG_RATE],	// Tp.cambio para la determinación de precios y estadísticas
+	[0NETPRICE],	// Precio neto
+	[0NET_PO_VAL],	// Valor neto de pedido
+	[0NO_POS],	// Contador para posiciones
+	[0NUMERATOR],	// Contador (factor) para conversión cantidad venta en UME
+	[0ORDER_QUAN],	// Cantidad de pedido
+	[0PRICE_UNIT],	// Cantidad base
+	[0UPPR_BND]	// Lím.tolerancia p.exceso de suministro en %
+
+FROM /IMO/D_PUR11;
+
+STORE PUR11 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_PUR11.qvd;

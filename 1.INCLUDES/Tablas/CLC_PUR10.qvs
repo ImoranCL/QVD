@@ -1,0 +1,76 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+CLC_PUR10:
+LOAD RowNum, 
+	[0CALDAY] as [CALDAY], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0DOC_CAT] as [DOC_CAT], 
+	[0ENTRY_DATE] as [ENTRY_DATE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0LOG_SYS_BE] as [LOG_SYS_BE], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0ORDER_CURR] as [ORDER_CURR], 
+	[0PO_STATUS] as [PO_STATUS], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0PURCH_ORG] as [PURCH_ORG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VAL_END] as [VAL_END], 
+	[0VAL_START] as [VAL_START], 
+	CLC_NV_PA, 
+	CLC_PROFG, 
+	CLC_UPP_P, 
+	CLC_VEND, 
+	[0DELIVERIES] as [DELIVERIES], 
+	[0EXCHG_RATE] as [EXCHG_RATE], 
+	[0INVOICES] as [INVOICES], 
+	[0NO_HDR] as [NO_HDR],
+    [0SOURSYSTEM]&[0OI_EBELN] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0CALDAY],	// Fecha de documento de compras
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0OI_EBELN],	// Número del documento de compras
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PO_STATUS],	// Status del documento de compras
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UPD_DATE],	// Fecha de actualización
+	[0VAL_END],	// Fin per.val.
+	[0VAL_START],	// Inicio del período de validez
+	[CLC_NV_PA],	// Emisor de la factura
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_UPP_P],	// Centro suministrador
+	[CLC_VEND],	// Proveedor_1
+	[0DELIVERIES],	// Cantidad entregas
+	[0EXCHG_RATE],	// Tp.cambio para la determinación de precios y estadísticas
+	[0INVOICES],	// Cantidad facturas
+	[0NO_HDR]	// Contador para documentos
+
+FROM CLC_PUR10;
+
+[PURCH_ORG_TEXTS]: LEFT JOIN LOAD [PURCH_ORG], [TXTSH] AS [PURCH_ORG_TEXT]; SELECT PURCH_ORG, TXTSH FROM /BI0/TPURCH_ORG;
+[CLC_PROFG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_PROFG] AS [CLC_PROFG], [TXTSH] AS [CLC_PROFG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PROFG, TXTSH FROM /BIC/TCLC_PROFG;
+[CLC_VEND_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_VEND] AS [CLC_VEND], [TXTMD] AS [CLC_VEND_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_VEND, TXTMD FROM /BIC/TCLC_VEND;
+
+STORE CLC_PUR10 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CLC_PUR10.qvd;

@@ -1,0 +1,149 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+FIGL04:
+LOAD RowNum, 
+	[0ACCT_TYPE] as [Clase de cuenta], 
+	[0AC_DOC_NO] as [Número de un documento contable], 
+	[0AC_DOC_TYP] as [Clase de documento], 
+	[0ALLOC_NMBR] as [Número de asignación], 
+	[0BUS_AREA] as [División], 
+	[0BUS_TRXN] as [Business Transaction], 
+	[0CHRT_ACCTS] as [Plan de cuentas], 
+	[0CLEAR_DATE] as [Fecha de la compensación], 
+	[0CLR_DOC_NO] as [Número de documento de compensación], 
+	[0COMP_CODE] as Sociedad, 
+	[0COORDER] as [Número de orden], 
+	[0COSTCENTER] as [Centro de coste], 
+	[0CO_AREA] as [Sociedad CO], 
+	[0CREATEDON] as [Fecha de creación del registro], 
+	[0DATAPAKID] as [Paquete de datos], 
+	[0DOC_CURRCY] as [Moneda del documento], 
+	[0DOC_DATE] as [Fecha del documento], 
+	[0DOC_HD_TXT] as [Document Header Text], 
+	[0EMPLOYEE] as Empleados, 
+	[0FISCPER] as [Ejercicio/Período], 
+	[0FISCPER3] as [Período contable], 
+	[0FISCVARNT] as [Variante de ejercicio], 
+	[0FISCYEAR] as Ejercicio, 
+	[0FI_DOCSTAT] as [Status de partida], 
+	[0FM_AREA] as [Entidad CP], 
+	[0FUNC_AREA] as [Área funcional], 
+	[0FUND] as Fondos, 
+	[0GL_ACCOUNT] as [Cuenta de mayor], 
+	[0GN_R3_SSY] as [Sistema fuente de la entidad (2 posiciones)], 
+	[0ITEM_NUM] as [Número de apunte contable dentro del documento contable], 
+	[0LOC_CURRC2] as [Segunda moneda local], 
+	[0LOC_CURRC3] as [Tercera moneda local], 
+	[0LOC_CURRCY] as [Moneda local], 
+	[0LOC_CURTP2] as [Tipo moneda de segunda moneda local], 
+	[0LOC_CURTP3] as [Tipo moneda de tercera moneda local], 
+	[0ORG_DOC_CC] as [Sociedad para el número documento original], 
+	[0ORG_DOC_CO] as [Sociedad CO para el número de documento original], 
+	[0ORG_DOC_NO] as [Nº documento de documento de origen], 
+	[0ORG_DOC_YR] as [Ejercicio para el número de documento original], 
+	[0PART_PRCTR] as [Centro de beneficio interlocutor], 
+	[0PBUS_AREA] as [División del interlocutor comercial], 
+	[0PCOMPANY] as [Número de sociedad GL asociada], 
+	[0PLANT] as Ctro, 
+	[0POSTXT] as [Texto posición], 
+	[0POST_KEY] as [Clave de contabilización], 
+	[0PROFIT_CTR] as [Centro de beneficio], 
+	[0PSTNG_DATE] as [Fecha de contabilización en el documento], 
+	[0RECORD] as [Número registro datos], 
+	[0RECORDMODE] as [BW procedimiento delta: Modo de actualización], 
+	[0REF_DOC_NO] as [Número de documento de referencia], 
+	[0REF_KEY3] as [Clave referencia 3], 
+	[0REQTSN] as [Número de transacción consecutivo de solicitud], 
+	[0SOURSYSTEM] as [ID sistema fuente], 
+	[0SP_GL_IND] as [Indicador de operación en cuenta de mayor especial], 
+	[0TRXN_KEY] as [Transaction key], 
+	[0UPD_DATE] as [Fecha de actualización], 
+	[0VALUE_DATE] as [Fecha valor], 
+	[0WBS_ELEMT] as [Elemento del plan de estructura de proyecto (elemento PEP)], 
+	[0CREDIT_DC] as [Importe en el Haber en moneda extranjera], 
+	[0CREDIT_LC] as [Importe en el Haber en moneda local], 
+	[0CREDIT_LC2] as [Importe de haber en segunda moneda local], 
+	[0CREDIT_LC3] as [Importe de haber en tercera moneda local], 
+	[0DEBIT_DC] as [Importe en el Debe en moneda extranjera], 
+	[0DEBIT_LC] as [Importe en el Debe en moneda local], 
+	[0DEBIT_LC2] as [Importe en el debe en segunda moneda local], 
+	[0DEBIT_LC3] as [Importe en el debe en la tercera moneda local], 
+	[0DEB_CRE_DC] as [Importe en moneda extranjera con signo +/-], 
+	[0DEB_CRE_L2] as [Importe en la segunda moneda local con signo], 
+	[0DEB_CRE_L3] as [Importe en tercera moneda local con signo +/-], 
+	[0DEB_CRE_LC] as [Importe en moneda local con signo +/-],
+    [0SOURSYSTEM]&[0COMP_CODE]&[0CHRT_ACCTS]&[0GL_ACCOUNT]&[0FISCVARNT]&[0FISCPER]&[0AC_DOC_NO]&[0ITEM_NUM] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0ACCT_TYPE],	// Clase de cuenta
+	[0AC_DOC_NO],	// Número de un documento contable
+	[0AC_DOC_TYP],	// Clase de documento
+	[0ALLOC_NMBR],	// Número de asignación
+	[0BUS_AREA],	// División
+	[0BUS_TRXN],	// Business Transaction
+	[0CHRT_ACCTS],	// Plan de cuentas
+	[0CLEAR_DATE],	// Fecha de la compensación
+	[0CLR_DOC_NO],	// Número de documento de compensación
+	[0COMP_CODE],	// Sociedad
+	[0COORDER],	// Número de orden
+	[0COSTCENTER],	// Centro de coste
+	[0CO_AREA],	// Sociedad CO
+	[0CREATEDON],	// Fecha de creación del registro
+	[0DATAPAKID],	// Paquete de datos
+	[0DOC_CURRCY],	// Moneda del documento
+	[0DOC_DATE],	// Fecha del documento
+	[0DOC_HD_TXT],	// Document Header Text
+	[0EMPLOYEE],	// Empleados
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCPER3],	// Período contable
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0FI_DOCSTAT],	// Status de partida
+	[0FM_AREA],	// Entidad CP
+	[0FUNC_AREA],	// Área funcional
+	[0FUND],	// Fondos
+	[0GL_ACCOUNT],	// Cuenta de mayor
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0ITEM_NUM],	// Número de apunte contable dentro del documento contable
+	[0LOC_CURRC2],	// Segunda moneda local
+	[0LOC_CURRC3],	// Tercera moneda local
+	[0LOC_CURRCY],	// Moneda local
+	[0LOC_CURTP2],	// Tipo moneda de segunda moneda local
+	[0LOC_CURTP3],	// Tipo moneda de tercera moneda local
+	[0ORG_DOC_CC],	// Sociedad para el número documento original
+	[0ORG_DOC_CO],	// Sociedad CO para el número de documento original
+	[0ORG_DOC_NO],	// Nº documento de documento de origen
+	[0ORG_DOC_YR],	// Ejercicio para el número de documento original
+	[0PART_PRCTR],	// Centro de beneficio interlocutor
+	[0PBUS_AREA],	// División del interlocutor comercial
+	[0PCOMPANY],	// Número de sociedad GL asociada
+	[0PLANT],	// Ctro
+	[0POSTXT],	// Texto posición
+	[0POST_KEY],	// Clave de contabilización
+	[0PROFIT_CTR],	// Centro de beneficio
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REF_DOC_NO],	// Número de documento de referencia
+	[0REF_KEY3],	// Clave referencia 3
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0SP_GL_IND],	// Indicador de operación en cuenta de mayor especial
+	[0TRXN_KEY],	// Transaction key
+	[0UPD_DATE],	// Fecha de actualización
+	[0VALUE_DATE],	// Fecha valor
+	[0WBS_ELEMT],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[0CREDIT_DC],	// Importe en el Haber en moneda extranjera
+	[0CREDIT_LC],	// Importe en el Haber en moneda local
+	[0CREDIT_LC2],	// Importe de haber en segunda moneda local
+	[0CREDIT_LC3],	// Importe de haber en tercera moneda local
+	[0DEBIT_DC],	// Importe en el Debe en moneda extranjera
+	[0DEBIT_LC],	// Importe en el Debe en moneda local
+	[0DEBIT_LC2],	// Importe en el debe en segunda moneda local
+	[0DEBIT_LC3],	// Importe en el debe en la tercera moneda local
+	[0DEB_CRE_DC],	// Importe en moneda extranjera con signo +/-
+	[0DEB_CRE_L2],	// Importe en la segunda moneda local con signo
+	[0DEB_CRE_L3],	// Importe en tercera moneda local con signo +/-
+	[0DEB_CRE_LC]	// Importe en moneda local con signo +/-
+
+FROM /IMO/D_FIGL04;
+STORE FIGL04 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/FIGL04.qvd;

@@ -1,0 +1,96 @@
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+
+WBS10:
+LOAD
+    RowNum,
+    "Clase objeto imputación auxiliar" as [AUXACCTYPE],
+    "Objeto imputación auxiliar" as [AUXACCVAL],
+    "Plan de cuentas" as [CHRT_ACCTS],
+    "Sociedad GL" as [COMPANY],
+    "Clase de coste" as [COSTELMNT],
+    "Sociedad CO" as [CO_AREA],
+    "Número del documento CO" as [CO_DOC_NO],
+    "Apunte contable de un documento CO" as [CO_ITEM_NR],
+    "Texto del apunte contable de CO" as [CO_ITEM_TX],
+    "Jerarquía de gestión de proyectos" as [CPR_GUID],
+    "Número de cuenta del proveedor o acreedor" as [CREDITOR],
+    "Clave de moneda" as [CURRENCY],
+    "Tipo de moneda" as [CURTYPE],
+    "Paquete de datos" as [DATAPAKID],
+    "Indicador emisor/receptor" as [DB_CR_IND],
+    "Número de deudor" as [DEBITOR],
+    "Fecha del documento" as [DOC_DATE],
+    "Ejercicio/Período" as [FISCPER],
+    "Período contable" as [FISCPER3],
+    "Variante de ejercicio" as [FISCVARNT],
+    Ejercicio as [FISCYEAR],
+    "Entidad CP" as [FM_AREA],
+    "Área funcional" as [FUNC_AREA],
+    Fondos as [FUND],
+    "Cuenta de mayor" as [GL_ACCOUNT],
+    "Sistema fuente de la entidad (2 posiciones)" as [GN_R3_SSY],
+    Subvención as [GRANT_NBR],
+    "Tipo de ratio" as [METYPE],
+    "Proceso empresarial interlocutor" as [PART_ABCPR],
+    "Clase de actividad del centro de coste interlocutor" as [PART_ACTTY],
+    "Centro de coste de interlocutor" as [PART_CCTR],
+    "Orden interlocutor" as [PART_COORD],
+    "Elemento PEP interlocutor" as [PART_WBSEL],
+    "Período de presupuesto de interlocutor" as [PBDGTID],
+    "Sociedad del interlocutor" as [PCOMP_CODE],
+    "Área de funciones del interlocutor" as [PFUNC_AREA],
+    "Fondos de interlocutor" as [PFUND],
+    "Fomento de interlocutor" as [PGRANT_NBR],
+    "Tipo objeto interlocutor" as [PIOBJSV],
+    "Objeto del interlocutor" as [PIOVALUE],
+    "Definición del proyecto" as [PROJECT],
+    "UID de un objeto PS" as [PSGUID],
+    "Fecha de contabilización en el documento" as [PSTNG_DATE],
+    Per.presupuesto as [PU_BDGTID],
+    "Número registro datos" as [RECORD],
+    "BW procedimiento delta: Modo de actualización" as [RECORDMODE],
+    "Sociedad del documento de referencia" as [REF_DOC_CC],
+    "Ejercicio del documento de referencia" as [REF_DOC_FY],
+    "Posición del documento de referencia" as [REF_DOC_IT],
+    "Número documento de referencia" as [REF_DOC_NR],
+    "Documento de referencia: Clase" as [REF_DOC_TY],
+    "Número de transacción consecutivo de solicitud" as [REQTSN],
+    "ID sistema fuente" as [SOURSYSTEM],
+    "Unidad medida" as [UNIT],
+    "Fecha de actualización" as [UPD_DATE],
+    "Vista de valoración" as [VALUATION],
+    Vers. as [VERSION],
+    "Detalle del tipo de valor" as [VTDETAIL],
+    "Indicador estadística para tipo valor" as [VTSTAT],
+    "Tipo valor para informes" as [VTYPE],
+    División as CLC_BUSA,
+    Text(Sociedad) as CLC_COMPC,
+    Text(Material) as CLC_MATER,
+    Text(Ctro) as CLC_PLANT,
+    "Elemento del plan de estructura de proyecto (elemento PEP)" as CLC_WBSP,
+    Empleados as CL_EMPLOYCL_EMPLOY,
+    Importe as [AMOUNT],
+    "Importe fijo" as [AMOUNTFX],
+    "Importe variable" as [AMOUNTVR],
+    Cantidad as [QUANTITY],
+    "Cantidad fija" as [QUANTITYFX],
+    "Cantidad variable" as [QUANTITYVR],
+    UniqueKey
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_WBS10.qvd]
+(qvd);
+
+[CHRT_ACCTS_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [CHRT_ACCTS], [TXTLG] AS [CHRT_ACCTS_TEXT]; SELECT SOURSYSTEM, CHRT_ACCTS, TXTLG FROM /BI0/TCHRT_ACCTS WHERE LANGU = 'S';
+[COSTELMNT_TEXTS]: LEFT JOIN LOAD [CO_AREA], [COSTELMNT], [TXTMD] AS [COSTELMNT_TEXT], [TXTSH] AS [COSTELMNT_TEXT_S]; SELECT CO_AREA, COSTELMNT, TXTMD, TXTSH FROM /BI0/TCOSTELMNT WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[FM_AREA_TEXTS]: LEFT JOIN LOAD [FM_AREA], [TXTMD] AS [FM_AREA_TEXT]; SELECT FM_AREA, TXTMD FROM /BI0/TFM_AREA WHERE LANGU = 'S';
+[FUNC_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM] AS [SOURSYSTEM], [FUNC_AREA], [TXTMD] AS [FUNC_AREA_TEXT]; SELECT SOURSYSTEM, FUNC_AREA, TXTMD FROM /BI0/TFUNC_AREA WHERE LANGU = 'S';
+[GL_ACCOUNT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [CHRT_ACCTS] AS [CHRT_ACCTS], [GL_ACCOUNT], [TXTLG] AS [GL_ACCOUNT_TEXT], [TXTSH] AS [GL_ACCOUNT_TEXT_S]; SELECT SOURSYSTEM, CHRT_ACCTS, GL_ACCOUNT, TXTLG, TXTSH FROM /BI0/TGL_ACCOUNT WHERE LANGU = 'S';
+[PROJECT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [PROJECT], [TXTMD] AS [PROJECT_TEXT]; SELECT SOURSYSTEM, PROJECT, TXTMD FROM /BI0/TPROJECT WHERE LANGU = 'S';
+[CLC_BUSA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_BUSA] AS [CLC_BUSA], [TXTMD] AS [CLC_BUSA_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_BUSA, TXTMD FROM /BIC/TCLC_BUSA WHERE LANGU = 'S';
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATER]) AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_PLANT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [TXTMD] AS [CLC_PLANT_TEXT], [TXTSH] AS [CLC_PLANT_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, TXTMD, TXTSH FROM /BIC/TCLC_PLANT;
+[CLC_WBSP_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_WBSP] AS [CLC_WBSP], [TXTMD] AS [CLC_WBSP_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_WBSP, TXTMD FROM /BIC/TCLC_WBSP WHERE LANGU = 'S';
+// [CL_EMPLOY_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CL_EMPLOY] AS [CL_EMPLOY], [TXTMD] AS [CL_EMPLOY_TEXT]; SELECT SOURSYSTEM, /BIC/CL_EMPLOY, TXTMD FROM /BIC/TCL_EMPLOY WHERE DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+
+STORE [WBS10] INTO 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/WBS10.qvd' (qvd);

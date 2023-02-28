@@ -1,0 +1,101 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.CLC_PUR01.qvs
+// TABLA:     	/IMO/D_CLC_PUR01
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: MM-PUR: Solicitud de Pedido
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		CLC_PUR01	   	 ;
+TRACE ###############################;
+
+
+//Realizamos la carga de datos
+CLC_PUR01:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0CALDAY] as [CALDAY], 
+	[0CALMONTH] as [CALMONTH], 
+	[0CALMONTH2] as [CALMONTH2], 
+	[0CALQUART1] as [CALQUART1], 
+	[0CALQUARTER] as [CALQUARTER], 
+	[0CALWEEK] as [CALWEEK], 
+	[0CALYEAR] as [CALYEAR], 
+	[0CONF_DATE] as [CONF_DATE], 
+	[0CPR_RELON] as [CPR_RELON], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0ORDER_CURR] as [ORDER_CURR], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRO_STAT] as [PRO_STAT], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0REQUISIT] as [REQUISIT], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOR_LOC] as [STOR_LOC], 
+	CLC_BANFN, 
+	CLC_BNFPO, 
+	CLC_BSART, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_PLANT, 
+	CLC_PROFG, 
+	ZFEULTPED, 
+	[0NET_PO_VAL] as [NET_PO_VAL], 
+	[0ORDER_QUAN] as [ORDER_QUAN], 
+	[0PO_QTY] as [PO_QTY],
+    [0SOURSYSTEM]&CLC_BANFN&CLC_BNFPO as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0CALDAY],	// Fecha solped
+	[0CALMONTH],	// Año/Mes natural
+	[0CALMONTH2],	// Mes natural
+	[0CALQUART1],	// Trimestre
+	[0CALQUARTER],	// Año natural/Trimestre
+	[0CALWEEK],	// Año/Semana natural
+	[0CALYEAR],	// Año natural
+	[0CONF_DATE],	// Fecha de entrega de la posición
+	[0CPR_RELON],	// Fecha de liberación
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0ITEM_DEL],	// Posición borrada
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRO_STAT],	// Status global de tratamiento de documento
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0REQUISIT],	// Nombre del solicitante
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOR_LOC],	// Almacén
+	[CLC_BANFN],	// Número de la solicitud de pedido
+	[CLC_BNFPO],	// Número de posición de la solicitud de pedido
+	[CLC_BSART],	// Clase de documento de la solicitud de pedido
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[ZFEULTPED],	// Fecha Ultimo pedido Distribuidora
+	[0NET_PO_VAL],	// Valor neto de pedido
+	[0ORDER_QUAN],	// Cantidad de pedido
+	[0PO_QTY]	// Cantidad de pedido_1
+
+FROM CLC_PUR01;
+
+[STOR_LOC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [STOR_LOC], [TXTMD] AS [STOR_LOC_TEXT_MD]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, STOR_LOC, TXTMD FROM /BI0/TSTOR_LOC;
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATER]) AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_MATLG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATLG]) AS [CLC_MATLG], [TXTSH] AS [CLC_MATLG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATLG, TXTSH FROM /BIC/TCLC_MATLG WHERE LANGU = 'S';
+[CLC_PLANT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [TXTMD] AS [CLC_PLANT_TEXT], [TXTSH] AS [CLC_PLANT_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, TXTMD, TXTSH FROM /BIC/TCLC_PLANT;
+[CLC_PROFG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_PROFG] AS [CLC_PROFG], [TXTSH] AS [CLC_PROFG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PROFG, TXTSH FROM /BIC/TCLC_PROFG;
+
+STORE CLC_PUR01 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CLC_PUR01.qvd;
+
+DROP Table CLC_PUR01;
+

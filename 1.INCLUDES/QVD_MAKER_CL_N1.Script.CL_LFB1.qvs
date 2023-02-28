@@ -1,0 +1,81 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.CL_LFB1.qvs
+// TABLA:     	/IMO/D_CL_LFB1
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: Pedido LFB1
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		CL_LFB1	   	 ;
+TRACE ###############################;
+
+
+// Realizamos la carga de datos
+CL_LFB1:
+LOAD RowNum, 
+	[0APO_MRKDEL] as [APO_MRKDEL], 
+	[0COSTELMNT] as [COSTELMNT], 
+	[0CO_AREA] as [CO_AREA], 
+	[0CRM_ATHGRP] as [CRM_ATHGRP], 
+	[0CRM_PMNTTR] as [CRM_PMNTTR], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0PH_CREATON] as [PH_CREATON], 
+	[0PMNT_BLOCK] as [PMNT_BLOCK], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0RESP_PERS] as [RESP_PERS] , 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	EIKTO, 
+	FDGRV, 
+	HBKID, 
+	KVERM, 
+	SPERR, 
+	VZSKZ, 
+	XVERR, 
+	ZUAWA, 
+	ZWELS, 
+	Text(CLC_COMPC) as CLC_COMPC, 
+	CLC_PERNR, 
+	CLC_VEND,
+    [0SOURSYSTEM]&CLC_VEND&CLC_COMPC as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0APO_MRKDEL],	// Petición de borrado
+	[0COSTELMNT],	// Clase de coste
+	[0CO_AREA],	// Sociedad CO
+	[0CRM_ATHGRP],	// Grupo autorizaciones
+	[0CRM_PMNTTR],	// Condiciones de pago
+	[0DATAPAKID],	// Paquete de datos
+	[0PH_CREATON],	// Creado el
+	[0PMNT_BLOCK],	// Clave para bloqueo de pago
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0RESP_PERS],	// Responsable
+	[0SOURSYSTEM],	// ID sistema fuente
+	[EIKTO],	// Ntra.cta. c/acreed.
+	[FDGRV],	// Grupo de tesorería
+	[HBKID],	// Banco propio
+	[KVERM],	// Nota interior cuenta
+	[SPERR],	// Bloqueo contab. para sociedad
+	[VZSKZ],	// Indicador intereses
+	[XVERR],	// Compensar con deudor
+	[ZUAWA],	// Clave clasificación
+	[ZWELS],	// Vías de pago
+	[CLC_COMPC],	// Sociedad
+	[CLC_PERNR],	// Persona
+	[CLC_VEND]	// Proveedor
+
+FROM CL_LFB1;
+
+[COSTELMNT_TEXTS]: LEFT JOIN LOAD [CO_AREA], [COSTELMNT], [TXTMD] AS [COSTELMNT_TEXT], [TXTSH] AS [COSTELMNT_TEXT_S]; SELECT CO_AREA, COSTELMNT, TXTMD, TXTSH FROM /BI0/TCOSTELMNT WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_PERNR_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_PERNR] AS [CLC_PERNR], [TXTMD] AS [CLC_PERNR_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PERNR, TXTMD FROM /BIC/TCLC_PERNR WHERE DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CLC_VEND_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_VEND] AS [CLC_VEND], [TXTMD] AS [CLC_VEND_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_VEND, TXTMD FROM /BIC/TCLC_VEND;
+
+// Se almacena en QVD la tabla CL_LFB1 y posteriormente se elimina
+STORE CL_LFB1 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CL_LFB1.qvd;
+
+DROP Table CL_LFB1;

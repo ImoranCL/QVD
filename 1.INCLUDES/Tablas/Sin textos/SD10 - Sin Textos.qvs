@@ -1,0 +1,72 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+SD10:
+LOAD RowNum, 
+	[0CALDAY] as [Día natural], 
+	[0DATAPAKID] as [Paquete de datos], 
+	[0DEB_CRED] as [Contabilización en el Haber/Debe (H/D)], 
+	[0DOC_CLASS] as [Clase de documento: Oferta/Pedido/Entrega/Factura], 
+	[0DOC_NUMBER] as [Documento venta], 
+	[0FISCPER] as [Ejercicio/Período], 
+	[0FISCVARNT] as [Variante de ejercicio], 
+	[0FISCYEAR] as Ejercicio, 
+	[0GN_CUSTOM] as Cliente, 
+	[0GN_R3_SSY] as [Sistema fuente de la entidad (2 posiciones)], 
+	[0HEADER_DEL] as [Cabecera borrada], 
+	[0IMODOCCAT] as [Tipo de documento comercial], 
+	[0LOC_CURRCY] as [Moneda local], 
+	[0QUOT_FROM] as [Fecha de validez de la oferta (oferta con validez de ...)], 
+	[0QUOT_TO] as [Plazo vinculante oferta p.prestación servicios (validez a)], 
+	[0RECORD] as [Número registro datos], 
+	[0RECORDMODE] as [BW procedimiento delta: Modo de actualización], 
+	[0REQTSN] as [Número de transacción consecutivo de solicitud], 
+	[0SOURSYSTEM] as [ID sistema fuente], 
+	[0STAT_CURR] as [Moneda estadística], 
+	[0UPD_DATE] as [Fecha de actualización], 
+	CLC_COMPC as Sociedad, 
+	CLC_DTRCH as [Canal de distribución], 
+	CLC_KALSM as [Esquema de Cálculo], 
+	CLC_SLEMP as [Representante de ventas], 
+	CLC_SLGRP as [Grupo de vendedores], 
+	CLC_SLSOF as [Oficina de ventas], 
+	CLC_SOLDT as Solicitante, 
+	CLC_VKORG as [Organización de ventas], 
+	[0DLT_H_CNT] as [Cantidad de documentos borrados], 
+	[0SO_H_CNT] as [Cantidad de documentos de pedido de cliente],
+    [0SOURSYSTEM]&[0DOC_NUMBER] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0CALDAY],	// Día natural
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0DOC_NUMBER],	// Documento venta
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CUSTOM],	// Cliente
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0HEADER_DEL],	// Cabecera borrada
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0LOC_CURRCY],	// Moneda local
+	[0QUOT_FROM],	// Fecha de validez de la oferta (oferta con validez de ...)
+	[0QUOT_TO],	// Plazo vinculante oferta p.prestación servicios (validez a)
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STAT_CURR],	// Moneda estadística
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_COMPC],	// Sociedad
+	[CLC_DTRCH],	// Canal de distribución
+	[CLC_KALSM],	// Esquema de Cálculo
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SLGRP],	// Grupo de vendedores
+	[CLC_SLSOF],	// Oficina de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_VKORG],	// Organización de ventas
+	[0DLT_H_CNT],	// Cantidad de documentos borrados
+	[0SO_H_CNT]	// Cantidad de documentos de pedido de cliente
+
+FROM /IMO/D_SD10;
+
+STORE SD10 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/SD10.qvd;

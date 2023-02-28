@@ -1,0 +1,146 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.GG_PEDIDOS.qvs
+// TABLA:     	GGPEDIDOS
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: SD: Tabla ZVA05V2 listado de pedidos. Foto diaria.
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 	GG_PEDIDOS_N1	 ;
+TRACE ###############################;
+
+//Obtenemos todas las fechas que hay en el extractor
+Fechas:
+LOAD 
+	[0CALDAY] as [Fecha_Foto];
+    
+SELECT
+	[0CALDAY],	// Día natural
+FROM GGPEDIDOS;
+
+//Cargamos temporalmente el qvd a actualizar
+GG_PEDIDOS_TMP:
+LOAD
+    *
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_GG_PEDIDOS.qvd]
+(qvd);
+
+
+//Comprobamos las fechas que tiene extraídas y evaluamos con las que le faltan
+FechasQvd:
+NoConcatenate
+LOAD Distinct
+	CALDAY																AS FechaQVD,
+    'X'																	AS Guardado
+Resident GG_PEDIDOS_TMP;
+
+RIGHT JOIN LOAD 
+	[Fecha_Foto]														AS FechaQVD
+Resident Fechas;
+
+Drop Table Fechas;
+
+LET NumDias = NoOfRows('FechasQvd');
+
+//Empezamos a construir la tabla que guardaremos partiendo de la temporal
+GG_PEDIDOS:
+NoConcatenate
+LOAD
+	*
+Resident GG_PEDIDOS_TMP
+Order By CALDAY asc;
+
+Drop Table GG_PEDIDOS_TMP;
+
+//Concatenamos los días que le faltaban al qvd
+For i = 0 To $(NumDias) - 1;
+
+	LET Dia = Date(peek('FechaQVD',$(i),'FechasQvd'),'YYYYMMDD');
+    
+    SET Guardado = peek('Guardado',$(i),'FechasQvd');
+    
+    If $(Guardado) <> 'X' Then  
+    
+    	trace $(Dia);
+
+        Concatenate
+        LOAD //RowNum, 
+            [0BASE_UOM] 				as [BASE_UOM],//[Unidad de medida de venta], 
+            [0BILL_DATE] 				as [BILL_DATE],//[Fecha de índice de documento facturación/factura e impresión], 
+            Date([0CALDAY])				as [CALDAY],//[Día natural], 
+            [0COND_PR_UN] 				as [COND_PR_UN],//[Cantidad base], 
+            [0CONF_DATE] 				as [CONF_DATE],//[Fecha entrega confirmada], 
+            [0DATAPAKID] 				as [DATAPAKID],//[Paquete de datos], 
+            [0DEL_BLOCK] 				as [DEL_BLOCK],//[Bloqueo de nota de entrega cabecera de documento], 
+            [0DOC_CURRCY] 				as [DOC_CURRCY],//[Moneda del documento], 
+            [0DOC_DATE] 				as [DOC_DATE],//[Fecha del documento], 
+            [0DOC_NUMBER] 				as [DOC_NUMBER],//[Documento venta], 
+            [0DOC_TYPE] 				as [DOC_TYPE],//[Clase de documento de ventas], 
+            [0ORDER_CURR] 				as [ORDER_CURR],//[Moneda de pedido], 
+            [0PH_CREATBY] 				as [PH_CREATBY],//[Creado por], 
+            [0PO_UNIT] 					as [PO_UNIT],//[Unidad cantidad confirmada], 
+            [0REASON_REJ] 				as [REASON_REJ],//[Motivo de rechazo de ofertas y pedidos], 
+            [0RECORD] 					as [RECORD],//[Número registro datos], 
+            [0RECORDMODE] 				as [RECORDMODE],//[BW procedimiento delta: Modo de actualización], 
+            [0REQTSN] 					as [REQTSN],//[Número de transacción consecutivo de solicitud], 
+            [0SOURSYSTEM] 				as [SOURSYSTEM],//[ID sistema fuente], 
+            [0STS_DEL] 					as [STS_DEL],//[Status de datos incompletos de posición referente a entrega], 
+            [0S_ORD_ITEM] 				as [S_ORD_ITEM],//[Posición documento ventas], 
+            [0UNIT] 					as [UNIT],//[Unidad medida], 
+            BSTNK, 						//as [Número pedido del cliente], 
+            LFGSA, 						//as [Status-total-entrega], 
+            LFSTA_BEZ, 					//as [Status entrega], 
+            CLC_CUST, 					//as Cliente, 
+            CLC_MATER, 					//as Material, 
+            CLC_PLANT, 					//as Ctro, 
+            [0NET_PO_VAL] 				as [NET_PO_VAL],//[Valor neto de pedido], 
+            [0NET_PRICE] 				as [NET_PRICE],//[Precio neto], 
+            [0PCONF_QPU] 				as [PCONF_QPU],//[Cantidad confirmada (UMB)], 
+            [0PO_QTY] 					as [PO_QTY];//[Cantidad de pedido acumulada (venta)];
+
+        SELECT		[RowNum],	// RowNum
+            [0BASE_UOM],	// Unidad de medida de venta
+            [0BILL_DATE],	// Fecha de índice de documento facturación/factura e impresión
+            [0CALDAY],	// Día natural
+            [0COND_PR_UN],	// Cantidad base
+            [0CONF_DATE],	// Fecha entrega confirmada
+            [0DATAPAKID],	// Paquete de datos
+            [0DEL_BLOCK],	// Bloqueo de nota de entrega cabecera de documento
+            [0DOC_CURRCY],	// Moneda del documento
+            [0DOC_DATE],	// Fecha del documento
+            [0DOC_NUMBER],	// Documento venta
+            [0DOC_TYPE],	// Clase de documento de ventas
+            [0ORDER_CURR],	// Moneda de pedido
+            [0PH_CREATBY],	// Creado por
+            [0PO_UNIT],	// Unidad cantidad confirmada
+            [0REASON_REJ],	// Motivo de rechazo de ofertas y pedidos
+            [0RECORD],	// Número registro datos
+            [0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+            [0REQTSN],	// Número de transacción consecutivo de solicitud
+            [0SOURSYSTEM],	// ID sistema fuente
+            [0STS_DEL],	// Status de datos incompletos de posición referente a entrega
+            [0S_ORD_ITEM],	// Posición documento ventas
+            [0UNIT],	// Unidad medida
+            [BSTNK],	// Número pedido del cliente
+            [LFGSA],	// Status-total-entrega
+            [LFSTA_BEZ],	// Status entrega
+            [CLC_CUST],	// Cliente
+            [CLC_MATER],	// Material
+            [CLC_PLANT],	// Ctro
+            [0NET_PO_VAL],	// Valor neto de pedido
+            [0NET_PRICE],	// Precio neto
+            [0PCONF_QPU],	// Cantidad confirmada (UMB)
+            [0PO_QTY]	// Cantidad de pedido acumulada (venta)
+
+        FROM GGPEDIDOS
+        WHERE ([0CALDAY] = $(Dia));
+        
+	End If;
+    
+Next i;
+
+//Guardamos el qvd construido
+store GG_PEDIDOS into 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_GG_PEDIDOS.qvd' (qvd);
+
+//Y borramos la tabla construida y las que hemos utilizado
+DROP Tables GG_PEDIDOS, FechasQvd;

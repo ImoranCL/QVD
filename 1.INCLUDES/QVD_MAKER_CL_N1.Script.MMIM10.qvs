@@ -1,0 +1,300 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.MMIM10.qvs
+// TABLA:     	/IMO/D_MMIM10
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: MM-IM: Movimientos de material (documentos)
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		MMIM10	   	 ;
+TRACE ###############################;
+
+//Obtenemos el campo fecha
+Fecha:
+LOAD [UPD_DATE]
+
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/MMIM10.qvd] (qvd);
+
+//Seleccionamos la fecha máxima
+MaxOldQVD:
+
+LOAD
+
+Max([UPD_DATE]) as Max0UPD_DATE
+
+Resident Fecha;
+
+LET LastExecTime = Date(Peek('Max0UPD_DATE',-1,MaxOldQVD),'YYYYMMDD');
+
+DROP Table Fecha;
+
+DROP Table MaxOldQVD;
+
+// Let ThisExecTime =date(today(), 'YYYYMMDD');
+
+//Cargamos los datos con carga incremental
+MMIM10:
+LOAD RowNum, 
+	[0ACCOUNT] as [ACCOUNT], 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BATCH] as [BATCH], 
+	[0BWAPPLNM] as [BWAPPLNM], 
+	[0BWCOUNTER] as [BWCOUNTER], 
+	[0CALDAY] as [CALDAY], 
+	[0CALMONTH] as [CALMONTH], 
+	[0CALQUARTER] as [CALQUARTER], 
+	[0CALWEEK] as [CALWEEK], 
+	[0CALYEAR] as [CALYEAR], 
+	[0CHRT_ACCTS] as [CHRT_ACCTS], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DCINDIC] as [DCINDIC], 
+	[0DOC_DATE] as [DOC_DATE], 
+	[0DOC_NUMBER] as [DOC_NUMBER], 
+	[0DOC_YEAR] as [DOC_YEAR], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCPER3] as [FISCPER3], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0INDSPECSTK] as [INDSPECSTK], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0MATMREA] as [MATMREA], 
+	[0MAT_DOC] as [MAT_DOC], 
+	[0MAT_ITEM] as [MAT_ITEM], 
+	[0MOVETYPE] as [MOVETYPE], 
+	[0MOVE_PLANT] as [MOVE_PLANT], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0PROCESSKEY] as [PROCESSKEY], 
+	[0PRODUCT] as [PRODUCT], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0RT_PROMO] as [RT_PROMO], 
+	[0SCHED_LINE] as [SCHED_LINE], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOCKCAT] as [STOCKCAT], 
+	[0STOCKRELEV] as [STOCKRELEV], 
+	[0STOCKTYPE] as [STOCKTYPE], 
+	[0STORNO] as [STORNO], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0STRGE_BIN] as [STRGE_BIN], 
+	[0STRGE_TYPE] as [STRGE_TYPE], 
+	[0S_ORD_ITEM] as [S_ORD_ITEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VALSPECST] as [VALSPECST], 
+	[0VAL_CLASS] as [VAL_CLASS], 
+	[0VAL_TYPE] as [VAL_TYPE], 
+	[0WHSE_NUM] as [WHSE_NUM], 
+	CLC_BUSA, 
+	CLC_CAREA, 
+	Text(CLC_COMPC) as CLC_COMPC, 
+	CLC_CUST, 
+	Text(CLC_MATER) as CLC_MATER, 
+	CLC_OORDE, 
+	CLC_OSTCE, 
+	Text(CLC_PLANT) as CLC_PLANT, 
+	CLC_PROFI, 
+	CLC_VEND, 
+	CLC_WBSP, 
+	[0CPNOITEMS] as [CPNOITEMS], 
+	[0CPPVLC] as [CPPVLC], 
+	[0CPQUABU] as [CPQUABU], 
+	[0CPSTLC] as [CPSTLC], 
+	[0CPSVLC] as [CPSVLC],
+    [0SOURSYSTEM]&[0FISCVARNT]&[0DOC_YEAR]&[0MAT_DOC]&[0MAT_ITEM]&[0BWCOUNTER] as UniqueKey;
+    
+SELECT		[RowNum],	// RowNum
+	[0ACCOUNT],	// Número de cuenta
+	[0BASE_UOM],	// Unidad de medida base
+	[0BATCH],	// Número de lote
+	[0BWAPPLNM],	// Componente aplicación
+	[0BWCOUNTER],	// Campo clave adicional p.reg.docum.revalorización
+	[0CALDAY],	// Fecha contabilización
+	[0CALMONTH],	// Año/Mes natural
+	[0CALQUARTER],	// Año natural/Trimestre
+	[0CALWEEK],	// Año/Semana natural
+	[0CALYEAR],	// Año natural
+	[0CHRT_ACCTS],	// Plan de cuentas
+	[0DATAPAKID],	// Paquete de datos
+	[0DCINDIC],	// Indicador debe/haber
+	[0DOC_DATE],	// Fecha del documento
+	[0DOC_NUMBER],	// Documento venta
+	[0DOC_YEAR],	// BW: Año de documento
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCPER3],	// Período contable
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0INDSPECSTK],	// Indicador valoración stock especial
+	[0LOC_CURRCY],	// Moneda local
+	[0MATMREA],	// Motivo del movimiento de mercancías
+	[0MAT_DOC],	// Documento de material
+	[0MAT_ITEM],	// Posición del doc.material
+	[0MOVETYPE],	// Clase de movimiento (gestión stocks)
+	[0MOVE_PLANT],	// Centro receptor/suministrador
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0PROCESSKEY],	// BW: Clave de operación
+	[0PRODUCT],	// Producto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0RT_PROMO],	// Acción
+	[0SCHED_LINE],	// Número de reparto
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOCKCAT],	// Tipo de stocks
+	[0STOCKRELEV],	// BW: Relevancia stock
+	[0STOCKTYPE],	// Característica de stock
+	[0STORNO],	// Indicador de anulación
+	[0STOR_LOC],	// Almacén
+	[0STRGE_BIN],	// Ubicación
+	[0STRGE_TYPE],	// Tipo almacén
+	[0S_ORD_ITEM],	// Posición documento ventas
+	[0UPD_DATE],	// Fecha de actualización
+	[0VALSPECST],	// Indicador valoración stock especial_1
+	[0VAL_CLASS],	// Categoría de valoración
+	[0VAL_TYPE],	// Clase de valoración
+	[0WHSE_NUM],	// Número de almacén/Complejo de almacenes
+	[CLC_BUSA],	// División
+	[CLC_CAREA],	// Sociedad CO
+	[CLC_COMPC],	// Sociedad
+	[CLC_CUST],	// Cliente_1
+	[CLC_MATER],	// Material
+	[CLC_OORDE],	// Número de orden
+	[CLC_OSTCE],	// Centro de coste
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFI],	// Centro de beneficio
+	[CLC_VEND],	// Proveedor_1
+	[CLC_WBSP],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[0CPNOITEMS],	// BW: Cantidad de operaciones
+	[0CPPVLC],	// BW: Valor de compra en moneda local
+	[0CPQUABU],	// BW: Cantidad en unidad de medida base
+	[0CPSTLC],	// BW: Valor de venta con impuestos en moneda local
+	[0CPSVLC]	// BW: Valor de venta en moneda local
+    
+FROM /IMO/D_MMIM10
+WHERE (
+[0UPD_DATE]  >= $(LastExecTime)
+);
+
+[CHRT_ACCTS_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [CHRT_ACCTS], [TXTLG] AS [CHRT_ACCTS_TEXT]; SELECT SOURSYSTEM, CHRT_ACCTS, TXTLG FROM /BI0/TCHRT_ACCTS WHERE LANGU = 'S';
+[DCINDIC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [DCINDIC], [TXTLG] AS [DCINDIC_TEXT]; SELECT SOURSYSTEM, DCINDIC, TXTLG FROM /BI0/TDCINDIC WHERE LANGU = 'S';
+[STOR_LOC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [STOR_LOC], [TXTMD] AS [STOR_LOC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, STOR_LOC, TXTMD FROM /BI0/TSTOR_LOC;
+[CLC_BUSA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_BUSA] AS [CLC_BUSA], [TXTMD] AS [CLC_BUSA_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_BUSA, TXTMD FROM /BIC/TCLC_BUSA WHERE LANGU = 'S';
+[CLC_CAREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CAREA] AS [CLC_CAREA], [TXTMD] AS [CLC_CAREA_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, TXTMD FROM /BIC/TCLC_CAREA;
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_CUST_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CUST] AS [CLC_CUST], [TXTMD] AS [CLC_CUST_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_CUST, TXTMD FROM /BIC/TCLC_CUST;
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATER]) AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_OORDE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_OORDE] AS [CLC_OORDE], [TXTMD] AS [CLC_OORDE_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_OORDE, TXTMD FROM /BIC/TCLC_OORDE;
+[CLC_OSTCE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CAREA] AS [CLC_CAREA], [/BIC/CLC_OSTCE] AS [CLC_OSTCE], [TXTMD] AS [CLC_OSTCE_TEXT], [TXTSH] AS [CLC_OSTCE_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, /BIC/CLC_OSTCE, TXTMD, TXTSH FROM /BIC/TCLC_OSTCE WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CLC_PLANT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [TXTMD] AS [CLC_PLANT_TEXT], [TXTSH] AS [CLC_PLANT_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, TXTMD, TXTSH FROM /BIC/TCLC_PLANT;
+[CLC_PROFI_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_CAREA] AS [CLC_CAREA], [/BIC/CLC_PROFI] AS [CLC_PROFI], [TXTMD] AS [CLC_PROFI_TEXT], [TXTSH] AS [CLC_PROFI_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, /BIC/CLC_PROFI, TXTMD, TXTSH FROM /BIC/TCLC_PROFI WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CLC_VEND_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_VEND] AS [CLC_VEND], [TXTMD] AS [CLC_VEND_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_VEND, TXTMD FROM /BIC/TCLC_VEND;
+[CLC_WBSP_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_WBSP] AS [CLC_WBSP], [TXTMD] AS [CLC_WBSP_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_WBSP, TXTMD FROM /BIC/TCLC_WBSP WHERE LANGU = 'S';
+
+Concatenate
+LOAD
+    SOURSYSTEM,
+    CLC_WBSP,
+    CLC_VEND,
+    CLC_CAREA,
+    CLC_PROFI,
+    CLC_PLANT,
+    CLC_OSTCE,
+    CLC_OORDE,
+    CLC_MATER,
+    CLC_CUST,
+    CLC_COMPC,
+    CLC_BUSA,
+    STOR_LOC,
+    DCINDIC,
+    CHRT_ACCTS,
+    RowNum,
+    ACCOUNT,
+    BASE_UOM,
+    BATCH,
+    BWAPPLNM,
+    BWCOUNTER,
+    CALDAY,
+    CALMONTH,
+    CALQUARTER,
+    CALWEEK,
+    CALYEAR,
+    DATAPAKID,
+    DOC_DATE,
+    DOC_NUMBER,
+    DOC_YEAR,
+    FISCPER,
+    FISCPER3,
+    FISCVARNT,
+    FISCYEAR,
+    GN_CUSTOM,
+    GN_LOCATIO,
+    GN_R3_SSY,
+    GN_VENDOR,
+    INDSPECSTK,
+    LOC_CURRCY,
+    MATMREA,
+    MAT_DOC,
+    MAT_ITEM,
+    MOVETYPE,
+    MOVE_PLANT,
+    OI_EBELN,
+    OI_EBELP,
+    PROCESSKEY,
+    PRODUCT,
+    "RECORD",
+    RECORDMODE,
+    REQTSN,
+    RT_PROMO,
+    SCHED_LINE,
+    STOCKCAT,
+    STOCKRELEV,
+    STOCKTYPE,
+    STORNO,
+    STRGE_BIN,
+    STRGE_TYPE,
+    S_ORD_ITEM,
+    UPD_DATE,
+    VALSPECST,
+    VAL_CLASS,
+    VAL_TYPE,
+    WHSE_NUM,
+    CPNOITEMS,
+    CPPVLC,
+    CPQUABU,
+    CPSTLC,
+    CPSVLC,
+    UniqueKey,
+    CHRT_ACCTS_TEXT,
+    DCINDIC_TEXT,
+    STOR_LOC_TEXT,
+    CLC_BUSA_TEXT,
+    CLC_CAREA_TEXT,
+    CLC_COMPC_TEXT,
+    CLC_CUST_TEXT,
+    CLC_MATER_TEXT,
+    CLC_OORDE_TEXT,
+    CLC_OSTCE_TEXT,
+    CLC_OSTCE_TEXT_S,
+    CLC_PLANT_TEXT,
+    CLC_PLANT_TEXT_S,
+    CLC_PROFI_TEXT,
+    CLC_PROFI_TEXT_S,
+    CLC_VEND_TEXT,
+    CLC_WBSP_TEXT
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/MMIM10.qvd] (qvd)
+Where not Exists(UniqueKey);
+
+// Se almacena en QVD la tabla MMIM10 y posteriormente se elimina
+STORE MMIM10 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/MMIM10.qvd];
+
+DROP Table MMIM10;
+

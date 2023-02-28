@@ -1,0 +1,164 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+PUR21:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0CALDAY] as [CALDAY], 
+	[0COMPL_DEL] as [COMPL_DEL], 
+	[0CONF_TYPE] as [CONF_TYPE], 
+	[0CT_FLAG] as [CT_FLAG], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0DOC_CAT] as [DOC_CAT], 
+	[0ENTRY_DATE] as [ENTRY_DATE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_PUR] as [GN_CAT_PUR], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0GR_DATE] as [GR_DATE], 
+	[0GR_RE_IND] as [GR_RE_IND], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0ITM_CAT] as [ITM_CAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0LOG_SYS_BE] as [LOG_SYS_BE], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0PO_STATUS] as [PO_STATUS], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_DESCR] as [PROD_DESCR], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0PURCH_ORG] as [PURCH_ORG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0REQUISIT] as [REQUISIT], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CLC_HIERH, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_NV_PA, 
+	CLC_PLANT, 
+	CLC_PROFG, 
+	CLC_PSPN, 
+	CLC_SUPP, 
+	CLC_SUPPL, 
+	CLC_SUPVE, 
+	CLC_UPP_P, 
+	CLC_URSRC, 
+	CLC_VEND, 
+	[0DEL_DT_VR1] as [DEL_DT_VR1], 
+	[0DEL_DT_VR2] as [DEL_DT_VR2], 
+	[0DEL_DT_VR3] as [DEL_DT_VR3], 
+	[0DEL_DT_VR4] as [DEL_DT_VR4], 
+	[0DEL_DT_VR5] as [DEL_DT_VR5], 
+	[0DENOMINTR] as [DENOMINTR], 
+	[0NETPRICE] as [NETPRICE], 
+	[0NUMERATOR] as [NUMERATOR], 
+	[0ONT_DEL] as [ONT_DEL], 
+	[0ORDER_QUAN] as [ORDER_QUAN], 
+	[0PCONF_QPU] as [PCONF_QPU], 
+	[0PDQEYCRPU] as [PDQEYCRPU], 
+	[0PDQEYSCPU] as [PDQEYSCPU], 
+	[0PDQLECRPU] as [PDQLECRPU], 
+	[0PDQLESCPU] as [PDQLESCPU], 
+	[0PDV_QPU] as [PDV_QPU], 
+	[0PQCASRQPU] as [PQCASRQPU], 
+	[0PREQU_QPU] as [PREQU_QPU], 
+	[0PRICE_UNIT] as [PRICE_UNIT], 
+	[0QTY_DEV_1] as [QTY_DEV_1], 
+	[0QTY_DEV_2] as [QTY_DEV_2], 
+	[0QTY_DEV_3] as [QTY_DEV_3], 
+	[0QTY_DEV_4] as [QTY_DEV_4], 
+	[0QTY_DEV_5] as [QTY_DEV_5], 
+	[0QTY_REL] as [QTY_REL], 
+	[0SRV_QUAL] as [SRV_QUAL], 
+	[0TOTDELTIME] as [TOTDELTIME],
+    [0SOURSYSTEM]&[0OI_EBELN]&[0OI_EBELP] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0CALDAY],	// Fecha documento de pedido
+	[0COMPL_DEL],	// Indicador de entrega final
+	[0CONF_TYPE],	// Tipo de confirmación de pedido
+	[0CT_FLAG],	// Indicador para pedidos abiertos
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_PUR],	// Categoría de compras
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0GR_DATE],	// Fe.entr.mercancías
+	[0GR_RE_IND],	// Indicador de entrada de mercancías
+	[0ITEM_DEL],	// Posición borrada
+	[0ITM_CAT],	// Tipo de posición del documento de compras
+	[0LOC_CURRCY],	// Moneda local
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0PO_STATUS],	// Status del documento de compras
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRODUCT],	// Producto
+	[0PROD_DESCR],	// Descripción de producto
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0REQUISIT],	// Nombre del solicitante
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOR_LOC],	// Almacén
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_HIERH],	// Jerarquía de productos
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_NV_PA],	// Emisor de la factura
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_PSPN],	// Elemento PEP
+	[CLC_SUPP],	// Ce.sumin.que tiene asignadas funciones interlocutor
+	[CLC_SUPPL],	// Proveedor de mercancías
+	[CLC_SUPVE],	// Proveedor para entrega
+	[CLC_UPP_P],	// Centro suministrador
+	[CLC_URSRC],	// Campo de usuario codigo externo (CKIS)
+	[CLC_VEND],	// Proveedor_1
+	[0DEL_DT_VR1],	// Desviación de fecha de entrega 1
+	[0DEL_DT_VR2],	// Desviación de fecha de entrega 2
+	[0DEL_DT_VR3],	// Desviación de fecha de entrega 3
+	[0DEL_DT_VR4],	// Desviación de fecha de entrega 4
+	[0DEL_DT_VR5],	// Desviación de fecha de entrega 5
+	[0DENOMINTR],	// Denominador(divisor) para conversión ctd.vta.en UMA
+	[0NETPRICE],	// Precio neto
+	[0NUMERATOR],	// Contador (factor) para conversión cantidad venta en UME
+	[0ONT_DEL],	// Val.puntos p.cumplim.plazos
+	[0ORDER_QUAN],	// Cantidad de pedido
+	[0PCONF_QPU],	// Cantidad confirmada (UMB)
+	[0PDQEYCRPU],	// Ctad.entregada demas.pronto según fecha pref.entrega (UMB)
+	[0PDQEYSCPU],	// Ctad.entregada demas.pronto según fecha entrega confir.(UMB)
+	[0PDQLECRPU],	// Ctd.entregada demasiado tarde según fecha pref.entrega (UMB)
+	[0PDQLESCPU],	// Ctad.entregada demas.tarde según fecha entrega confirm.(UMB)
+	[0PDV_QPU],	// Cantidad real de entrega (UMB)
+	[0PQCASRQPU],	// Cantidad deseada confirmada (UMB)
+	[0PREQU_QPU],	// Cantidad preferente de entrega (UMB)
+	[0PRICE_UNIT],	// Cantidad base
+	[0QTY_DEV_1],	// Desviación de cantidad de entrega 1
+	[0QTY_DEV_2],	// Desviación de cantidad de entrega 2
+	[0QTY_DEV_3],	// Desviación de cantidad de entrega 3
+	[0QTY_DEV_4],	// Desviación de cantidad de entrega 4
+	[0QTY_DEV_5],	// Desviación de cantidad de entrega 5
+	[0QTY_REL],	// Val.puntos p.cumplim.ctd.
+	[0SRV_QUAL],	// Nota para la calidad de la prestación
+	[0TOTDELTIME]	// Total fecha de entrega en días
+
+FROM /IMO/D_PUR21;
+
+STORE PUR21 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_PUR21.qvd;

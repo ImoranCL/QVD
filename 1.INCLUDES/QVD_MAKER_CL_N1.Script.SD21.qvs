@@ -1,0 +1,295 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.SD21.qvs
+// TABLA:     	/IMO/D_SD21
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: SD: Datos de la posición de entrega
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		SD21	   	 ;
+TRACE ###############################;
+
+//Obtenemos el campo fecha
+Fecha:
+LOAD [UPD_DATE]
+
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/SD21.qvd] (qvd);
+
+//Seleccionamos la fecha máxima
+MaxOldQVD:
+
+LOAD
+
+Max([UPD_DATE]) as Max0UPD_DATE
+
+Resident Fecha;
+
+LET LastExecTime = Date(Peek('Max0UPD_DATE',-1,MaxOldQVD),'YYYYMMDD');
+
+DROP Table Fecha;
+
+DROP Table MaxOldQVD;
+
+// Let ThisExecTime =date(today(), 'YYYYMMDD');
+
+//Cargamos los datos con carga incremental
+SD21:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BATCH] as [BATCH], 
+	[0BP_GRP] as [BP_GRP], 
+	[0CALDAY] as [CALDAY], 
+	[0CP_CATEG] as [CP_CATEG], 
+	[0CREATEDBY] as [CREATEDBY], 
+	[0CREATEDON] as [CREATEDON], 
+	[0CREA_TIME] as [CREA_TIME], 
+	[0CRM_PROD] as [CRM_PROD], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0DELIV_ITEM] as [DELIV_ITEM], 
+	[0DELIV_NUMB] as [DELIV_NUMB], 
+	[0DOC_CLASS] as [DOC_CLASS], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_SAL] as [GN_CAT_SAL], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0IMODOCCAT] as [IMODOCCAT], 
+	[0ITEM_CATEG] as [ITEM_CATEG], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_CATEG] as [PROD_CATEG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REFER_DOC] as [REFER_DOC], 
+	[0REFER_ITM] as [REFER_ITM], 
+	[0REQTSN] as [REQTSN], 
+	[0SALES_UNIT] as [SALES_UNIT], 
+	[0SHIP_DATE] as [SHIP_DATE], 
+	[0SHIP_POINT] as [SHIP_POINT], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CLC_AUTLF, 
+	CLC_BILTO, 
+	Text(CLC_COMPC) as CLC_COMPC, 
+	CLC_DIVIS, 
+	CLC_DTRCH, 
+	CLC_EXPKZ, 
+	CLC_FKARV, 
+	CLC_FKDAT, 
+	CLC_GRULG, 
+	CLC_KALSM, 
+	CLC_KODAT, 
+	CLC_KZAZU, 
+	CLC_LDDAT, 
+	CLC_LPRIO, 
+	Text(CLC_MATER) as CLC_MATER, 
+	Text(CLC_MATLG) as CLC_MATLG, 
+	CLC_PAYER, 
+	Text(CLC_PLANT) as CLC_PLANT, 
+	CLC_ROUTA, 
+	CLC_SHIPT, 
+	CLC_SLEMP, 
+	CLC_SLGRP, 
+	CLC_SLSOF, 
+	CLC_SOLDT, 
+	CLC_TDDAT, 
+	CLC_TRAGR, 
+	Text(CLC_VKORG) as CLC_VKORG, 
+	CLC_VSBED, 
+	[0DEL_I_CNT] as [DEL_I_CNT], 
+	[0DLV_QTY] as [DLV_QTY], 
+	[0GR_WT_KG] as [GR_WT_KG], 
+	[0NT_WT_KG] as [NT_WT_KG], 
+	[0QUANT_B] as [QUANT_B], 
+	[0VOLUME_CDM] as [VOLUME_CDM],
+    [0SOURSYSTEM]&[0CALDAY]&[0DELIV_ITEM]&[0DELIV_NUMB] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0BATCH],	// Número de lote
+	[0BP_GRP],	// IC: Grupo interlocutores comerciales (de jerarquía)
+	[0CALDAY],	// Día natural
+	[0CP_CATEG],	// Categoría
+	[0CREATEDBY],	// Nombre del responsable que ha añadido el objeto
+	[0CREATEDON],	// Fecha de creación del registro
+	[0CREA_TIME],	// Hora de entrada
+	[0CRM_PROD],	// Producto
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DELIV_ITEM],	// Posición de entrega
+	[0DELIV_NUMB],	// Entrega
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_SAL],	// Categoría venta
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0ITEM_CATEG],	// Tipo de posición de documento comercial
+	[0ITEM_DEL],	// Posición borrada
+	[0PRODUCT],	// Producto_1
+	[0PROD_CATEG],	// Categoría de producto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REFER_DOC],	// Número del documento modelo
+	[0REFER_ITM],	// Número de la posición comercial modelo
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SALES_UNIT],	// Unidad de medida de venta
+	[0SHIP_DATE],	// Fecha de llegada de las mercancías al cliente
+	[0SHIP_POINT],	// Puesto de expedición
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOR_LOC],	// Almacén
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_AUTLF],	// ¿Entrega completa por pedido?
+	[CLC_BILTO],	// Destinatario Factura
+	[CLC_COMPC],	// Sociedad
+	[CLC_DIVIS],	// Sector
+	[CLC_DTRCH],	// Canal de distribución
+	[CLC_EXPKZ],	// Indicador de exportación
+	[CLC_FKARV],	// Propuesta de clase de factura para una factura por entrega
+	[CLC_FKDAT],	// Fecha de factura para el índice de factura e impresión
+	[CLC_GRULG],	// Grupo de peso de entrega (hasta grupo)
+	[CLC_KALSM],	// Esquema de Cálculo
+	[CLC_KODAT],	// Fecha de picking
+	[CLC_KZAZU],	// Indicador de agrupamiento de pedidos
+	[CLC_LDDAT],	// Fecha de carga
+	[CLC_LPRIO],	// Prioridad de entrega
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_PAYER],	// Responsable de pago
+	[CLC_PLANT],	// Ctro
+	[CLC_ROUTA],	// Ruta
+	[CLC_SHIPT],	// Destinatario Mercancias
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SLGRP],	// Grupo de vendedores
+	[CLC_SLSOF],	// Oficina de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_TDDAT],	// Fecha de planificación de transporte
+	[CLC_TRAGR],	// Grupo de transporte
+	[CLC_VKORG],	// Organización de ventas
+	[CLC_VSBED],	// Condición de expedición
+	[0DEL_I_CNT],	// Cantidad de posiciones de entrega
+	[0DLV_QTY],	// Cantidad entregada efectivamente en UMV
+	[0GR_WT_KG],	// Peso bruto en kilogramos
+	[0NT_WT_KG],	// Peso neto en kilogramos
+	[0QUANT_B],	// Cantidad en unidades de medida base
+	[0VOLUME_CDM]	// Volumen en decímetros cúbicos
+    
+FROM /IMO/D_SD21
+WHERE (
+[0UPD_DATE]  >= $(LastExecTime)
+);
+
+[STOR_LOC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [STOR_LOC] AS [STOR_LOC], [TXTMD] AS [STOR_LOC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, STOR_LOC, TXTMD FROM /BI0/TSTOR_LOC;
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_DIVIS_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_DIVIS] AS [CLC_DIVIS], [TXTSH] AS [CLC_DIVIS_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_DIVIS, TXTSH FROM /BIC/TCLC_DIVIS WHERE LANGU = 'S';
+[CLC_DTRCH_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_DTRCH] AS [CLC_DTRCH], [TXTSH] AS [CLC_DTRCH_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_DTRCH, TXTSH FROM /BIC/TCLC_DTRCH WHERE LANGU = 'S';
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATER]) AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_MATLG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATLG]) AS [CLC_MATLG], [TXTSH] AS [CLC_MATLG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATLG, TXTSH FROM /BIC/TCLC_MATLG WHERE LANGU = 'S';
+[CLC_PLANT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [TXTMD] AS [CLC_PLANT_TEXT], [TXTSH] AS [CLC_PLANT_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, TXTMD, TXTSH FROM /BIC/TCLC_PLANT;
+[CLC_SLGRP_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_SLGRP] AS [CLC_SLGRP], [TXTSH] AS [CLC_SLGRP_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_SLGRP, TXTSH FROM /BIC/TCLC_SLGRP WHERE LANGU = 'S';
+[CLC_SLSOF_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_SLSOF] AS [CLC_SLSOF], [TXTSH] AS [CLC_SLSOF_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_SLSOF, TXTSH FROM /BIC/TCLC_SLSOF WHERE LANGU = 'S';
+[CLC_VKORG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_VKORG]) AS [CLC_VKORG], [TXTLG] AS [CLC_VKORG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_VKORG, TXTLG FROM /BIC/TCLC_VKORG WHERE LANGU = 'S';
+
+Concatenate
+LOAD
+    SOURSYSTEM,
+    CLC_VKORG,
+    CLC_SLSOF,
+    CLC_SLGRP,
+    CLC_PLANT,
+    CLC_MATLG,
+    CLC_MATER,
+    CLC_DTRCH,
+    CLC_DIVIS,
+    CLC_COMPC,
+    STOR_LOC,
+    RowNum,
+    BASE_UOM,
+    BATCH,
+    BP_GRP,
+    CALDAY,
+    CP_CATEG,
+    CREATEDBY,
+    CREATEDON,
+    CREA_TIME,
+    CRM_PROD,
+    DATAPAKID,
+    DEB_CRED,
+    DELIV_ITEM,
+    DELIV_NUMB,
+    DOC_CLASS,
+    FISCPER,
+    FISCVARNT,
+    FISCYEAR,
+    GN_CAT_SAL,
+    GN_CUSTOM,
+    GN_LOCATIO,
+    GN_R3_SSY,
+    IMODOCCAT,
+    ITEM_CATEG,
+    ITEM_DEL,
+    PRODUCT,
+    PROD_CATEG,
+    "RECORD",
+    RECORDMODE,
+    REFER_DOC,
+    REFER_ITM,
+    REQTSN,
+    SALES_UNIT,
+    SHIP_DATE,
+    SHIP_POINT,
+    UPD_DATE,
+    CLC_AUTLF,
+    CLC_BILTO,
+    CLC_EXPKZ,
+    CLC_FKARV,
+    CLC_FKDAT,
+    CLC_GRULG,
+    CLC_KALSM,
+    CLC_KODAT,
+    CLC_KZAZU,
+    CLC_LDDAT,
+    CLC_LPRIO,
+    CLC_PAYER,
+    CLC_ROUTA,
+    CLC_SHIPT,
+    CLC_SLEMP,
+    CLC_SOLDT,
+    CLC_TDDAT,
+    CLC_TRAGR,
+    CLC_VSBED,
+    DEL_I_CNT,
+    DLV_QTY,
+    GR_WT_KG,
+    NT_WT_KG,
+    QUANT_B,
+    VOLUME_CDM,
+    UniqueKey,
+    STOR_LOC_TEXT,
+    CLC_COMPC_TEXT,
+    CLC_DIVIS_TEXT,
+    CLC_DTRCH_TEXT,
+    CLC_MATER_TEXT,
+    CLC_MATLG_TEXT,
+    CLC_PLANT_TEXT,
+    CLC_PLANT_TEXT_S,
+    CLC_SLGRP_TEXT,
+    CLC_SLSOF_TEXT,
+    CLC_VKORG_TEXT
+    
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/SD21.qvd] (qvd)
+Where not Exists(UniqueKey);
+
+// Se almacena en QVD la tabla SD21 y posteriormente se elimina
+STORE SD21 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/SD21.qvd];
+
+DROP Table SD21;
+

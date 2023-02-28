@@ -1,0 +1,71 @@
+﻿//******************************************************************
+// CONEXIÓN A LA BBDD
+//******************************************************************
+
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+
+//******************************************************************
+// SCRIPT CARGA QVDs
+//******************************************************************
+
+
+TRACE CARGA NIVEL 1;
+//$(vL.EntornoFramework) es la conexion de QLIK al directorio de nivel 1
+// $$(Must_Include=$(vL.EntornoFramework)\1.NIVEL_1\RAW_DATA\origen\4.CONFIG\1.INCLUDES\QVD_MAKER_xxxxxxx_N1.Script.xxxxx.qvs);
+// $$(Must_Include=$(vL.EntornoFramework)\1.NIVEL_1\RAW_DATA\origen\4.CONFIG\1.INCLUDES\QVD_MAKER_xxxxxxx_N1.Script.xxxxx.qvs);
+
+//TABLAS CON CARGA INCREMENTAL
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.SD10.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.SD11.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.SD20.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.SD21.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.SD30.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.SD31.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.WBS10.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.WBS20.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.WBS30.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CCA10.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CCA20.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.OPA10.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.OPA20.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.MMIV01.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.FIGL04.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.MMIM10.qvs);
+
+//TABLAS PUR
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.PUR10.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.PUR11.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.PUR12.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.PUR13.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.PUR14.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.PUR21.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.PUR22.qvs);
+
+//TABLAS SIN CARGA INCREMENTAL
+// $(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CLC_PUR01.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CLC_PUR10.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CL_MARC.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CL_MARA.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.GGB_CLASI.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.GG_MDPB.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CL_LFB1.qvs);
+// $(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CL_MCUENT.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.GG_PEDIDOS.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.GG_EKBE.qvs);
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.GG_EKBZ.qvs);
+
+//TABLAS CON DEPENDENCIA
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.GG_STOCK.qvs);
+
+// -----------
+//INCREMENTAL
+// $(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.MMIM01.qvs);
+// $(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.MMIM02.qvs);
+//NORMAL
+// $(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/Tablas/MMIM01.qvs);
+// $(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/Tablas/MMIM02.qvs);
+
+
+
+//Carga de 27min
+$(Must_Include=lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/4.CONFIG/1.INCLUDES/QVD_MAKER_CL_N1.Script.CLC_PUR01.qvs);

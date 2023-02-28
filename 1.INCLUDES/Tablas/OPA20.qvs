@@ -1,0 +1,72 @@
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+
+[OPA20]:
+LOAD
+    RowNum,
+    "Clase de coste" as [COSTELMNT],
+    "Sociedad CO" as [CO_AREA],
+    "CO: Clave" as [CO_HRKFT],
+    "CO: Número de objeto" as [CO_OBJNR],
+    "CO: Objeto interlocutor" as [CO_PAROB],
+    "CO: Objeto fuente" as [CO_USPOB],
+    "CO: Tipo valor (ERP)" as [CO_WRTTP],
+    "Clave de moneda de moneda de la transacción" as [CURKEY_TC],
+    "Clave de moneda" as [CURRENCY],
+    "Tipo de moneda" as [CURTYPE],
+    "Paquete de datos" as [DATAPAKID],
+    "Indicador emisor/receptor" as [DB_CR_IND],
+    "Contabilización en el Haber/Debe (H/D)" as [DEB_CRED],
+    "Ejercicio/Período" as [FISCPER],	// Ejercicio/Período
+    "Período contable" as [FISCPER3],	// Período contable
+    "Variante de ejercicio" as [FISCVARNT],	// Variante de ejercicio
+    Ejercicio as [FISCYEAR],
+    "Operación empresarial" as [FI_RACTIV],	// Operación empresarial
+    "Entidad CP" as [FM_AREA],	// Entidad CP
+    "Área funcional" as [FUNC_AREA],	// Área funcional
+    Fondos as [FUND],	// Fondos
+    "Sistema fuente de la entidad (2 posiciones)" as [GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+    Subvención as [GRANT_NBR],	// Subvención
+    "Tipo de ratio" as [METYPE],	// Tipo de ratio
+    "Proceso empresarial interlocutor" as [PART_ABCPR],	// Proceso empresarial interlocutor
+    "Clase de actividad del centro de coste interlocutor" as [PART_ACTTY],	// Clase de actividad del centro de coste interlocutor
+    "Centro de coste de interlocutor" as [PART_CCTR],	// Centro de coste de interlocutor
+    "Orden interlocutor" as [PART_COORD],	// Orden interlocutor
+    "Elemento PEP interlocutor" as [PART_WBSEL],	// Elemento PEP interlocutor
+    "Período de presupuesto de interlocutor" as [PBDGTID],	// Período de presupuesto de interlocutor
+    "División del interlocutor comercial" as [PBUS_AREA],	// División del interlocutor comercial
+    "Número de sociedad GL asociada" as [PCOMPANY],	// Número de sociedad GL asociada
+    "Área de funciones del interlocutor" as [PFUNC_AREA],	// Área de funciones del interlocutor
+    "Fondos de interlocutor" as [PFUND],	// Fondos de interlocutor
+    "Fomento de interlocutor" as [PGRANT_NBR],	// Fomento de interlocutor
+    "Tipo objeto interlocutor" as [PIOBJSV],	// Tipo objeto interlocutor
+    "Objeto del interlocutor" as [PIOVALUE],	// Objeto del interlocutor
+    Per.presupuesto as [PU_BDGTID],	// Per.presupuesto
+    "Número registro datos" as [RECORD],	// Número registro datos
+    "BW procedimiento delta: Modo de actualización" as [RECORDMODE],	// BW procedimiento delta: Modo de actualización
+    "Número de transacción consecutivo de solicitud" as [REQTSN],	// Número de transacción consecutivo de solicitud
+    "ID sistema fuente" as [SOURSYSTEM],	// ID sistema fuente
+    "Unidad medida" as [UNIT],	// Unidad medida
+    "Fecha de actualización" as [UPD_DATE],	// Fecha de actualización
+    "Vista de valoración" as [VALUATION],	// Vista de valoración
+    Vers. as [VERSION],	// Vers.
+    "Detalle del tipo de valor" as [VTDETAIL],	// Detalle del tipo de valor
+    "Indicador estadística para tipo valor" as [VTSTAT],	// Indicador estadística para tipo valor
+    "Tipo valor para informes" as [VTYPE],	// Tipo valor para informes
+    "Número de orden" as [CLC_OORDE],	// Número de orden
+    Importe as [AMOUNT],	// Importe
+    "Plan proyectos" as [AMOUNTPP],	// Plan proyectos
+    Cantidad as [QUANTITY],	// Cantidad
+    "Costes plan (período plan)" as [RPM_PCPP],	// Costes plan (período plan)
+    UniqueKey
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_OPA20.qvd]
+(qvd);
+
+
+[COSTELMNT_TEXTS]: LEFT JOIN LOAD [CO_AREA] AS [CO_AREA], [COSTELMNT] AS [COSTELMNT], [TXTMD] AS [COSTELMNT_TEXT], [TXTSH] AS [COSTELMNT_TEXT_S]; SELECT CO_AREA, COSTELMNT, TXTMD, TXTSH FROM /BI0/TCOSTELMNT WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD [CO_AREA] AS [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[FM_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FM_AREA] AS [FM_AREA], [TXTMD] AS [FM_AREA_TEXT]; SELECT SOURSYSTEM, FM_AREA, TXTMD FROM /BI0/TFM_AREA WHERE LANGU = 'S';
+[FUNC_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FUNC_AREA] AS [FUNC_AREA], [TXTMD] AS [FUNC_AREA_TEXT]; SELECT SOURSYSTEM, FUNC_AREA, TXTMD FROM /BI0/TFUNC_AREA WHERE LANGU = 'S';
+[CLC_OORDE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_OORDE] AS [CLC_OORDE], [TXTMD] AS [CLC_OORDE_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_OORDE, TXTMD FROM /BIC/TCLC_OORDE;
+
+//     Store [GESPG] into 'lib://QlikRepository/2.DATOS_NIVEL_2/GES_CO/1.QVD/GESPGF_ANALITICO.qvd' (qvd);
+STORE [OPA20] INTO 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/OPA20.qvd' (qvd);

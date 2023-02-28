@@ -1,0 +1,73 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+GG_MDPB:
+LOAD RowNum, 
+	[0CONF_DATE] as [Fecha entrega confirmada], 
+	[0DATAPAKID] as [Paquete de datos], 
+	[0FRE_PLNPUR] as [Planificador necesidades], 
+	[0RECORD] as [Número registro datos], 
+	[0RECORDMODE] as [BW procedimiento delta: Modo de actualización], 
+	[0REQTSN] as [Número de transacción consecutivo de solicitud], 
+	[0SOURSYSTEM] as [ID sistema fuente], 
+	[0UNIT] as [Unidad medida], 
+	BDZEI as [Puntero nec.primar.], 
+	BEDAE as [Clase de necesidad], 
+	CUOBJ as [Nº objeto interno], 
+	ENTLI as [Tipo de fecha], 
+	KDAUF as [Pedido cliente], 
+	KDPOS as [Pos.pedido cliente], 
+	KNTTP as [Tipo de imputación], 
+	KZBWS as [Val.stock especial], 
+	KZVBR as Consumo, 
+	OPLKZ as [No relev. p. MRP], 
+	PLNKZ as [Ind.planificación], 
+	SERNR as [Número de serie], 
+	SGT_RCAT as [Segmento necesidad], 
+	SOBKZ as [Stock especial], 
+	TECHS as [Valoración estándar], 
+	VERID as [Versión fabricación], 
+	VERKZ as [Compens.preplanif.], 
+	VERVS as Activa, 
+	ZUVKZ as [Ind-compensación], 
+	CLC_MATER as Material, 
+	CLC_PLANT as Ctro, 
+	CLC_VERSB as [Versión], 
+	CLC_WBSP as [Elemento del plan de estructura de proyecto (elemento PEP)], 
+	[0QUANTITY] as Cantidad,
+    [0SOURSYSTEM]&CLC_MATER&CLC_PLANT&BEDAE&CLC_VERSB&[0FRE_PLNPUR]&BDZEI&[0CONF_DATE] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0CONF_DATE],	// Fecha entrega confirmada
+	[0DATAPAKID],	// Paquete de datos
+	[0FRE_PLNPUR],	// Planificador necesidades
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UNIT],	// Unidad medida
+	[BDZEI],	// Puntero nec.primar.
+	[BEDAE],	// Clase de necesidad
+	[CUOBJ],	// Nº objeto interno
+	[ENTLI],	// Tipo de fecha
+	[KDAUF],	// Pedido cliente
+	[KDPOS],	// Pos.pedido cliente
+	[KNTTP],	// Tipo de imputación
+	[KZBWS],	// Val.stock especial
+	[KZVBR],	// Consumo
+	[OPLKZ],	// No relev. p. MRP
+	[PLNKZ],	// Ind.planificación
+	[SERNR],	// Número de serie
+	[SGT_RCAT],	// Segmento necesidad
+	[SOBKZ],	// Stock especial
+	[TECHS],	// Valoración estándar
+	[VERID],	// Versión fabricación
+	[VERKZ],	// Compens.preplanif.
+	[VERVS],	// Activa
+	[ZUVKZ],	// Ind-compensación
+	[CLC_MATER],	// Material
+	[CLC_PLANT],	// Ctro
+	[CLC_VERSB],	// Versión
+	[CLC_WBSP],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[0QUANTITY]	// Cantidad
+
+FROM GG_MDPB;
+STORE GG_MDPB INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/GG_MDPB.qvd;

@@ -1,0 +1,376 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.SD10.qvs
+// TABLA:     	/IMO/D_SD10
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: SD: Datos de cabecera del documento de ventas
+//==================================================================================================================================================================
+
+TRACE #######################################################;
+TRACE ########## 		P&G completo años 2021 y 2022	   	 ;
+TRACE #######################################################;
+
+for a = 1 to 12;
+   /* If $(a) <= 9 then  
+    let lv_per = '202100' & '$(a)';
+  else ; //'2021', $(a);
+  	let lv_per = '20210' & '$(a)';
+  end if;*/
+  
+  If $(a) <= 9 then  
+    let lv_per = '202200' & '$(a)';
+  else ; //'2021', $(a);
+  	let lv_per = '20220' & '$(a)';
+  end if;
+
+[GESPG]:
+LOAD RowNum, 
+	[0ACTTYPE] as [Clase de actividad], 
+	[0AUXACCTYPE] as [Clase objeto imputación auxiliar], 
+	[0AUXACCVAL] as [Objeto imputación auxiliar], 
+	[0CCTR_IBV] as [Centro de coste eliminación de costes interiores], 
+	[0CHRT_ACCTS] as [Plan de cuentas], 
+	[0CORRTYPE] as [Tipo de corrección], 
+	[0COSTELMNT] as [Clase de coste], 
+	[0COUNTRY] as [Clave de país], 
+	[0CO_AREA] as [Sociedad CO], 
+	[0CO_DOC_NO] as [Número del documento CO], 
+	[0CO_ITEM_NR] as [Apunte contable de un documento CO], 
+	[0CO_OBJNR] as [CO: Número de objeto], 
+	[0CURKEY_TC] as [Clave de moneda de moneda de la transacción], 
+	[0CURRENCY] as [Clave de moneda], 
+	[0CURTYPE] as [Tipo de moneda], 
+	[0DB_CR_IND] as [Indicador emisor/receptor], 
+	[0DEBITOR] as [Número de deudor], 
+	[0DEB_CRED] as [Contabilización en el Haber/Debe (H/D)], 
+	[0DOC_DATE] as [Fecha del documento], 
+	[0EMPLOYEE] as Empleados, 
+	[0FISCPER] as [Ejercicio/Período], 
+    Num(Month(MakeDate(Mid([0FISCPER],2,4),Right([0FISCPER],2))),'00') as Mes,
+	[0FISCPER3] as [Período contable], 
+	[0FISCVARNT] as [Variante de ejercicio], 
+	[0FISCYEAR] as Ejercicio, 
+	[0FI_RACTIV] as [Operación empresarial], 
+	[0FLAG] as [Indicador: Sociedad continuada], 
+	[0FM_AREA] as [Entidad CP], 
+	[0FUNC_AREA] as [Área funcional], 
+	[0FUND] as Fondos, 
+	[0GL_ACCOUNT] as [Cuenta de mayor], 
+	[0GRANT_NBR] as [Subvención], 
+	[0INFOPROV] as InfoSitio, 
+	[0METYPE] as [Tipo de ratio], 
+	[0NOTIFICATN] as [Número de aviso], 
+	[0PART_ABCPR] as [Proceso empresarial interlocutor], 
+	[0PART_ACTTY] as [Clase de actividad del centro de coste interlocutor], 
+	[0PART_CCTR] as [Centro de coste de interlocutor], 
+	[0PART_COORD] as [Orden interlocutor], 
+	[0PART_WBSEL] as [Elemento PEP interlocutor], 
+	[0PBDGTID] as [Período de presupuesto de interlocutor], 
+	[0PBUS_AREA] as [División del interlocutor comercial], 
+	Right([0PCOMPANY],4) as [Código grupo], 
+	[0PCOMP_CODE] as [Sociedad del interlocutor], 
+	[0PFUNC_AREA] as [Área de funciones del interlocutor], 
+	[0PFUND] as [Fondos de interlocutor], 
+	[0PGRANT_NBR] as [Fomento de interlocutor], 
+	[0PIOBJSV] as [Tipo objeto interlocutor], 
+	[0PIOVALUE] as [Objeto del interlocutor], 
+	[0PROFIT_CTR] as [Centro de beneficio], 
+	[0PROJECT] as [Definición del proyecto], 
+	[0PSTNG_DATE] as [Fecha de contabilización en el documento], 
+	[0PU_BDGTID] as [Per.presupuesto], 
+	[0REF_DOC_AA] as [Documento referencia: Número imputación], 
+	[0REF_DOC_CT] as [Documento de referencia: Tipo], 
+	[0REF_DOC_DI] as [Documento de referencia: Posición de fecha], 
+	[0REF_DOC_FY] as [Ejercicio del documento de referencia], 
+	[0REF_DOC_IT] as [Posición del documento de referencia], 
+	[0REF_DOC_NR] as [Número documento de referencia], 
+	[0REF_DOC_TY] as [Documento de referencia: Clase], 
+	[0RES_DEL] as [Indicador: Posición de documento borrada], 
+	[0SOURSYSTEM] as [ID sistema fuente], 
+	[0UNIT] as [Unidad medida], 
+	[0USERNAME] as [Nombre de usuario], 
+	[0VALUATION] as [Vista de valoración], 
+	[0VERSION] as [Vers.], 
+	[0VTDETAIL] as [Detalle del tipo de valor], 
+	[0VTSTAT] as [Indicador estadística para tipo valor], 
+	[0VTYPE] as [Tipo valor para informes], 
+	[1CUDIM] as [Moneda/Unidad], 
+	[/BI0/0FLAG_0] as [Indicador: Proyecto continuada], 
+	[/BI0/0FLAG_1] as [Cabecera proyecto sociedad continuada], 
+	BU, 
+	CLC_COMPC as Sociedad, 
+	DATEFROMGLOB as [Global Date From], 
+	DATESEL as [Global Date Selection], 
+	DATETOGLOB as [Global Date To], 
+	JOB as JOB, 
+	CLC_BUSA as [División], 
+	CLC_CAREA as [Sociedad CO_1], 
+	CLC_MATER as Material, 
+	CLC_MATLG as [Grupo artículos], 
+	CLC_OORDE as [Número de orden], 
+	CLC_OSTCE as [Centro de coste], 
+	CLC_PLANT as Ctro, 
+	CLC_PROFI as [Centro de beneficio_1], 
+	CLC_VEND as Proveedor, 
+	CLC_WBSP as [Elemento del plan de estructura de proyecto (elemento PEP)], 
+	GESCLAOH2 as GESCLAOH2, //[GES Class.OH nivel 2], 
+	GESCLASOH as GESCLASOH, //[GES Class.OH], 
+	GESCLASS1 as GESCLASS1, // [GES Class1], 
+	GESCLASS2 as GESCLASS2, //[GES ClassReport2], 
+	GESEBIT   as GESEBIT,   //[Análitica EBITDA CEBE], 
+	GESREPORT as GESREPORT, //[GES ClassReport2_1], 
+    [0PCA_HIEND] AS [0PCA_HIEND],
+    GES_GROUP    AS [Agrupacion CLASS.OH],
+    //GES_PYGRP as [Agrupacion proyecto P&G],
+	if(GES_PYGRP = '   ' and [0PCA_HIEND] = 'P200', '035', GES_PYGRP)  as [Agrupacion proyecto P&G],
+	[0AMOUNT] as Importe, 
+	[0AMOUNTFX] as [Importe fijo], 
+	[0AMOUNTPP] as [Plan proyectos], 
+	[0AMOUNTVR] as [Importe variable], 
+	[0QUANTITY] as Cantidad, 
+	[0QUANTITYFX] as [Cantidad fija], 
+	[0QUANTITYVR] as [Cantidad variable], 
+	[0RPM_PCPP] as [Costes plan (período plan)],    
+	' ' as [Ajuste manual],
+    if(GESEBIT = 'P500' or [/BI0/0FLAG_0] = 'X' or [/BI0/0FLAG_1] = 'X' or [0FLAG] = 'X','X','') as [Discontinuada],
+//     if( isnull([0PCOMPANY]), '','X') as [Trading partner];
+	if(WildMatch([0COSTELMNT],'*68*'),' ', ApplyMap('SOCIEDADES',[0PCOMPANY], ' ')) AS [Trading partner],
+    if(if(WildMatch([0COSTELMNT],'*68*'),' ', ApplyMap('SOCIEDADES',[0PCOMPANY], ' ')) = 'X', if([0PCOMPANY] > CLC_COMPC, [CLC_COMPC] &' - '&Right([0PCOMPANY],4) , Right([0PCOMPANY],4) &' - '& [CLC_COMPC]), ' ') AS [InterComp];
+//     Resident [PROJECT_ATTR];
+
+SELECT		[RowNum],	//  
+	[0ACTTYPE],	// Clase de actividad
+	[0AUXACCTYPE],	// Clase objeto imputación auxiliar
+	[0AUXACCVAL],	// Objeto imputación auxiliar
+	[0CCTR_IBV],	// Centro de coste eliminación de costes interiores
+	[0CHRT_ACCTS],	// Plan de cuentas
+	[0CORRTYPE],	// Tipo de corrección
+	[0COSTELMNT],	// Clase de coste
+	[0COUNTRY],	// Clave de país
+	[0CO_AREA],	// Sociedad CO
+	[0CO_DOC_NO],	// Número del documento CO
+	[0CO_ITEM_NR],	// Apunte contable de un documento CO
+	[0CO_OBJNR],	// CO: Número de objeto
+	[0CURKEY_TC],	// Clave de moneda de moneda de la transacción
+	[0CURRENCY],	// Clave de moneda
+	[0CURTYPE],	// Tipo de moneda
+	[0DB_CR_IND],	// Indicador emisor/receptor
+	[0DEBITOR],	// Número de deudor
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DOC_DATE],	// Fecha del documento
+	[0EMPLOYEE],	// Empleados
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCPER3],	// Período contable
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0FI_RACTIV],	// Operación empresarial
+	[0FLAG],	// Indicador: Sociedad continuada
+	[0FM_AREA],	// Entidad CP
+	[0FUNC_AREA],	// Área funcional
+	[0FUND],	// Fondos
+	[0GL_ACCOUNT],	// Cuenta de mayor
+	[0GRANT_NBR],	// Subvención
+	[0INFOPROV],	// InfoSitio
+	[0METYPE],	// Tipo de ratio
+	[0NOTIFICATN],	// Número de aviso
+	[0PART_ABCPR],	// Proceso empresarial interlocutor
+	[0PART_ACTTY],	// Clase de actividad del centro de coste interlocutor
+	[0PART_CCTR],	// Centro de coste de interlocutor
+	[0PART_COORD],	// Orden interlocutor
+	[0PART_WBSEL],	// Elemento PEP interlocutor
+	[0PBDGTID],	// Período de presupuesto de interlocutor
+	[0PBUS_AREA],	// División del interlocutor comercial
+	[0PCOMPANY],	// Número de sociedad GL asociada
+	[0PCOMP_CODE],	// Sociedad del interlocutor
+	[0PFUNC_AREA],	// Área de funciones del interlocutor
+	[0PFUND],	// Fondos de interlocutor
+	[0PGRANT_NBR],	// Fomento de interlocutor
+	[0PIOBJSV],	// Tipo objeto interlocutor
+	[0PIOVALUE],	// Objeto del interlocutor
+	[0PROFIT_CTR],	// Centro de beneficio
+	[0PROJECT],	// Definición del proyecto
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PU_BDGTID],	// Per.presupuesto
+	[0REF_DOC_AA],	// Documento referencia: Número imputación
+	[0REF_DOC_CT],	// Documento de referencia: Tipo
+	[0REF_DOC_DI],	// Documento de referencia: Posición de fecha
+	[0REF_DOC_FY],	// Ejercicio del documento de referencia
+	[0REF_DOC_IT],	// Posición del documento de referencia
+	[0REF_DOC_NR],	// Número documento de referencia
+	[0REF_DOC_TY],	// Documento de referencia: Clase
+	[0RES_DEL],	// Indicador: Posición de documento borrada
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UNIT],	// Unidad medida
+	[0USERNAME],	// Nombre de usuario
+	[0VALUATION],	// Vista de valoración
+	[0VERSION],	// Vers.
+	[0VTDETAIL],	// Detalle del tipo de valor
+	[0VTSTAT],	// Indicador estadística para tipo valor
+	[0VTYPE],	// Tipo valor para informes
+	[1CUDIM],	// Moneda/Unidad
+	[/BI0/0FLAG_0],	// Indicador: Proyecto continuada
+	[/BI0/0FLAG_1],	// Cabecera proyecto sociedad continuada
+	[BU],	// BU
+	[CLC_COMPC],	// Sociedad
+	[DATEFROMGLOB],	// Global Date From
+	[DATESEL],	// Global Date Selection
+	[DATETOGLOB],	// Global Date To
+	[JOB],	// JOB
+	[CLC_BUSA],	// División
+	[CLC_CAREA],	// Sociedad CO_1
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_OORDE],	// Número de orden
+	[CLC_OSTCE],	// Centro de coste
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFI],	// Centro de beneficio_1
+	[CLC_VEND],	// Proveedor
+	[CLC_WBSP],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[GESCLAOH2],	// GES Class.OH nivel 2
+	[GESCLASOH],	// GES Class.OH
+	[GESCLASS1],	// GES Class1
+	[GESCLASS2],	// GES ClassReport2
+	[GESEBIT],	// Análitica EBITDA CEBE
+	[GESREPORT],	// GES ClassReport2_1
+    [0PCA_HIEND],
+    [GES_GROUP],
+	[GES_PYGRP],	// Agrupacion proyecto P&G
+	[0AMOUNT],	// Importe
+	[0AMOUNTFX],	// Importe fijo
+	[0AMOUNTPP],	// Plan proyectos
+	[0AMOUNTVR],	// Importe variable
+	[0QUANTITY],	// Cantidad
+	[0QUANTITYFX],	// Cantidad fija
+	[0QUANTITYVR],	// Cantidad variable
+	[0RPM_PCPP]	// Costes plan (período plan)
+
+FROM GES_PG
+WHERE (
+	[0CURTYPE] = 20,
+  	[0FISCPER] = ($(lv_per)), //2021001,
+	[0FISCYEAR] = 2022,
+	[0METYPE] = 001000,
+	[0METYPE] = 001001
+);
+
+next
+
+Store [GESPG] into 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/GESPG2022.qvd' (qvd);
+
+Concatenate
+
+LOAD
+    RowNum,
+    "Clase de actividad",
+    "Clase objeto imputación auxiliar",
+    "Objeto imputación auxiliar",
+    "Centro de coste eliminación de costes interiores",
+    "Plan de cuentas",
+    "Tipo de corrección",
+    "Clase de coste",
+    "Clave de país",
+    "Sociedad CO",
+    "Número del documento CO",
+    "Apunte contable de un documento CO",
+    "CO: Número de objeto",
+    "Clave de moneda de moneda de la transacción",
+    "Clave de moneda",
+    "Tipo de moneda",
+    "Indicador emisor/receptor",
+    "Número de deudor",
+    "Contabilización en el Haber/Debe (H/D)",
+    "Fecha del documento",
+    Empleados,
+    "Ejercicio/Período",
+    Mes,
+    "Período contable",
+    "Variante de ejercicio",
+    Ejercicio,
+    "Operación empresarial",
+    "Indicador: Sociedad continuada",
+    "Entidad CP",
+    "Área funcional",
+    Fondos,
+    "Cuenta de mayor",
+    Subvención,
+    InfoSitio,
+    "Tipo de ratio",
+    "Número de aviso",
+    "Proceso empresarial interlocutor",
+    "Clase de actividad del centro de coste interlocutor",
+    "Centro de coste de interlocutor",
+    "Orden interlocutor",
+    "Elemento PEP interlocutor",
+    "Período de presupuesto de interlocutor",
+    "División del interlocutor comercial",
+    "Código grupo",
+    "Sociedad del interlocutor",
+    "Área de funciones del interlocutor",
+    "Fondos de interlocutor",
+    "Fomento de interlocutor",
+    "Tipo objeto interlocutor",
+    "Objeto del interlocutor",
+    "Centro de beneficio",
+    "Definición del proyecto",
+    "Fecha de contabilización en el documento",
+    Per.presupuesto,
+    "Documento referencia: Número imputación",
+    "Documento de referencia: Tipo",
+    "Documento de referencia: Posición de fecha",
+    "Ejercicio del documento de referencia",
+    "Posición del documento de referencia",
+    "Número documento de referencia",
+    "Documento de referencia: Clase",
+    "Indicador: Posición de documento borrada",
+    "ID sistema fuente",
+    "Unidad medida",
+    "Nombre de usuario",
+    "Vista de valoración",
+    Vers.,
+    "Detalle del tipo de valor",
+    "Indicador estadística para tipo valor",
+    "Tipo valor para informes",
+    "Moneda/Unidad",
+    "Indicador: Proyecto continuada",
+    "Cabecera proyecto sociedad continuada",
+    BU,
+    Sociedad,
+    "Global Date From",
+    "Global Date Selection",
+    "Global Date To",
+    JOB,
+    División,
+    "Sociedad CO_1",
+    Material,
+    "Grupo artículos",
+    "Número de orden",
+    "Centro de coste",
+    Ctro,
+    "Centro de beneficio_1",
+    Proveedor,
+    "Elemento del plan de estructura de proyecto (elemento PEP)",
+    GESCLAOH2,
+    GESCLASOH,
+    GESCLASS1,
+    GESCLASS2,
+    GESEBIT,
+    GESREPORT,
+    "0PCA_HIEND",
+    "Agrupacion proyecto P&G",
+    Importe,
+    "Importe fijo",
+    "Plan proyectos",
+    "Importe variable",
+    Cantidad,
+    "Cantidad fija",
+    "Cantidad variable",
+    "Costes plan (período plan)",
+    "Ajuste manual",
+    Discontinuada,
+    "Trading partner",
+    InterComp
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/gespg2021.qvd]
+(qvd);
+
+Store [GESPG] into 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/GESPG.qvd' (qvd);
+
+DROP Table GESPG;

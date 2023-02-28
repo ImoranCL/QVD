@@ -1,0 +1,129 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+CL_MARC:
+LOAD RowNum, 
+	[0ABCKEY] as [Indicador ABC], 
+	[0APO_STORGU] as [APO unidad stock en almacén recurso], 
+	[0CRM_PLGRP] as [Grupo de perfiles de planificación], 
+	[0CURRENCY] as [Clave de moneda], 
+	[0DATAPAKID] as [Paquete de datos], 
+	[0DEL_FLAG] as [Petición borrado para todos datos de materiales de un centro], 
+	[0DISMM] as [Característica de planificación de necesidades], 
+	[0FLAG] as [PB a nivel de centro], 
+	[0INDSPECSTK] as [Indicador valoración stock especial], 
+	[0LOT_HERK] as [Origen lote inspección], 
+	[0PO_UNIT] as [Unidad de medida de pedido], 
+	[0RECORD] as [Número registro datos], 
+	[0RECORDMODE] as [BW procedimiento delta: Modo de actualización], 
+	[0REQTSN] as [Número de transacción consecutivo de solicitud], 
+	[0RSPL_FCSTR] as [Estrategia previsión], 
+	[0RT_SUPS] as [Fuente de aprovisionamiento], 
+	[0RUNOUTDATE] as [Fecha de fin de validez], 
+	[0SOURSYSTEM] as [ID sistema fuente], 
+	[0STGE_PD_UN] as [Unidad para el tiempo de almacenamiento máximo], 
+	[0UNIT] as [Unidad medida], 
+	[0VALIDFROM] as [Válido de], 
+	BESKZ as [Clase aprovisionam.], 
+	FHORI as [Clave de horizonte], 
+	KZAUS as [Ind.reemplazo], 
+	KZBED as [Agrup.necesidades], 
+	KZKRI as [Parte crítica], 
+	LAGPR as [Costes almacenaje], 
+	LFGJA as [Ej.período actual], 
+	LGFSB as [Alm. aprov. externo], 
+	MATERIAL2 as [Material reemplazante], 
+	MISKZ as [Planif. nec. mixta], 
+	MMSTA as [Stat.mat.específ.ce.], 
+	PERKZ as [Indicador de período], 
+	PSTAT as [Status actualización], 
+	SBDKZ as [Individual/Colectivo], 
+	STDPD as [Mat. configurable], 
+	CLC_CAREA as [Sociedad CO], 
+	CLC_MATER as Material, 
+	CLC_PLANT as Ctro, 
+	CLC_PROFG as [Grupo de compras], 
+	CLC_PROFI as [Centro de beneficio], 
+	CLC_T460T as [Clase de aprov. espec., y texto], 
+	CL_MRPCTL as [Planificador necesidades], 
+	[0AMOUNT] as Importe, 
+	[0GR_PR_TIME] as [Tiempo de tratamiento para la entrada de mercancía en días], 
+	[0INHSEPRODT] as [Tiempo de fabricación propia], 
+	[0ORDER_QUAN] as [Cantidad de pedido], 
+	[0PLND_DELRY] as [Plazo de entrega], 
+	[0PROCTIME] as [Tiempo tratamiento], 
+	[0QUANTITY] as Cantidad, 
+	[0SETUPTIME] as [Tiempo preparación y desmontaje], 
+	[0STGEPERIOD] as [Tiempo de almacenamiento máximo], 
+	[0TRANSTIME] as [Tiempo de tránsito], 
+	CL_BASMG as [Cantidad base], 
+	CL_EISBE as [Stock de seguridad], 
+	CL_LOTECC as [Tamaño de lote CC], 
+	CL_LOTEFI as [Tamaño de lote fijo], 
+	CL_LOTEMA as [Tamaño de lote máximo], 
+	CL_LOTEMI as [Tamaño de lote mínimo], 
+	CL_MABST as [Stock máximo],
+    [0SOURSYSTEM]&CLC_MATER&CLC_PLANT as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0ABCKEY],	// Indicador ABC
+	[0APO_STORGU],	// APO unidad stock en almacén recurso
+	[0CRM_PLGRP],	// Grupo de perfiles de planificación
+	[0CURRENCY],	// Clave de moneda
+	[0DATAPAKID],	// Paquete de datos
+	[0DEL_FLAG],	// Petición borrado para todos datos de materiales de un centro
+	[0DISMM],	// Característica de planificación de necesidades
+	[0FLAG],	// PB a nivel de centro
+	[0INDSPECSTK],	// Indicador valoración stock especial
+	[0LOT_HERK],	// Origen lote inspección
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0RSPL_FCSTR],	// Estrategia previsión
+	[0RT_SUPS],	// Fuente de aprovisionamiento
+	[0RUNOUTDATE],	// Fecha de fin de validez
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STGE_PD_UN],	// Unidad para el tiempo de almacenamiento máximo
+	[0UNIT],	// Unidad medida
+	[0VALIDFROM],	// Válido de
+	[BESKZ],	// Clase aprovisionam.
+	[FHORI],	// Clave de horizonte
+	[KZAUS],	// Ind.reemplazo
+	[KZBED],	// Agrup.necesidades
+	[KZKRI],	// Parte crítica
+	[LAGPR],	// Costes almacenaje
+	[LFGJA],	// Ej.período actual
+	[LGFSB],	// Alm. aprov. externo
+	[MATERIAL2],	// Material reemplazante
+	[MISKZ],	// Planif. nec. mixta
+	[MMSTA],	// Stat.mat.específ.ce.
+	[PERKZ],	// Indicador de período
+	[PSTAT],	// Status actualización
+	[SBDKZ],	// Individual/Colectivo
+	[STDPD],	// Mat. configurable
+	[CLC_CAREA],	// Sociedad CO
+	[CLC_MATER],	// Material
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_PROFI],	// Centro de beneficio
+	[CLC_T460T],	// Clase de aprov. espec., y texto
+	[CL_MRPCTL],	// Planificador necesidades
+	[0AMOUNT],	// Importe
+	[0GR_PR_TIME],	// Tiempo de tratamiento para la entrada de mercancía en días
+	[0INHSEPRODT],	// Tiempo de fabricación propia
+	[0ORDER_QUAN],	// Cantidad de pedido
+	[0PLND_DELRY],	// Plazo de entrega
+	[0PROCTIME],	// Tiempo tratamiento
+	[0QUANTITY],	// Cantidad
+	[0SETUPTIME],	// Tiempo preparación y desmontaje
+	[0STGEPERIOD],	// Tiempo de almacenamiento máximo
+	[0TRANSTIME],	// Tiempo de tránsito
+	[CL_BASMG],	// Cantidad base
+	[CL_EISBE],	// Stock de seguridad
+	[CL_LOTECC],	// Tamaño de lote CC
+	[CL_LOTEFI],	// Tamaño de lote fijo
+	[CL_LOTEMA],	// Tamaño de lote máximo
+	[CL_LOTEMI],	// Tamaño de lote mínimo
+	[CL_MABST]	// Stock máximo
+
+FROM CL_MARC;
+STORE CL_MARC INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CL_MARC.qvd;

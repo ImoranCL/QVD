@@ -1,0 +1,112 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+GGB_CLASI:
+LOAD RowNum, 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0UNIT] as [UNIT], 
+	SEL, 
+	TIMESTAMP, 
+	WAERS, 
+	ZALBARAN, 
+	ZBASCUL_ID, 
+	ZCH_CLASIF, 
+	ZCH_FEC_REG, 
+	ZCH_HOR_REG, 
+	ZCH_LOC_NOM, 
+	ZCH_MODO_OPER, 
+	ZCH_NFOTOS, 
+	ZCH_OBS, 
+	ZCH_USU, 
+	ZCOD_AGE, 
+	ZCOD_ART, 
+	ZCOD_TRANS, 
+	ZDES_AGE, 
+	ZDES_PROV, 
+	ZDES_TRANS, 
+	ZDOCUMENTO1, 
+	ZDOCUMENTO2, 
+	ZDOCUMENTO3, 
+	ZDOCUMENTO4, 
+	ZFECHA_REGISTRO, 
+	ZHORA_REGISTRO, 
+	ZMAT_CAM, 
+	ZMAT_REM, 
+	ZNOM_ART, 
+	ZPEDIDO, 
+	ZPROVEEDOR, 
+	ZPUERTO, 
+	ZSOCIEDAD, 
+	ZTARJETA, 
+	ZTICKET_ID, 
+	ZVAGON, 
+	ZZONA, 
+	[0AS_PRCNT] as [AS_PRCNT], 
+	[0QUANTITY] as [QUANTITY], 
+	[0QUANTITYFX] as [QUANTITYFX], 
+	[0QUANTITYVR] as [QUANTITYVR], 
+	IMPORTE_CAD, 
+	IMPORTE_ENTR, 
+	IMPORTE_PROV, 
+	IMPORTE_TCAD, 
+	IMPORTE_TRAS, 
+	IMPORTE_TSCAD,
+    TIMESTAMP&ZCOD_ART&ZSOCIEDAD as UniqueKey;
+    
+
+SELECT		[RowNum],	// RowNum
+	[0DATAPAKID],	// Paquete de datos
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0UNIT],	// Unidad medida
+	[SEL],	// Carácter 1
+	[TIMESTAMP],	// Cronomarcador
+	[WAERS],	// Moneda
+	[ZALBARAN],	// Nota de entrega
+	[ZBASCUL_ID],	// Identificador báscula
+	[ZCH_CLASIF],	// Carácter 1_1
+	[ZCH_FEC_REG],	// Fecha Registro Clasificación
+	[ZCH_HOR_REG],	// Hora Registro Clasificación
+	[ZCH_LOC_NOM],	// Descripción localización
+	[ZCH_MODO_OPER],	// Carácter 1_2
+	[ZCH_NFOTOS],	// Número natural
+	[ZCH_OBS],	// Carácter 100
+	[ZCH_USU],	// 30 caracteres
+	[ZCOD_AGE],	// Campo de texto, longitud 10
+	[ZCOD_ART],	// Material
+	[ZCOD_TRANS],	// Acreedor
+	[ZDES_AGE],	// Nombre
+	[ZDES_PROV],	// Nombre_1
+	[ZDES_TRANS],	// Nombre_2
+	[ZDOCUMENTO1],	// Nº documento
+	[ZDOCUMENTO2],	// Nº documento_1
+	[ZDOCUMENTO3],	// Nº documento_2
+	[ZDOCUMENTO4],	// Nº documento_3
+	[ZFECHA_REGISTRO],	// Fecha
+	[ZHORA_REGISTRO],	// Fecha/Hora
+	[ZMAT_CAM],	// Campo de texto, longitud 10_1
+	[ZMAT_REM],	// Campo de texto, longitud 10_2
+	[ZNOM_ART],	// Texto breve material
+	[ZPEDIDO],	// Documento compras
+	[ZPROVEEDOR],	// Acreedor_1
+	[ZPUERTO],	// Reserva
+	[ZSOCIEDAD],	// Sociedad
+	[ZTARJETA],	// Campo de texto, longitud 10_3
+	[ZTICKET_ID],	// Núm. Ticket
+	[ZVAGON],	// Campo de longitud 16
+	[ZZONA],	// Licitación
+	[0AS_PRCNT],	// Asignación porcentaje
+	[0QUANTITY],	// Cantidad
+	[0QUANTITYFX],	// Cantidad fija
+	[0QUANTITYVR],	// Cantidad variable
+	[IMPORTE_CAD],	// Importe ML
+	[IMPORTE_ENTR],	// Importe ML_1
+	[IMPORTE_PROV],	// Importe ML_2
+	[IMPORTE_TCAD],	// Importe ML_3
+	[IMPORTE_TRAS],	// Importe ML_4
+	[IMPORTE_TSCAD]	// Importe ML_5
+
+FROM GGB_CLASI;
+STORE GGB_CLASI INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/GGB_CLASI.qvd;

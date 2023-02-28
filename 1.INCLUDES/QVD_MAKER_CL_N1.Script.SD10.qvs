@@ -1,0 +1,174 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.SD10.qvs
+// TABLA:     	/IMO/D_SD10
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: SD: Datos de cabecera del documento de ventas
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		SD10	   	 ;
+TRACE ###############################;
+
+//Obtenemos el campo fecha
+Fecha:
+LOAD [UPD_DATE]
+
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/SD10.qvd] (qvd);
+
+//Seleccionamos la fecha máxima
+MaxOldQVD:
+
+LOAD
+
+Max([UPD_DATE]) as Max0UPD_DATE
+
+Resident Fecha;
+
+LET LastExecTime = Date(Peek('Max0UPD_DATE',-1,MaxOldQVD),'YYYYMMDD');
+
+DROP Table Fecha;
+
+DROP Table MaxOldQVD;
+
+// Let ThisExecTime =date(today(), 'YYYYMMDD');
+
+//Cargamos los datos con carga incremental
+SD10:
+LOAD RowNum, 
+	[0CALDAY] as [CALDAY], 
+	[0CREATEDBY] as [CREATEDBY], 
+	[0CREATEDON] as [CREATEDON], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0DOC_CLASS] as [DOC_CLASS], 
+	[0DOC_NUMBER] as [DOC_NUMBER], 
+	[0DOC_TYPE] as [DOC_TYPE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0HEADER_DEL] as [HEADER_DEL], 
+	[0IMODOCCAT] as [IMODOCCAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0QUOT_FROM] as [QUOT_FROM], 
+	[0QUOT_TO] as [QUOT_TO], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0REQ_DATE] as [REQ_DATE], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STAT_CURR] as [STAT_CURR], 
+	[0UPD_DATE] as [UPD_DATE], 
+	Text(CLC_COMPC) as CLC_COMPC, 
+	CLC_DTRCH, 
+	CLC_KALSM, 
+	CLC_SLEMP, 
+	CLC_SLGRP, 
+	CLC_SLSOF, 
+	CLC_SOLDT, 
+	Text(CLC_VKORG) as CLC_VKORG, 
+	[0DLT_H_CNT] as [DLT_H_CNT], 
+	[0SO_H_CNT] as [SO_H_CNT],
+    [0SOURSYSTEM]&[0DOC_NUMBER] as UniqueKey;
+	
+SELECT		[RowNum],	// RowNum
+	[0CALDAY],	// Día natural
+	[0CREATEDBY],	// Nombre del responsable que ha añadido el objeto
+	[0CREATEDON],	// Fecha de creación del registro
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0DOC_NUMBER],	// Documento venta
+	[0DOC_TYPE],	// Clase de documento de ventas
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CUSTOM],	// Cliente
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0HEADER_DEL],	// Cabecera borrada
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0LOC_CURRCY],	// Moneda local
+	[0QUOT_FROM],	// Fecha de validez de la oferta (oferta con validez de ...)
+	[0QUOT_TO],	// Plazo vinculante oferta p.prestación servicios (validez a)
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0REQ_DATE],	// Fecha de reparto
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STAT_CURR],	// Moneda estadística
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_COMPC],	// Sociedad
+	[CLC_DTRCH],	// Canal de distribución
+	[CLC_KALSM],	// Esquema de Cálculo
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SLGRP],	// Grupo de vendedores
+	[CLC_SLSOF],	// Oficina de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_VKORG],	// Organización de ventas
+	[0DLT_H_CNT],	// Cantidad de documentos borrados
+	[0SO_H_CNT]	// Cantidad de documentos de pedido de cliente
+
+FROM /IMO/D_SD10
+WHERE (
+[0UPD_DATE]  >= $(LastExecTime)
+);
+
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_DTRCH_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_DTRCH] AS [CLC_DTRCH], [TXTSH] AS [CLC_DTRCH_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_DTRCH, TXTSH FROM /BIC/TCLC_DTRCH WHERE LANGU = 'S';
+[CLC_SLGRP_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_SLGRP] AS [CLC_SLGRP], [TXTSH] AS [CLC_SLGRP_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_SLGRP, TXTSH FROM /BIC/TCLC_SLGRP WHERE LANGU = 'S';
+[CLC_SLSOF_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_SLSOF] AS [CLC_SLSOF], [TXTSH] AS [CLC_SLSOF_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_SLSOF, TXTSH FROM /BIC/TCLC_SLSOF WHERE LANGU = 'S';
+[CLC_VKORG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_VKORG]) AS [CLC_VKORG], [TXTLG] AS [CLC_VKORG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_VKORG, TXTLG FROM /BIC/TCLC_VKORG WHERE LANGU = 'S';
+
+Concatenate
+LOAD
+    RowNum, 
+	SOURSYSTEM,
+    CLC_VKORG,
+    CLC_SLSOF,
+    CLC_SLGRP,
+    CLC_DTRCH,
+    CLC_COMPC,
+    CALDAY,
+    CREATEDBY,
+    CREATEDON,
+    DATAPAKID,
+    DEB_CRED,
+    DOC_CLASS,
+    DOC_NUMBER,
+    DOC_TYPE,
+    FISCPER,
+    FISCVARNT,
+    FISCYEAR,
+    GN_CUSTOM,
+    GN_R3_SSY,
+    HEADER_DEL,
+    IMODOCCAT,
+    LOC_CURRCY,
+    QUOT_FROM,
+    QUOT_TO,
+    "RECORD",
+    RECORDMODE,
+    REQTSN,
+    REQ_DATE,
+    STAT_CURR,
+    UPD_DATE,
+    CLC_KALSM,
+    CLC_SLEMP,
+    CLC_SOLDT,
+    DLT_H_CNT,
+    SO_H_CNT,
+    CLC_COMPC_TEXT,
+    CLC_DTRCH_TEXT,
+    CLC_SLGRP_TEXT,
+    CLC_SLSOF_TEXT,
+    CLC_VKORG_TEXT,
+	UniqueKey
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/SD10.qvd] (qvd)
+Where not Exists(UniqueKey);
+
+// Se almacena en QVD la tabla SD10 y posteriormente se elimina
+STORE SD10 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/SD10.qvd;
+
+DROP Table SD10;
+

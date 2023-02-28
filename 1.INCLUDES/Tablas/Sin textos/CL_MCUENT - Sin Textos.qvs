@@ -1,0 +1,54 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+CL_MCUENT:
+LOAD RowNum, 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0PUR_APLZL] as [PUR_APLZL], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	INDICADOR_INF, 
+	TIPO_ACUM_CECO, 
+	CLC_AGRCC, 
+	CLC_AGRCU, 
+	CLC_CAREA, 
+	CLC_COMPC, 
+	CLC_DIVI, 
+	CLC_EMPRE, 
+	CLC_EOSTC, 
+	CLC_GLACC, 
+	CLC_GLCON, 
+	CLC_HRT_A, 
+	CLC_PAGRP, 
+	P_CASHFLO, 
+	P_EMPRESA, 
+	P_PRODEMP,
+	[0SOURSYSTEM]&CLC_CAREA&CLC_COMPC&CLC_GLACC&CLC_HRT_A&[0PUR_APLZL] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0DATAPAKID],	// Paquete de datos
+	[0PUR_APLZL],	// Contador interno
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[INDICADOR_INF],	// Indicador inf
+	[TIPO_ACUM_CECO],	// TIPO ACUM CECO
+	[CLC_AGRCC],	// Agrupador CeCos
+	[CLC_AGRCU],	// Agrupador de cuentas
+	[CLC_CAREA],	// Sociedad CO
+	[CLC_COMPC],	// Sociedad
+	[CLC_DIVI],	// División consolidado PyG Controlling
+	[CLC_EMPRE],	// Empresa consolidado CO
+	[CLC_EOSTC],	// Centro de coste emisor
+	[CLC_GLACC],	// Cuenta de mayor
+	[CLC_GLCON],	// Cuenta consolidación
+	[CLC_HRT_A],	// Plan de cuentas
+	[CLC_PAGRP],	// ID PARTIDA CUENTA RESULTADO GRUPO
+	[P_CASHFLO],	// Partida CASH-FLOW
+	[P_EMPRESA],	// Partida cuenta resultado empresa
+	[P_PRODEMP]	// Partida cuenta producción empresa
+
+FROM CL_MCUENT;
+
+STORE CL_MCUENT INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_CL_MCUENT.qvd;

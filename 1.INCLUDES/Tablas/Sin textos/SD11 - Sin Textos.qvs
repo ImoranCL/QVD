@@ -1,0 +1,294 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+SD11:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BP_GRP] as [BP_GRP], 
+	[0CALDAY] as [CALDAY], 
+	[0CP_CATEG] as [CP_CATEG], 
+	[0CREATEDBY] as [CREATEDBY], 
+	[0CREATEDON] as [CREATEDON], 
+	[0CUST_GROUP] as [CUST_GROUP], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0DOC_CLASS] as [DOC_CLASS], 
+	[0DOC_CURRCY] as [DOC_CURRCY], 
+	[0DOC_NUMBER] as [DOC_NUMBER], 
+	[0DOC_TYPE] as [DOC_TYPE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_SAL] as [GN_CAT_SAL], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0IMODOCCAT] as [IMODOCCAT], 
+	[0ITEM_CATEG] as [ITEM_CATEG], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_CATEG] as [PROD_CATEG], 
+	[0QUOT_FROM] as [QUOT_FROM], 
+	[0QUOT_TO] as [QUOT_TO], 
+	[0REASON_REJ] as [REASON_REJ], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REJECTN_ST] as [REJECTN_ST], 
+	[0REQTSN] as [REQTSN], 
+	[0SHIP_POINT] as [SHIP_POINT], 
+	[0SHIP_STCK] as [SHIP_STCK], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STAT_CURR] as [STAT_CURR], 
+	[0STAT_DATE] as [STAT_DATE], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0ST_UP_DTE] as [ST_UP_DTE], 
+	[0S_ORD_ITEM] as [S_ORD_ITEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CLC_ACABA, 
+	CLC_AG001, 
+	CLC_AG002, 
+	CLC_AG003, 
+	CLC_AG007, 
+	CLC_AG008, 
+	CLC_AG009, 
+	CLC_AG010, 
+	CLC_AG018, 
+	CLC_AG020, 
+	CLC_AG021, 
+	CLC_AG024, 
+	CLC_AG025, 
+	CLC_AG026, 
+	CLC_AG027, 
+	CLC_AG028, 
+	CLC_BILTO, 
+	CLC_BZIRK, 
+	CLC_CALID, 
+	CLC_CERTI, 
+	CLC_CINDO, 
+	CLC_CINSI, 
+	CLC_CIZAL, 
+	CLC_COLA, 
+	CLC_COMPC, 
+	CLC_CORP, 
+	CLC_CRDO, 
+	CLC_CRTDV, 
+	CLC_CRTV, 
+	CLC_DIVIS, 
+	CLC_DTRCH, 
+	CLC_ENTGA, 
+	CLC_KALSM, 
+	CLC_M03, 
+	CLC_M05, 
+	CLC_M12, 
+	CLC_M13, 
+	CLC_MARCA, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_NCPRO, 
+	CLC_OXIC, 
+	CLC_PAYER, 
+	CLC_PERFI, 
+	CLC_PLANT, 
+	CLC_PRECO, 
+	CLC_PRHIE, 
+	CLC_ROUTE, 
+	CLC_SHIPT, 
+	CLC_SLEMP, 
+	CLC_SLGRP, 
+	CLC_SLSOF, 
+	CLC_SOLDT, 
+	CLC_UBIC, 
+	CLC_VKORG, 
+	[0COST] as [COST], 
+	[0COST_VAL_S] as [COST_VAL_S], 
+	[0GR_WT_KG] as [GR_WT_KG], 
+	[0NETVALQUOT] as [NETVALQUOT], 
+	[0NETVAL_REJ] as [NETVAL_REJ], 
+	[0NET_VALUE] as [NET_VALUE], 
+	[0NET_VAL_S] as [NET_VAL_S], 
+	[0NOQUOT_EXP] as [NOQUOT_EXP], 
+	[0NOQUOT_REJ] as [NOQUOT_REJ], 
+	[0NT_WT_KG] as [NT_WT_KG], 
+	[0ORD_PROBK] as [ORD_PROBK], 
+	[0ORD_QUOT] as [ORD_QUOT], 
+	[0QUANT_B] as [QUANT_B], 
+	[0SO_I_CNT] as [SO_I_CNT], 
+	[0SUBTOT_1S] as [SUBTOT_1S], 
+	[0SUBTOT_2S] as [SUBTOT_2S], 
+	[0SUBTOT_3S] as [SUBTOT_3S], 
+	[0SUBTOT_4S] as [SUBTOT_4S], 
+	[0SUBTOT_5S] as [SUBTOT_5S], 
+	[0SUBTOT_6S] as [SUBTOT_6S], 
+	[0VOLUME_CDM] as [VOLUME_CDM], 
+	CCL_AG004, 
+	CLC_AG006, 
+	CLC_AG013, 
+	CLC_AG014, 
+	CLC_AG015, 
+	CLC_AG016, 
+	CLC_AG017, 
+	CLC_AG019, 
+	CLC_AG034, 
+	CLC_AG035, 
+	CLC_ALTO, 
+	CLC_ANCH, 
+	CLC_ENTAL, 
+	CLC_ESPES, 
+	CLC_FRESA, 
+	CLC_LONG, 
+	CLC_M01, 
+	CLC_M02, 
+	CLC_M07, 
+	CLC_M08, 
+	CLC_M11, 
+	CLC_NTALA, 
+	CLC_PUNZ, 
+	CLC_ROSCA,
+    [0SOURSYSTEM]&[0DOC_NUMBER]&[0S_ORD_ITEM] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0BP_GRP],	// IC: Grupo interlocutores comerciales (de jerarquía)
+	[0CALDAY],	// Día natural
+	[0CP_CATEG],	// Categoría
+	[0CREATEDBY],	// Nombre del responsable que ha añadido el objeto
+	[0CREATEDON],	// Fecha de creación del registro
+	[0CUST_GROUP],	// Grupo de clientes
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0DOC_CURRCY],	// Moneda del documento
+	[0DOC_NUMBER],	// Documento venta
+	[0DOC_TYPE],	// Clase de documento de ventas
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_SAL],	// Categoría venta
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0ITEM_CATEG],	// Tipo de posición de documento comercial
+	[0ITEM_DEL],	// Posición borrada
+	[0LOC_CURRCY],	// Moneda local
+	[0PRODUCT],	// Producto
+	[0PROD_CATEG],	// Categoría de producto
+	[0QUOT_FROM],	// Fecha de validez de la oferta (oferta con validez de ...)
+	[0QUOT_TO],	// Plazo vinculante oferta p.prestación servicios (validez a)
+	[0REASON_REJ],	// Motivo de rechazo de ofertas y pedidos
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REJECTN_ST],	// Status de rechazo posición de documento comercial
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SHIP_POINT],	// Puesto de expedición
+	[0SHIP_STCK],	// Entreg.desde almacén
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STAT_CURR],	// Moneda estadística
+	[0STAT_DATE],	// Fecha para estadísticas
+	[0STOR_LOC],	// Almacén
+	[0ST_UP_DTE],	// Fecha de actualización de estadísticas
+	[0S_ORD_ITEM],	// Posición documento ventas
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_ACABA],	// Acabado
+	[CLC_AG001],	// Tipo de producto Final.
+	[CLC_AG002],	// Designación
+	[CLC_AG003],	// Calidad_Tubo
+	[CLC_AG007],	// Acabado_1
+	[CLC_AG008],	// Color
+	[CLC_AG009],	// Perfil del Tubo
+	[CLC_AG010],	// Lote original
+	[CLC_AG018],	// Tipo de chapa
+	[CLC_AG020],	// Recubrimiento de galvanizado
+	[CLC_AG021],	// Intercambiabilidad
+	[CLC_AG024],	// Norma del producto
+	[CLC_AG025],	// Norma de tolerancia
+	[CLC_AG026],	// Sello N
+	[CLC_AG027],	// Sello CE
+	[CLC_AG028],	// Tipo de Certificado
+	[CLC_BILTO],	// Destinatario Factura
+	[CLC_BZIRK],	// Zona de ventas
+	[CLC_CALID],	// Descripción calidad
+	[CLC_CERTI],	// Certificado Colada
+	[CLC_CINDO],	// Corte Inglete Doble
+	[CLC_CINSI],	// Corte Inglete Simple
+	[CLC_CIZAL],	// Cizallado
+	[CLC_COLA],	// Colada
+	[CLC_COMPC],	// Sociedad
+	[CLC_CORP],	// Corte Plasma
+	[CLC_CRDO],	// Corte Recto Doble
+	[CLC_CRTDV],	// Corte en V doble
+	[CLC_CRTV],	// Corte en V
+	[CLC_DIVIS],	// Sector
+	[CLC_DTRCH],	// Canal de distribución
+	[CLC_ENTGA],	// Entallado en garra
+	[CLC_KALSM],	// Esquema de Cálculo
+	[CLC_M03],	// Subcalidad
+	[CLC_M05],	// Material
+	[CLC_M12],	// Calidad
+	[CLC_M13],	// Texto breve posición de pedido
+	[CLC_MARCA],	// Marcado
+	[CLC_MATER],	// Material_1
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_NCPRO],	// Número de cuenta del proveedor
+	[CLC_OXIC],	// Oxicorte
+	[CLC_PAYER],	// Responsable de pago
+	[CLC_PERFI],	// Perfil
+	[CLC_PLANT],	// Ctro
+	[CLC_PRECO],	// Preconfigurado
+	[CLC_PRHIE],	// Jerarquía de productos
+	[CLC_ROUTE],	// Ruta para Transporte
+	[CLC_SHIPT],	// Destinatario Mercancias
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SLGRP],	// Grupo de vendedores
+	[CLC_SLSOF],	// Oficina de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_UBIC],	// Ubicación
+	[CLC_VKORG],	// Organización de ventas
+	[0COST],	// Precio de facturación en moneda del documento
+	[0COST_VAL_S],	// Precio de facturación en moneda estadística
+	[0GR_WT_KG],	// Peso bruto en kilogramos
+	[0NETVALQUOT],	// Valor neto de posición de pedido resultante de ofertas
+	[0NETVAL_REJ],	// Valor neto de posiciones de oferta rechazadas
+	[0NET_VALUE],	// Valor neto de posición de pedido en moneda de documento
+	[0NET_VAL_S],	// Valor neto en moneda estadística
+	[0NOQUOT_EXP],	// Cantidad de ofertas caducadas
+	[0NOQUOT_REJ],	// Cantidad de posiciones de oferta rechazadas
+	[0NT_WT_KG],	// Peso neto en kilogramos
+	[0ORD_PROBK],	// Probabilidad de pedido de la posición de oferta
+	[0ORD_QUOT],	// Cantidad de pedidos resultantes de ofertas
+	[0QUANT_B],	// Cantidad en unidades de medida base
+	[0SO_I_CNT],	// Cantidad de posiciones de pedido de cliente
+	[0SUBTOT_1S],	// Subtotal condiciones 1 de esquema cálculo en mon.estadística
+	[0SUBTOT_2S],	// Subtotal condiciones 2 de esquema cálculo en mon.estadística
+	[0SUBTOT_3S],	// Subtotal condiciones 3 de esquema cálculo en mon.estadística
+	[0SUBTOT_4S],	// Subtotal condiciones 4 de esquema cálculo en mon.estadística
+	[0SUBTOT_5S],	// Subtotal condiciones 5 de esquema cálculo en mon.estadística
+	[0SUBTOT_6S],	// Subtotal condiciones 6 de esquema cálculo en mon.estadística
+	[0VOLUME_CDM],	// Volumen en decímetros cúbicos
+	[CCL_AG004],	// Espesor
+	[CLC_AG006],	// Longitud
+	[CLC_AG013],	// Ancho
+	[CLC_AG014],	// Altura
+	[CLC_AG015],	// Unidades de pedido de ventas
+	[CLC_AG016],	// Metros totales del Pedido
+	[CLC_AG017],	// Cantidad de pedido en KG
+	[CLC_AG019],	// Unidades por paquete
+	[CLC_AG034],	// AG Peso Bobina MP
+	[CLC_AG035],	// AG Ancho Bobina PT
+	[CLC_ALTO],	// Altura_1
+	[CLC_ANCH],	// Ancho_1
+	[CLC_ENTAL],	// Entallado
+	[CLC_ESPES],	// Espesor_1
+	[CLC_FRESA],	// Fresado
+	[CLC_LONG],	// Longitud_1
+	[CLC_M01],	// Gramaje
+	[CLC_M02],	// Ancho_2
+	[CLC_M07],	// Largo
+	[CLC_M08],	// Diámetro
+	[CLC_M11],	// Código de defecto
+	[CLC_NTALA],	// Número de Taladros
+	[CLC_PUNZ],	// Punzonado
+	[CLC_ROSCA]	// Roscado
+
+FROM /IMO/D_SD11;
+
+STORE [SD11] INTO 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_SD11.qvd' (qvd);

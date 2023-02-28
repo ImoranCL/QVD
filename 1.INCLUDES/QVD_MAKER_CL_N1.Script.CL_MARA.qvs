@@ -1,0 +1,94 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.CL_MARA.qvs
+// TABLA:     	/IMO/D_CL_MARA
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: Datos generales material
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		CL_MARA	   	 ;
+TRACE ###############################;
+
+CL_MARA:
+//Realizamos la carga de datos
+LOAD [BASE_UOM], 
+	[BASIC_MATL], 
+	[CHANGEDBY], 
+	[CH_ON], 
+	[CREATEDON], 
+	[DEL_FLAG], 
+	[IND_SECTOR], 
+	[MATL_TYPE], 
+	[PH_CREATBY], 
+	[PO_UNIT], 
+	[RECORDMODE],
+	[RT_PURCHAR], 
+	[SIZE_DIM], 
+	[SOURSYSTEM], 
+	[STD_DESCR], 
+	[UNIT_DIM], 
+	[UNIT_OF_WT], 
+	[VOLUMEUNIT], 
+	PSTAT, 
+	VPSTA, 
+	[/BIC/CLC_BISMT] as CLC_BISMT, 
+	[/BIC/CLC_CLASE] as CLC_CLASE, 
+	[/BIC/CLC_HIERH] as CLC_HIERH, 
+	[/BIC/CLC_LABOR] as CLC_LABOR, 
+	Text([/BIC/CLC_MATER]) as CLC_MATER, 
+	Text([/BIC/CLC_MATLG]) as CLC_MATLG, 
+	[GROSS_WT], 
+	[HEIGHT], 
+	[LENGHT], 
+	[NET_WEIGHT], 
+	[VOLUME], 
+	[WIDTH],
+	[TXTMD] as [CLC_MATER_TEXT],
+    [SOURSYSTEM]&[/BIC/CLC_MATER] as UniqueKey;
+
+SELECT		BASE_UOM,	// Unidad de medida base
+	BASIC_MATL,	// Materia
+	CHANGEDBY,	// Modificados por
+	CH_ON,	// Fecha última modificación
+	CREATEDON,	// Fecha de creación del registro
+	DEL_FLAG,	// Petición borrado para todos datos de materiales de un centro
+	IND_SECTOR,	// Ramo
+	MATL_TYPE,	// Tipo de material
+	PH_CREATBY,	// Creado por
+	PO_UNIT,	// Unidad de medida de pedido
+	RECORDMODE,	// BW procedimiento delta: Modo de actualización
+	RT_PURCHAR,	// Área de compras
+	SIZE_DIM,	// Tamaño/Dimensión
+	SOURSYSTEM,	// ID sistema fuente
+	STD_DESCR,	// Denominación estándar (p. ej., DIN)
+	UNIT_DIM,	// Unidad para longitud/ancho/altura
+	UNIT_OF_WT,	// Unidad de peso
+	VOLUMEUNIT,	// Unidad volumen
+	PSTAT,	// Status actualización
+	VPSTA,	// Status act.completo
+	/BIC/CLC_BISMT,	// Nº Antiguo Material
+	/BIC/CLC_CLASE,	// Clase perfil
+	/BIC/CLC_HIERH,	// Jerarquía de productos
+	/BIC/CLC_LABOR,	// Familia producción
+	/BIC/CLC_MATER,	// Material
+	/BIC/CLC_MATLG,	// Grupo artículos
+	GROSS_WT,	// Peso bruto
+	HEIGHT,	// Altura
+	LENGHT,	// Longitud
+	NET_WEIGHT,	// Peso neto de la posición
+	VOLUME,	// Volumen
+	WIDTH,	// Ancho
+	TXTMD
+
+//Debido a que CL_MARA es un dato maestro llamamos a la tabla y no al ODS (Único Script)
+FROM /BIC/ACL_MARA2;
+
+[CLC_CLASE_TEXTS]: LEFT JOIN LOAD [/BIC/CLC_CLASE] AS [CLC_CLASE], [TXTSH] AS [CLC_CLASE_TEXT]; SELECT /BIC/CLC_CLASE, TXTSH FROM /BIC/TCLC_CLASE;
+[CLC_HIERH_TEXTS]: LEFT JOIN LOAD [/BIC/CLC_HIERH] AS [CLC_HIERH], [TXTLG] AS [CLC_HIERH_TEXT_L], [TXTMD] AS [CLC_HIERH_TEXT], [TXTSH] AS [CLC_HIERH_TEXT_S]; SELECT /BIC/CLC_HIERH, TXTLG, TXTMD, TXTSH FROM /BIC/TCLC_HIERH;
+[CLC_MATLG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATLG]) AS [CLC_MATLG], [TXTSH] AS [CLC_MATLG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATLG, TXTSH FROM /BIC/TCLC_MATLG WHERE LANGU = 'S';
+
+// Se almacena en QVD la tabla CL_MARA y posteriormente se elimina
+STORE CL_MARA INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CL_MARA.qvd;
+
+DROP Table CL_MARA;
+

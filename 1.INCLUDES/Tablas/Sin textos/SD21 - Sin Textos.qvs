@@ -1,0 +1,152 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+SD21:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BATCH] as [BATCH], 
+	[0BP_GRP] as [BP_GRP], 
+	[0CALDAY] as [CALDAY], 
+	[0CP_CATEG] as [CP_CATEG], 
+	[0CREATEDBY] as [CREATEDBY], 
+	[0CREATEDON] as [CREATEDON], 
+	[0CREA_TIME] as [CREA_TIME], 
+	[0CRM_PROD] as [CRM_PROD], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0DELIV_ITEM] as [DELIV_ITEM], 
+	[0DELIV_NUMB] as [DELIV_NUMB], 
+	[0DOC_CLASS] as [DOC_CLASS], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_SAL] as [GN_CAT_SAL], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0IMODOCCAT] as [IMODOCCAT], 
+	[0ITEM_CATEG] as [ITEM_CATEG], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_CATEG] as [PROD_CATEG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REFER_DOC] as [REFER_DOC], 
+	[0REFER_ITM] as [REFER_ITM], 
+	[0REQTSN] as [REQTSN], 
+	[0SALES_UNIT] as [SALES_UNIT], 
+	[0SHIP_DATE] as [SHIP_DATE], 
+	[0SHIP_POINT] as [SHIP_POINT], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CLC_AUTLF, 
+	CLC_BILTO, 
+	CLC_COMPC, 
+	CLC_DIVIS, 
+	CLC_DTRCH, 
+	CLC_EXPKZ, 
+	CLC_FKARV, 
+	CLC_FKDAT, 
+	CLC_GRULG, 
+	CLC_KALSM, 
+	CLC_KODAT, 
+	CLC_KZAZU, 
+	CLC_LDDAT, 
+	CLC_LPRIO, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_PAYER, 
+	CLC_PLANT, 
+	CLC_ROUTA, 
+	CLC_SHIPT, 
+	CLC_SLEMP, 
+	CLC_SLGRP, 
+	CLC_SLSOF, 
+	CLC_SOLDT, 
+	CLC_TDDAT, 
+	CLC_TRAGR, 
+	CLC_VKORG, 
+	CLC_VSBED, 
+	[0DEL_I_CNT] as [DEL_I_CNT], 
+	[0DLV_QTY] as [DLV_QTY], 
+	[0GR_WT_KG] as [GR_WT_KG], 
+	[0NT_WT_KG] as [NT_WT_KG], 
+	[0QUANT_B] as [QUANT_B], 
+	[0VOLUME_CDM] as [VOLUME_CDM],
+    [0SOURSYSTEM]&[0CALDAY]&[0DELIV_ITEM]&[0DELIV_NUMB] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0BATCH],	// Número de lote
+	[0BP_GRP],	// IC: Grupo interlocutores comerciales (de jerarquía)
+	[0CALDAY],	// Día natural
+	[0CP_CATEG],	// Categoría
+	[0CREATEDBY],	// Nombre del responsable que ha añadido el objeto
+	[0CREATEDON],	// Fecha de creación del registro
+	[0CREA_TIME],	// Hora de entrada
+	[0CRM_PROD],	// Producto
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DELIV_ITEM],	// Posición de entrega
+	[0DELIV_NUMB],	// Entrega
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_SAL],	// Categoría venta
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0ITEM_CATEG],	// Tipo de posición de documento comercial
+	[0ITEM_DEL],	// Posición borrada
+	[0PRODUCT],	// Producto_1
+	[0PROD_CATEG],	// Categoría de producto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REFER_DOC],	// Número del documento modelo
+	[0REFER_ITM],	// Número de la posición comercial modelo
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SALES_UNIT],	// Unidad de medida de venta
+	[0SHIP_DATE],	// Fecha de llegada de las mercancías al cliente
+	[0SHIP_POINT],	// Puesto de expedición
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOR_LOC],	// Almacén
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_AUTLF],	// ¿Entrega completa por pedido?
+	[CLC_BILTO],	// Destinatario Factura
+	[CLC_COMPC],	// Sociedad
+	[CLC_DIVIS],	// Sector
+	[CLC_DTRCH],	// Canal de distribución
+	[CLC_EXPKZ],	// Indicador de exportación
+	[CLC_FKARV],	// Propuesta de clase de factura para una factura por entrega
+	[CLC_FKDAT],	// Fecha de factura para el índice de factura e impresión
+	[CLC_GRULG],	// Grupo de peso de entrega (hasta grupo)
+	[CLC_KALSM],	// Esquema de Cálculo
+	[CLC_KODAT],	// Fecha de picking
+	[CLC_KZAZU],	// Indicador de agrupamiento de pedidos
+	[CLC_LDDAT],	// Fecha de carga
+	[CLC_LPRIO],	// Prioridad de entrega
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_PAYER],	// Responsable de pago
+	[CLC_PLANT],	// Ctro
+	[CLC_ROUTA],	// Ruta
+	[CLC_SHIPT],	// Destinatario Mercancias
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SLGRP],	// Grupo de vendedores
+	[CLC_SLSOF],	// Oficina de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_TDDAT],	// Fecha de planificación de transporte
+	[CLC_TRAGR],	// Grupo de transporte
+	[CLC_VKORG],	// Organización de ventas
+	[CLC_VSBED],	// Condición de expedición
+	[0DEL_I_CNT],	// Cantidad de posiciones de entrega
+	[0DLV_QTY],	// Cantidad entregada efectivamente en UMV
+	[0GR_WT_KG],	// Peso bruto en kilogramos
+	[0NT_WT_KG],	// Peso neto en kilogramos
+	[0QUANT_B],	// Cantidad en unidades de medida base
+	[0VOLUME_CDM]	// Volumen en decímetros cúbicos
+
+FROM /IMO/D_SD21;
+
+STORE SD21 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_SD21.qvd;

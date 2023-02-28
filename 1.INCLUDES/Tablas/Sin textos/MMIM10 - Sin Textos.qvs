@@ -1,0 +1,151 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+MMIM10:
+LOAD RowNum, 
+	[0ACCOUNT] as [ACCOUNT], 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BATCH] as [BATCH], 
+	[0BWAPPLNM] as [BWAPPLNM], 
+	[0BWCOUNTER] as [BWCOUNTER], 
+	[0CALDAY] as [CALDAY], 
+	[0CALMONTH] as [CALMONTH], 
+	[0CALQUARTER] as [CALQUARTER], 
+	[0CALWEEK] as [CALWEEK], 
+	[0CALYEAR] as [CALYEAR], 
+	[0CHRT_ACCTS] as [CHRT_ACCTS], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DCINDIC] as [DCINDIC], 
+	[0DOC_DATE] as [DOC_DATE], 
+	[0DOC_NUMBER] as [DOC_NUMBER], 
+	[0DOC_YEAR] as [DOC_YEAR], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCPER3] as [FISCPER3], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0INDSPECSTK] as [INDSPECSTK], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0MATMREA] as [MATMREA], 
+	[0MAT_DOC] as [MAT_DOC], 
+	[0MAT_ITEM] as [MAT_ITEM], 
+	[0MOVETYPE] as [MOVETYPE], 
+	[0MOVE_PLANT] as [MOVE_PLANT], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0PROCESSKEY] as [PROCESSKEY], 
+	[0PRODUCT] as [PRODUCT], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0RT_PROMO] as [RT_PROMO], 
+	[0SCHED_LINE] as [SCHED_LINE], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOCKCAT] as [STOCKCAT], 
+	[0STOCKRELEV] as [STOCKRELEV], 
+	[0STOCKTYPE] as [STOCKTYPE], 
+	[0STORNO] as [STORNO], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0STRGE_BIN] as [STRGE_BIN], 
+	[0STRGE_TYPE] as [STRGE_TYPE], 
+	[0S_ORD_ITEM] as [S_ORD_ITEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VALSPECST] as [VALSPECST], 
+	[0VAL_CLASS] as [VAL_CLASS], 
+	[0VAL_TYPE] as [VAL_TYPE], 
+	[0WHSE_NUM] as [WHSE_NUM], 
+	CLC_BUSA, 
+	CLC_CAREA, 
+	Text(CLC_COMPC) as CLC_COMPC, 
+	CLC_CUST, 
+	Text(CLC_MATER) as CLC_MATER, 
+	CLC_OORDE, 
+	CLC_OSTCE, 
+	Text(CLC_PLANT) as CLC_PLANT, 
+	CLC_PROFI, 
+	CLC_VEND, 
+	CLC_WBSP, 
+	[0CPNOITEMS] as [CPNOITEMS], 
+	[0CPPVLC] as [CPPVLC], 
+	[0CPQUABU] as [CPQUABU], 
+	[0CPSTLC] as [CPSTLC], 
+	[0CPSVLC] as [CPSVLC],
+    [0SOURSYSTEM]&[0FISCVARNT]&[0DOC_YEAR]&[0MAT_DOC]&[0MAT_ITEM]&[0BWCOUNTER] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0ACCOUNT],	// Número de cuenta
+	[0BASE_UOM],	// Unidad de medida base
+	[0BATCH],	// Número de lote
+	[0BWAPPLNM],	// Componente aplicación
+	[0BWCOUNTER],	// Campo clave adicional p.reg.docum.revalorización
+	[0CALDAY],	// Fecha contabilización
+	[0CALMONTH],	// Año/Mes natural
+	[0CALQUARTER],	// Año natural/Trimestre
+	[0CALWEEK],	// Año/Semana natural
+	[0CALYEAR],	// Año natural
+	[0CHRT_ACCTS],	// Plan de cuentas
+	[0DATAPAKID],	// Paquete de datos
+	[0DCINDIC],	// Indicador debe/haber
+	[0DOC_DATE],	// Fecha del documento
+	[0DOC_NUMBER],	// Documento venta
+	[0DOC_YEAR],	// BW: Año de documento
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCPER3],	// Período contable
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0INDSPECSTK],	// Indicador valoración stock especial
+	[0LOC_CURRCY],	// Moneda local
+	[0MATMREA],	// Motivo del movimiento de mercancías
+	[0MAT_DOC],	// Documento de material
+	[0MAT_ITEM],	// Posición del doc.material
+	[0MOVETYPE],	// Clase de movimiento (gestión stocks)
+	[0MOVE_PLANT],	// Centro receptor/suministrador
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0PROCESSKEY],	// BW: Clave de operación
+	[0PRODUCT],	// Producto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0RT_PROMO],	// Acción
+	[0SCHED_LINE],	// Número de reparto
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOCKCAT],	// Tipo de stocks
+	[0STOCKRELEV],	// BW: Relevancia stock
+	[0STOCKTYPE],	// Característica de stock
+	[0STORNO],	// Indicador de anulación
+	[0STOR_LOC],	// Almacén
+	[0STRGE_BIN],	// Ubicación
+	[0STRGE_TYPE],	// Tipo almacén
+	[0S_ORD_ITEM],	// Posición documento ventas
+	[0UPD_DATE],	// Fecha de actualización
+	[0VALSPECST],	// Indicador valoración stock especial_1
+	[0VAL_CLASS],	// Categoría de valoración
+	[0VAL_TYPE],	// Clase de valoración
+	[0WHSE_NUM],	// Número de almacén/Complejo de almacenes
+	[CLC_BUSA],	// División
+	[CLC_CAREA],	// Sociedad CO
+	[CLC_COMPC],	// Sociedad
+	[CLC_CUST],	// Cliente_1
+	[CLC_MATER],	// Material
+	[CLC_OORDE],	// Número de orden
+	[CLC_OSTCE],	// Centro de coste
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFI],	// Centro de beneficio
+	[CLC_VEND],	// Proveedor_1
+	[CLC_WBSP],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[0CPNOITEMS],	// BW: Cantidad de operaciones
+	[0CPPVLC],	// BW: Valor de compra en moneda local
+	[0CPQUABU],	// BW: Cantidad en unidad de medida base
+	[0CPSTLC],	// BW: Valor de venta con impuestos en moneda local
+	[0CPSVLC]	// BW: Valor de venta en moneda local
+
+FROM /IMO/D_MMIM10;
+
+
+STORE [MMIM10] INTO 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_MMIM10.qvd' (qvd);

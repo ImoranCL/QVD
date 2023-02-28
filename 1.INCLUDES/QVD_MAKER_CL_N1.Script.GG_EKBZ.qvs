@@ -1,0 +1,60 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.GG_EKBZ.qvs
+// TABLA:     	/IMO/D_GG_EKBZ
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: Historial para documento compras - Costes indir.adquisición
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		GG_EKBZ	   	 ;
+TRACE ###############################;
+
+GG_EKBZ:
+//Realizamos la carga de datos
+LOAD RowNum, 
+	[0CALYEAR] as [CALYEAR], 
+	[0CURRENCY] as [CURRENCY], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0KNCOUNTER] as [KNCOUNTER], 
+	[0MAT_DOC] as [MAT_DOC], 
+	[0MAT_ITEM] as [MAT_ITEM], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REC_TYPE] as [REC_TYPE], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	CLC_NUMN,
+	[0AMOUNT] as [AMOUNT],
+    [0SOURSYSTEM]&[0OI_EBELP]&[0OI_EBELN]&[0MAT_DOC]&[0MAT_ITEM]&[CLC_NUMN]&[0KNCOUNTER]&[0REC_TYPE]&[0CALYEAR] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0CALYEAR],	// Año natural
+	[0CURRENCY],	// Clave de moneda
+	[0DATAPAKID],	// Paquete de datos
+	[0KNCOUNTER],	// Contador condición
+	[0MAT_DOC],	// Documento de material
+	[0MAT_ITEM],	// Posición del doc.material
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REC_TYPE],	// Clase de operación
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[CLC_NUMN],	// Número Nivel
+	[0AMOUNT]	// Importe
+
+
+
+//Debido a que GG_EKBZ es un dato maestro llamamos a la tabla y no al ODS (Único Script)
+FROM GG_EKBZ;
+
+// Se almacena en QVD la tabla GG_EKBZ y posteriormente se elimina
+STORE GG_EKBZ INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/GG_EKBZ.qvd;
+
+DROP Table GG_EKBZ;
+

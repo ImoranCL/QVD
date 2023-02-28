@@ -1,0 +1,299 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.FIGL04.qvs
+// TABLA:     	/IMO/D_FIGL04
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: FI-GL: Partidas individuales
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		FIGL04	   	 ;
+TRACE ###############################;
+
+//Obtenemos el campo fecha
+Fecha:
+LOAD [UPD_DATE]
+
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/FIGL04.qvd] (qvd);
+
+//Seleccionamos la fecha máxima
+MaxOldQVD:
+
+LOAD
+
+Max([UPD_DATE]) as Max0UPD_DATE
+
+Resident Fecha;
+
+LET LastExecTime = Date(Peek('Max0UPD_DATE',-1,MaxOldQVD),'YYYYMMDD');
+
+DROP Table Fecha;
+
+DROP Table MaxOldQVD;
+
+// Let ThisExecTime =date(today(), 'YYYYMMDD');
+
+//Cargamos los datos con carga incremental
+FIGL04:
+LOAD RowNum, 
+	[0ACCT_TYPE] as [ACCT_TYPE], 
+	[0AC_DOC_NO] as [AC_DOC_NO], 
+	[0AC_DOC_TYP] as [AC_DOC_TYP], 
+	[0ALLOC_NMBR] as [ALLOC_NMBR], 
+	Text([0BUS_AREA]) as [BUS_AREA], 
+	[0BUS_TRXN] as [BUS_TRXN], 
+	[0CHRT_ACCTS] as [CHRT_ACCTS], 
+	[0CLEAR_DATE] as [CLEAR_DATE], 
+	[0CLR_DOC_NO] as [CLR_DOC_NO], 
+	Text([0COMP_CODE]) as [COMP_CODE], 
+	[0COORDER] as [COORDER], 
+	[0COSTCENTER] as [COSTCENTER], 
+	Text([0CO_AREA]) as [CO_AREA], 
+	[0CREATEDON] as [CREATEDON], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOC_CURRCY] as [DOC_CURRCY], 
+	[0DOC_DATE] as [DOC_DATE], 
+	[0DOC_HD_TXT] as [DOC_HD_TXT], 
+	[0EMPLOYEE] as [EMPLOYEE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCPER3] as [FISCPER3], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0FI_DOCSTAT] as [FI_DOCSTAT], 
+	[0FM_AREA] as [FM_AREA], 
+	[0FUNC_AREA] as [FUNC_AREA], 
+	[0FUND] as [FUND], 
+	Text([0GL_ACCOUNT]) as [GL_ACCOUNT], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0ITEM_NUM] as [ITEM_NUM], 
+	[0LOC_CURRC2] as [LOC_CURRC2], 
+	[0LOC_CURRC3] as [LOC_CURRC3], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0LOC_CURTP2] as [LOC_CURTP2], 
+	[0LOC_CURTP3] as [LOC_CURTP3], 
+	[0ORG_DOC_CC] as [ORG_DOC_CC], 
+	[0ORG_DOC_CO] as [ORG_DOC_CO], 
+	[0ORG_DOC_NO] as [ORG_DOC_NO], 
+	[0ORG_DOC_YR] as [ORG_DOC_YR], 
+	[0PART_PRCTR] as [PART_PRCTR], 
+	[0PBUS_AREA] as [PBUS_AREA], 
+	[0PCOMPANY] as [PCOMPANY], 
+	Text([0PLANT]) as [PLANT], 
+	[0POSTXT] as [POSTXT], 
+	[0POST_KEY] as [POST_KEY], 
+	[0PROFIT_CTR] as [PROFIT_CTR], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REF_DOC_NO] as [REF_DOC_NO], 
+	[0REF_KEY3] as [REF_KEY3], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0SP_GL_IND] as [SP_GL_IND], 
+	[0TRXN_KEY] as [TRXN_KEY], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VALUE_DATE] as [VALUE_DATE], 
+	[0WBS_ELEMT] as [WBS_ELEMT], 
+	[0CREDIT_DC] as [CREDIT_DC], 
+	[0CREDIT_LC] as [CREDIT_LC], 
+	[0CREDIT_LC2] as [CREDIT_LC2], 
+	[0CREDIT_LC3] as [CREDIT_LC3], 
+	[0DEBIT_DC] as [DEBIT_DC], 
+	[0DEBIT_LC] as [DEBIT_LC], 
+	[0DEBIT_LC2] as [DEBIT_LC2], 
+	[0DEBIT_LC3] as [DEBIT_LC3], 
+	[0DEB_CRE_DC] as [DEB_CRE_DC], 
+	[0DEB_CRE_L2] as [DEB_CRE_L2], 
+	[0DEB_CRE_L3] as [DEB_CRE_L3], 
+	[0DEB_CRE_LC] as [DEB_CRE_LC],
+    [0SOURSYSTEM]&[0COMP_CODE]&[0CHRT_ACCTS]&[0GL_ACCOUNT]&[0FISCVARNT]&[0FISCPER]&[0AC_DOC_NO]&[0ITEM_NUM] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0ACCT_TYPE],	// Clase de cuenta
+	[0AC_DOC_NO],	// Número de un documento contable
+	[0AC_DOC_TYP],	// Clase de documento
+	[0ALLOC_NMBR],	// Número de asignación
+	[0BUS_AREA],	// División
+	[0BUS_TRXN],	// Business Transaction
+	[0CHRT_ACCTS],	// Plan de cuentas
+	[0CLEAR_DATE],	// Fecha de la compensación
+	[0CLR_DOC_NO],	// Número de documento de compensación
+	[0COMP_CODE],	// Sociedad
+	[0COORDER],	// Número de orden
+	[0COSTCENTER],	// Centro de coste
+	[0CO_AREA],	// Sociedad CO
+	[0CREATEDON],	// Fecha de creación del registro
+	[0DATAPAKID],	// Paquete de datos
+	[0DOC_CURRCY],	// Moneda del documento
+	[0DOC_DATE],	// Fecha del documento
+	[0DOC_HD_TXT],	// Document Header Text
+	[0EMPLOYEE],	// Empleados
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCPER3],	// Período contable
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0FI_DOCSTAT],	// Status de partida
+	[0FM_AREA],	// Entidad CP
+	[0FUNC_AREA],	// Área funcional
+	[0FUND],	// Fondos
+	[0GL_ACCOUNT],	// Cuenta de mayor
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0ITEM_NUM],	// Número de apunte contable dentro del documento contable
+	[0LOC_CURRC2],	// Segunda moneda local
+	[0LOC_CURRC3],	// Tercera moneda local
+	[0LOC_CURRCY],	// Moneda local
+	[0LOC_CURTP2],	// Tipo moneda de segunda moneda local
+	[0LOC_CURTP3],	// Tipo moneda de tercera moneda local
+	[0ORG_DOC_CC],	// Sociedad para el número documento original
+	[0ORG_DOC_CO],	// Sociedad CO para el número de documento original
+	[0ORG_DOC_NO],	// Nº documento de documento de origen
+	[0ORG_DOC_YR],	// Ejercicio para el número de documento original
+	[0PART_PRCTR],	// Centro de beneficio interlocutor
+	[0PBUS_AREA],	// División del interlocutor comercial
+	[0PCOMPANY],	// Número de sociedad GL asociada
+	[0PLANT],	// Ctro
+	[0POSTXT],	// Texto posición
+	[0POST_KEY],	// Clave de contabilización
+	[0PROFIT_CTR],	// Centro de beneficio
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REF_DOC_NO],	// Número de documento de referencia
+	[0REF_KEY3],	// Clave referencia 3
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0SP_GL_IND],	// Indicador de operación en cuenta de mayor especial
+	[0TRXN_KEY],	// Transaction key
+	[0UPD_DATE],	// Fecha de actualización
+	[0VALUE_DATE],	// Fecha valor
+	[0WBS_ELEMT],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[0CREDIT_DC],	// Importe en el Haber en moneda extranjera
+	[0CREDIT_LC],	// Importe en el Haber en moneda local
+	[0CREDIT_LC2],	// Importe de haber en segunda moneda local
+	[0CREDIT_LC3],	// Importe de haber en tercera moneda local
+	[0DEBIT_DC],	// Importe en el Debe en moneda extranjera
+	[0DEBIT_LC],	// Importe en el Debe en moneda local
+	[0DEBIT_LC2],	// Importe en el debe en segunda moneda local
+	[0DEBIT_LC3],	// Importe en el debe en la tercera moneda local
+	[0DEB_CRE_DC],	// Importe en moneda extranjera con signo +/-
+	[0DEB_CRE_L2],	// Importe en la segunda moneda local con signo
+	[0DEB_CRE_L3],	// Importe en tercera moneda local con signo +/-
+	[0DEB_CRE_LC]	// Importe en moneda local con signo +/-
+
+FROM /IMO/D_FIGL04
+WHERE (
+[0UPD_DATE]  >= $(LastExecTime)
+);
+
+[ACCT_TYPE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [ACCT_TYPE], [TXTLG] AS [ACCT_TYPE_TEXT]; SELECT SOURSYSTEM, ACCT_TYPE, TXTLG FROM /BI0/TACCT_TYPE WHERE LANGU = 'S';
+[BUS_AREA_TEXTS]: LEFT JOIN LOAD Text([BUS_AREA]) as [BUS_AREA], [TXTMD] AS [BUS_AREA_TEXT]; SELECT BUS_AREA, TXTMD FROM /BI0/TBUS_AREA WHERE LANGU = 'S';
+[CHRT_ACCTS_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [CHRT_ACCTS], [TXTLG] AS [CHRT_ACCTS_TEXT]; SELECT SOURSYSTEM, CHRT_ACCTS, TXTLG FROM /BI0/TCHRT_ACCTS WHERE LANGU = 'S';
+[COMP_CODE_TEXTS]: LEFT JOIN LOAD Text([COMP_CODE]) as [COMP_CODE], [TXTMD] AS [COMP_CODE_TEXT]; SELECT COMP_CODE, TXTMD FROM /BI0/TCOMP_CODE;
+[COORDER_TEXTS]: LEFT JOIN LOAD [COORDER], [TXTMD] AS [COORDER_TEXT]; SELECT COORDER, TXTMD FROM /BI0/TCOORDER;
+[COSTCENTER_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) as [CO_AREA], [COSTCENTER], [TXTMD] AS [COSTCENTER_TEXT], [TXTSH] AS [COSTCENTER_TEXT_S]; SELECT CO_AREA, COSTCENTER, TXTMD, TXTSH FROM /BI0/TCOSTCENTER WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) as [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[EMPLOYEE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [EMPLOYEE], [TXTMD] AS [EMPLOYEE_TEXT]; SELECT SOURSYSTEM, EMPLOYEE, TXTMD FROM /BI0/TEMPLOYEE WHERE DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[FM_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FM_AREA], [TXTMD] AS [FM_AREA_TEXT]; SELECT SOURSYSTEM, FM_AREA, TXTMD FROM /BI0/TFM_AREA WHERE LANGU = 'S';
+[FUNC_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FUNC_AREA], [TXTMD] AS [FUNC_AREA_TEXT]; SELECT SOURSYSTEM, FUNC_AREA, TXTMD FROM /BI0/TFUNC_AREA WHERE LANGU = 'S';
+[GL_ACCOUNT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [CHRT_ACCTS], Text([GL_ACCOUNT]) as [GL_ACCOUNT], [TXTLG] AS [GL_ACCOUNT_TEXT], [TXTSH] AS [GL_ACCOUNT_TEXT_S]; SELECT SOURSYSTEM, CHRT_ACCTS, GL_ACCOUNT, TXTLG, TXTSH FROM /BI0/TGL_ACCOUNT WHERE LANGU = 'S';
+[PLANT_TEXTS]: LEFT JOIN LOAD Text([PLANT]) as [PLANT], [TXTMD] AS [PLANT_TEXT], [TXTSH] AS [PLANT_TEXT_S]; SELECT PLANT, TXTMD, TXTSH FROM /BI0/TPLANT;
+[PROFIT_CTR_TEXTS]: LEFT JOIN LOAD Text([CO_AREA]) as [CO_AREA], [PROFIT_CTR], [TXTMD] AS [PROFIT_CTR_TEXT], [TXTSH] AS [PROFIT_CTR_TEXT_S]; SELECT CO_AREA, PROFIT_CTR, TXTMD, TXTSH FROM /BI0/TPROFIT_CTR WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+
+Concatenate
+LOAD
+    CO_AREA,
+    PROFIT_CTR,
+    PLANT,
+    CHRT_ACCTS,
+    GL_ACCOUNT,
+    SOURSYSTEM,
+    FUNC_AREA,
+    FM_AREA,
+    EMPLOYEE,
+    COSTCENTER,
+    COORDER,
+    COMP_CODE,
+    BUS_AREA,
+    ACCT_TYPE,
+    RowNum,
+    AC_DOC_NO,
+    AC_DOC_TYP,
+    ALLOC_NMBR,
+    BUS_TRXN,
+    CLEAR_DATE,
+    CLR_DOC_NO,
+    CREATEDON,
+    DATAPAKID,
+    DOC_CURRCY,
+    DOC_DATE,
+    DOC_HD_TXT,
+    FISCPER,
+    FISCPER3,
+    FISCVARNT,
+    FISCYEAR,
+    FI_DOCSTAT,
+    FUND,
+    GN_R3_SSY,
+    ITEM_NUM,
+    LOC_CURRC2,
+    LOC_CURRC3,
+    LOC_CURRCY,
+    LOC_CURTP2,
+    LOC_CURTP3,
+    ORG_DOC_CC,
+    ORG_DOC_CO,
+    ORG_DOC_NO,
+    ORG_DOC_YR,
+    PART_PRCTR,
+    PBUS_AREA,
+    PCOMPANY,
+    POSTXT,
+    POST_KEY,
+    PSTNG_DATE,
+    "RECORD",
+    RECORDMODE,
+    REF_DOC_NO,
+    REF_KEY3,
+    REQTSN,
+    SP_GL_IND,
+    TRXN_KEY,
+    UPD_DATE,
+    VALUE_DATE,
+    WBS_ELEMT,
+    CREDIT_DC,
+    CREDIT_LC,
+    CREDIT_LC2,
+    CREDIT_LC3,
+    DEBIT_DC,
+    DEBIT_LC,
+    DEBIT_LC2,
+    DEBIT_LC3,
+    DEB_CRE_DC,
+    DEB_CRE_L2,
+    DEB_CRE_L3,
+    DEB_CRE_LC,
+    UniqueKey,
+    ACCT_TYPE_TEXT,
+    BUS_AREA_TEXT,
+    CHRT_ACCTS_TEXT,
+    COMP_CODE_TEXT,
+    COORDER_TEXT,
+    COSTCENTER_TEXT,
+    COSTCENTER_TEXT_S,
+    CO_AREA_TEXT,
+    EMPLOYEE_TEXT,
+    FM_AREA_TEXT,
+    FUNC_AREA_TEXT,
+    GL_ACCOUNT_TEXT,
+    GL_ACCOUNT_TEXT_S,
+    PLANT_TEXT,
+    PLANT_TEXT_S,
+    PROFIT_CTR_TEXT,
+    PROFIT_CTR_TEXT_S
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/FIGL04.qvd] (qvd)
+Where not Exists(UniqueKey);
+
+// Se almacena en QVD la tabla FIGL04 y posteriormente se elimina
+STORE FIGL04 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/FIGL04.qvd;
+
+DROP Table FIGL04;
+

@@ -1,0 +1,428 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.MMIV01.qvs
+// TABLA:     	/IMO/D_MMIV01
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: MM-IV: Verificación de facturas
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 		MMIV01	   	 ;
+TRACE ###############################;
+
+//Obtenemos el campo fecha
+Fecha:
+LOAD [UPD_DATE]
+
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/MMIV01.qvd] (qvd);
+
+//Seleccionamos la fecha máxima
+MaxOldQVD:
+
+LOAD
+
+Max([UPD_DATE]) as Max0UPD_DATE
+
+Resident Fecha;
+
+LET LastExecTime = Date(Peek('Max0UPD_DATE',-1,MaxOldQVD),'YYYYMMDD');
+
+DROP Table Fecha;
+
+DROP Table MaxOldQVD;
+
+// Let ThisExecTime =date(today(), 'YYYYMMDD');
+
+//Cargamos los datos con carga incremental
+MMIV01:
+LOAD RowNum, 
+	[0ACCT_TYPE] as [ACCT_TYPE], 
+	[0AC_DOC_TYP] as [AC_DOC_TYP], 
+	[0BBP_ACCCAT] as [BBP_ACCCAT], 
+	[0BBP_ACC_NO] as [BBP_ACC_NO], 
+	[0BBP_COITEM] as [BBP_COITEM], 
+	[0BBP_CON_ID] as [BBP_CON_ID], 
+	[0BBP_DELREF] as [BBP_DELREF], 
+	[0BBP_DESCR] as [BBP_DESCR], 
+	[0BBP_FRTCOD] as [BBP_FRTCOD], 
+	[0BBP_INITEM] as [BBP_INITEM], 
+	[0BBP_INPTYP] as [BBP_INPTYP], 
+	[0BBP_INV_ID] as [BBP_INV_ID], 
+	[0BBP_POITEM] as [BBP_POITEM], 
+	[0BBP_PO_ID] as [BBP_PO_ID], 
+	[0BBP_SUBTYP] as [BBP_SUBTYP], 
+	[0BLCKRSN_AM] as [BLCKRSN_AM], 
+	[0BLCKRSN_DT] as [BLCKRSN_DT], 
+	[0BLCKRSN_HM] as [BLCKRSN_HM], 
+	[0BLCKRSN_HS] as [BLCKRSN_HS], 
+	[0BLCKRSN_MN] as [BLCKRSN_MN], 
+	[0BLCKRSN_PJ] as [BLCKRSN_PJ], 
+	[0BLCKRSN_PQ] as [BLCKRSN_PQ], 
+	[0BLCKRSN_PR] as [BLCKRSN_PR], 
+	[0BLCKRSN_QL] as [BLCKRSN_QL], 
+	[0BLCKRSN_QN] as [BLCKRSN_QN], 
+	[0CALDAY] as [CALDAY], 
+	[0CALMONTH] as [CALMONTH], 
+	[0CALQUARTER] as [CALQUARTER], 
+	[0CALYEAR] as [CALYEAR], 
+	[0CREATEDBY] as [CREATEDBY], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DCINDIC] as [DCINDIC], 
+	[0DOC_DATE] as [DOC_DATE], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0INV_CURR] as [INV_CURR], 
+	[0INV_STAT] as [INV_STAT], 
+	[0ITM_CAT] as [ITM_CAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0PO_PR_UNIT] as [PO_PR_UNIT], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROFTB_SEG] as [PROFTB_SEG], 
+	Text([0PURCH_ORG]) as [PURCH_ORG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0RET_ITM] as [RET_ITM], 
+	[0REV_DOC_NO] as [REV_DOC_NO], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0SR_SCRED] as [SR_SCRED], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CLC_ASSET, 
+	CLC_ASSM, 
+	CLC_BUSA, 
+	Text(CLC_CAREA) as CLC_CAREA, 
+	Text(CLC_COMPC) as CLC_COMPC, 
+	CLC_ETWOR, 
+	CLC_EV_DO, 
+	CLC_GLACC, 
+	CLC_HRT_A, 
+	Text(CLC_MATER) as CLC_MATER, 
+	Text(CLC_MATLG) as CLC_MATLG, 
+	CLC_NV_PT, 
+	CLC_N_CAT, 
+	CLC_OSTCE, 
+	Text(CLC_PLANT) as CLC_PLANT, 
+	Text(CLC_PROFG) as CLC_PROFG, 
+	CLC_PROFI, 
+	CLC_VEND, 
+	CLC_VGART, 
+	[0BBP_BILITM] as [BBP_BILITM], 
+	[0BBP_BILLCT] as [BBP_BILLCT], 
+	[0DENOMI_UC] as [DENOMI_UC], 
+	[0EXCHG_RATE] as [EXCHG_RATE], 
+	[0LIV_AUIVR] as [LIV_AUIVR], 
+	[0LIV_AUIVRT] as [LIV_AUIVRT], 
+	[0LIV_GRIRLC] as [LIV_GRIRLC], 
+	[0LIV_GRQEPU] as [LIV_GRQEPU], 
+	[0LIV_GRQHOU] as [LIV_GRQHOU], 
+	[0LIV_GRVHIC] as [LIV_GRVHIC], 
+	[0LIV_IVDFF] as [LIV_IVDFF], 
+	[0LIV_IVDFFT] as [LIV_IVDFFT], 
+	[0LIV_IVGAIC] as [LIV_IVGAIC], 
+	[0LIV_IVQEOU] as [LIV_IVQEOU], 
+	[0LIV_IVQEPU] as [LIV_IVQEPU], 
+	[0LIV_IVQHOU] as [LIV_IVQHOU], 
+	[0LIV_IVQHPU] as [LIV_IVQHPU], 
+	[0LIV_IVQVOU] as [LIV_IVQVOU], 
+	[0LIV_IVQVPU] as [LIV_IVQVPU], 
+	[0LIV_IVVHIC] as [LIV_IVVHIC], 
+	[0LIV_IVVVIC] as [LIV_IVVVIC], 
+	[0LIV_MNIVD] as [LIV_MNIVD], 
+	[0LIV_MNIVDT] as [LIV_MNIVDT], 
+	[0LIV_ORQTOU] as [LIV_ORQTOU], 
+	[0LIV_ORVTIC] as [LIV_ORVTIC], 
+	[0LIV_VDERR] as [LIV_VDERR], 
+	[0LIV_VDERRT] as [LIV_VDERRT], 
+	[0NETPRICE] as [NETPRICE], 
+	[0NUMERA_UC] as [NUMERA_UC], 
+	[0PRICE_UNIT] as [PRICE_UNIT], 
+	[0SR_FREIGIC] as [SR_FREIGIC], 
+	[0SR_IVVIC] as [SR_IVVIC], 
+	[0SR_IVVLC] as [SR_IVVLC], 
+	[0SR_TAXESIC] as [SR_TAXESIC],
+    [0SOURSYSTEM]&[0BBP_INV_ID]&[0BBP_INITEM]&[0BBP_ACC_NO]&[0ACCT_TYPE]&[0FISCYEAR]&[0FISCVARNT] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0ACCT_TYPE],	// Clase de cuenta
+	[0AC_DOC_TYP],	// Clase de documento
+	[0BBP_ACCCAT],	// Tipo de imputación
+	[0BBP_ACC_NO],	// Número actual de la imputación
+	[0BBP_COITEM],	// Número posición en documento confirmación
+	[0BBP_CON_ID],	// Número de confirmación
+	[0BBP_DELREF],	// Nº documento del proveedor
+	[0BBP_DESCR],	// Nombre del documento
+	[0BBP_FRTCOD],	// Indicador de impuesto de porte
+	[0BBP_INITEM],	// Número de posición en factura
+	[0BBP_INPTYP],	// Indicador de creación
+	[0BBP_INV_ID],	// Número de la factura
+	[0BBP_POITEM],	// Número de posición en documento de pedido
+	[0BBP_PO_ID],	// Número del pedido
+	[0BBP_SUBTYP],	// Característica de documento
+	[0BLCKRSN_AM],	// Motivo bloqueo: Importe
+	[0BLCKRSN_DT],	// Motivo bloqueo: Fecha
+	[0BLCKRSN_HM],	// Motivo bloqueo: Manual (cabecera)
+	[0BLCKRSN_HS],	// Motivo bloqueo: Estadístico (cabecera)
+	[0BLCKRSN_MN],	// Motivo bloqueo: Manual (posición)
+	[0BLCKRSN_PJ],	// Motivo de bloqueo: Presupuesto de proyecto
+	[0BLCKRSN_PQ],	// Motivo de bloqueo: Cantidad de precio de pedido
+	[0BLCKRSN_PR],	// Motivo bloqueo: Precio
+	[0BLCKRSN_QL],	// Motivo bloqueo: Calidad
+	[0BLCKRSN_QN],	// Motivo bloqueo: Cantidad
+	[0CALDAY],	// Fecha de contabilización
+	[0CALMONTH],	// Año/Mes natural
+	[0CALQUARTER],	// Año natural/Trimestre
+	[0CALYEAR],	// Año natural
+	[0CREATEDBY],	// Nombre del responsable que ha añadido el objeto
+	[0DATAPAKID],	// Paquete de datos
+	[0DCINDIC],	// Indicador debe/haber
+	[0DOC_DATE],	// Fecha del documento
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0INV_CURR],	// Moneda de la factura
+	[0INV_STAT],	// Status de factura
+	[0ITM_CAT],	// Tipo de posición del documento de compras
+	[0LOC_CURRCY],	// Moneda local
+	[0PO_PR_UNIT],	// Unidad medida de precio de pedido
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRODUCT],	// Producto
+	[0PROFTB_SEG],	// Número para objetos PA (CO-PA)
+	[0PURCH_ORG],	// Organización de compras
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0RET_ITM],	// Posición de devoluciones
+	[0REV_DOC_NO],	// Nº docum.anulación
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0SR_SCRED],	// Cargo/Abono posterior
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_ASSET],	// Subnúmero de activo fijo
+	[CLC_ASSM],	// Número principal de activo fijo
+	[CLC_BUSA],	// División
+	[CLC_CAREA],	// Sociedad CO
+	[CLC_COMPC],	// Sociedad
+	[CLC_ETWOR],	// Grafo
+	[CLC_EV_DO],	// Ejercicio de documento anulación
+	[CLC_GLACC],	// Cuenta de mayor
+	[CLC_HRT_A],	// Plan de cuentas
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_NV_PT],	// Emisor de factura diferente
+	[CLC_N_CAT],	// Categoría de compras
+	[CLC_OSTCE],	// Centro de coste
+	[CLC_PLANT],	// Ctro
+	[CLC_PROFG],	// Grupo de compras
+	[CLC_PROFI],	// Centro de beneficio
+	[CLC_VEND],	// Proveedor_1
+	[CLC_VGART],	// Clase documento interna
+	[0BBP_BILITM],	// Ctd.posiciones de factura
+	[0BBP_BILLCT],	// Cantidad facturas
+	[0DENOMI_UC],	// Denominador p.conversión UMP en UMPP
+	[0EXCHG_RATE],	// Tp.cambio para la determinación de precios y estadísticas
+	[0LIV_AUIVR],	// Importe de reducción de factura autom.(neto)
+	[0LIV_AUIVRT],	// Impuestos para importe de reducción de factura autom.
+	[0LIV_GRIRLC],	// Valor compensación cuenta EM/RF en moneda local
+	[0LIV_GRQEPU],	// Cantidad entrada mercancías en unidad medida precio pedido
+	[0LIV_GRQHOU],	// Ctd.entrada mercancías un.medida pedido
+	[0LIV_GRVHIC],	// Valor entrada mercancías en moneda factura
+	[0LIV_IVDFF],	// Diferencia de facturas aceptada globalmente (neto)
+	[0LIV_IVDFFT],	// Impuestos para diferencia de factura aceptada globalmente
+	[0LIV_IVGAIC],	// Importe de factura bruta en moneda de factura
+	[0LIV_IVQEOU],	// Cantidad de factura en unidad de medida de pedido
+	[0LIV_IVQEPU],	// Cantidad de factura en unidad de medida de precio de pedido
+	[0LIV_IVQHOU],	// Historial cantidad de factura en unidad medida pedido
+	[0LIV_IVQHPU],	// Historial cantidad factura en unidad de medida pedido precio
+	[0LIV_IVQVOU],	// Cantidad factura seg.proveedor en unidad medida pedido
+	[0LIV_IVQVPU],	// Cantidad factura p/proveedor en unidad medida precio pedido
+	[0LIV_IVVHIC],	// Historial valor factura en moneda factura
+	[0LIV_IVVVIC],	// Valor de factura por proveedor en moneda de factura
+	[0LIV_MNIVD],	// Importe de diferencia aceptada manualmente (neto)
+	[0LIV_MNIVDT],	// Impuestos para importe de diferencia aceptada manualmente
+	[0LIV_ORQTOU],	// Cantidad de pedido en unidad de medida de pedido
+	[0LIV_ORVTIC],	// Valor de pedido en moneda de factura
+	[0LIV_VDERR],	// Error de proveedor (neto)
+	[0LIV_VDERRT],	// Impuestos p.error de proveedor
+	[0NETPRICE],	// Precio neto
+	[0NUMERA_UC],	// Contador para conversión de UMP a UMPP
+	[0PRICE_UNIT],	// Cantidad base
+	[0SR_FREIGIC],	// Gastos de porte en factura en moneda de factura
+	[0SR_IVVIC],	// Valor factura neto en moneda factura
+	[0SR_IVVLC],	// Valor factura neto en moneda local
+	[0SR_TAXESIC]	// Importe impuestos de factura en moneda de factura
+
+FROM /IMO/D_MMIV01
+WHERE (
+[0UPD_DATE]  >= $(LastExecTime)
+);
+
+[ACCT_TYPE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [ACCT_TYPE], [TXTLG] AS [ACCT_TYPE_TEXT]; SELECT SOURSYSTEM, ACCT_TYPE, TXTLG FROM /BI0/TACCT_TYPE WHERE LANGU = 'S';
+[DCINDIC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [DCINDIC], [TXTLG] AS [DCINDIC_TEXT]; SELECT SOURSYSTEM, DCINDIC, TXTLG FROM /BI0/TDCINDIC WHERE LANGU = 'S';
+[PURCH_ORG_TEXTS]: LEFT JOIN LOAD Text([PURCH_ORG]) as [PURCH_ORG],[TXTSH] AS [PURCH_ORG_TEXT]; SELECT PURCH_ORG, TXTSH FROM /BI0/TPURCH_ORG;
+[CLC_ASSET_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_ASSM] AS [CLC_ASSM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [/BIC/CLC_ASSET] AS [CLC_ASSET], [TXTLG] AS [CLC_ASSET_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_ASSM, /BIC/CLC_COMPC, /BIC/CLC_ASSET, TXTLG FROM /BIC/TCLC_ASSET WHERE DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CLC_ASSM_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [/BIC/CLC_ASSM] AS [CLC_ASSM], [TXTLG] AS [CLC_ASSM_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, /BIC/CLC_ASSM, TXTLG FROM /BIC/TCLC_ASSM;
+[CLC_BUSA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_BUSA] AS [CLC_BUSA], [TXTMD] AS [CLC_BUSA_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_BUSA, TXTMD FROM /BIC/TCLC_BUSA WHERE LANGU = 'S';
+[CLC_CAREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_CAREA]) AS [CLC_CAREA], [TXTMD] AS [CLC_CAREA_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, TXTMD FROM /BIC/TCLC_CAREA;
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_ETWOR_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_ETWOR] AS [CLC_ETWOR], [TXTMD] AS [CLC_ETWOR_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_ETWOR, TXTMD FROM /BIC/TCLC_ETWOR WHERE LANGU = 'S';
+[CLC_GLACC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_HRT_A] AS [CLC_HRT_A], [/BIC/CLC_GLACC] AS [CLC_GLACC], [TXTLG] AS [CLC_GLACC_TEXT], [TXTSH] AS [CLC_GLACC_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_HRT_A, /BIC/CLC_GLACC, TXTLG, TXTSH FROM /BIC/TCLC_GLACC WHERE LANGU = 'S';
+[CLC_HRT_A_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_HRT_A] AS [CLC_HRT_A], [TXTLG] AS [CLC_HRT_A_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_HRT_A, TXTLG FROM /BIC/TCLC_HRT_A WHERE LANGU = 'S';
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATER]) AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_MATLG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATLG]) AS [CLC_MATLG], [TXTSH] AS [CLC_MATLG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATLG, TXTSH FROM /BIC/TCLC_MATLG WHERE LANGU = 'S';
+[CLC_OSTCE_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_CAREA]) AS [CLC_CAREA], [/BIC/CLC_OSTCE] AS [CLC_OSTCE], [TXTMD] AS [CLC_OSTCE_TEXT], [TXTSH] AS [CLC_OSTCE_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_CAREA, /BIC/CLC_OSTCE, TXTMD, TXTSH FROM /BIC/TCLC_OSTCE WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CLC_PLANT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PLANT]) AS [CLC_PLANT], [TXTMD] AS [CLC_PLANT_TEXT], [TXTSH] AS [CLC_PLANT_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, TXTMD, TXTSH FROM /BIC/TCLC_PLANT;
+[CLC_PROFG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_PROFG]) AS [CLC_PROFG], [TXTSH] AS [CLC_PROFG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_PROFG, TXTSH FROM /BIC/TCLC_PROFG;
+[CLC_PROFI_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_CAREA]) AS [CLC_CAREA], [/BIC/CLC_PROFI] AS [CLC_PROFI], [TXTMD] AS [CLC_PROFI_TEXT], [TXTSH] AS [CLC_PROFI_TEXT_S]; SELECT SOURSYSTEM,/BIC/CLC_CAREA, /BIC/CLC_PROFI, TXTMD, TXTSH FROM /BIC/TCLC_PROFI WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CLC_VEND_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_VEND] AS [CLC_VEND], [TXTMD] AS [CLC_VEND_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_VEND, TXTMD FROM /BIC/TCLC_VEND;
+
+
+Concatenate
+LOAD
+	SOURSYSTEM,
+    CLC_VEND,
+    CLC_CAREA,
+    CLC_PROFI,
+    CLC_PROFG,
+    CLC_PLANT,
+    CLC_OSTCE,
+    CLC_MATLG,
+    CLC_MATER,
+    CLC_HRT_A,
+    CLC_GLACC,
+    CLC_ETWOR,
+    CLC_COMPC,
+    CLC_BUSA,
+    CLC_ASSM,
+    CLC_ASSET,
+    PURCH_ORG,
+    DCINDIC,
+    ACCT_TYPE,
+    RowNum,
+    AC_DOC_TYP,
+    BBP_ACCCAT,
+    BBP_ACC_NO,
+    BBP_COITEM,
+    BBP_CON_ID,
+    BBP_DELREF,
+    BBP_DESCR,
+    BBP_FRTCOD,
+    BBP_INITEM,
+    BBP_INPTYP,
+    BBP_INV_ID,
+    BBP_POITEM,
+    BBP_PO_ID,
+    BBP_SUBTYP,
+    BLCKRSN_AM,
+    BLCKRSN_DT,
+    BLCKRSN_HM,
+    BLCKRSN_HS,
+    BLCKRSN_MN,
+    BLCKRSN_PJ,
+    BLCKRSN_PQ,
+    BLCKRSN_PR,
+    BLCKRSN_QL,
+    BLCKRSN_QN,
+    CALDAY,
+    CALMONTH,
+    CALQUARTER,
+    CALYEAR,
+    CREATEDBY,
+    DATAPAKID,
+    DOC_DATE,
+    FISCPER,
+    FISCVARNT,
+    FISCYEAR,
+    GN_LOCATIO,
+    GN_R3_SSY,
+    GN_VENDOR,
+    INV_CURR,
+    INV_STAT,
+    ITM_CAT,
+    LOC_CURRCY,
+    PO_PR_UNIT,
+    PO_UNIT,
+    PRODUCT,
+    PROFTB_SEG,
+    "RECORD",
+    RECORDMODE,
+    REQTSN,
+    RET_ITM,
+    REV_DOC_NO,
+    SR_SCRED,
+    UPD_DATE,
+    CLC_EV_DO,
+    CLC_NV_PT,
+    CLC_N_CAT,
+    CLC_VGART,
+    BBP_BILITM,
+    BBP_BILLCT,
+    DENOMI_UC,
+    EXCHG_RATE,
+    LIV_AUIVR,
+    LIV_AUIVRT,
+    LIV_GRIRLC,
+    LIV_GRQEPU,
+    LIV_GRQHOU,
+    LIV_GRVHIC,
+    LIV_IVDFF,
+    LIV_IVDFFT,
+    LIV_IVGAIC,
+    LIV_IVQEOU,
+    LIV_IVQEPU,
+    LIV_IVQHOU,
+    LIV_IVQHPU,
+    LIV_IVQVOU,
+    LIV_IVQVPU,
+    LIV_IVVHIC,
+    LIV_IVVVIC,
+    LIV_MNIVD,
+    LIV_MNIVDT,
+    LIV_ORQTOU,
+    LIV_ORVTIC,
+    LIV_VDERR,
+    LIV_VDERRT,
+    NETPRICE,
+    NUMERA_UC,
+    PRICE_UNIT,
+    SR_FREIGIC,
+    SR_IVVIC,
+    SR_IVVLC,
+    SR_TAXESIC,
+    UniqueKey,
+    ACCT_TYPE_TEXT,
+    DCINDIC_TEXT,
+    PURCH_ORG_TEXT,
+    CLC_ASSET_TEXT,
+    CLC_ASSM_TEXT,
+    CLC_BUSA_TEXT,
+    CLC_CAREA_TEXT,
+    CLC_COMPC_TEXT,
+    CLC_ETWOR_TEXT,
+    CLC_GLACC_TEXT,
+    CLC_GLACC_TEXT_S,
+    CLC_HRT_A_TEXT,
+    CLC_MATER_TEXT,
+    CLC_MATLG_TEXT,
+    CLC_OSTCE_TEXT,
+    CLC_OSTCE_TEXT_S,
+    CLC_PLANT_TEXT,
+    CLC_PLANT_TEXT_S,
+    CLC_PROFG_TEXT,
+    CLC_PROFI_TEXT,
+    CLC_PROFI_TEXT_S,
+    CLC_VEND_TEXT
+From [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/MMIV01.qvd] (qvd)
+Where not Exists(UniqueKey);
+
+
+// Se almacena en QVD la tabla MMIV01 y posteriormente se elimina
+STORE MMIV01 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/MMIV01.qvd];
+
+DROP Table MMIV01;
+

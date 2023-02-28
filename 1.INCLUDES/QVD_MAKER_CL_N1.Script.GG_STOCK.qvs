@@ -1,0 +1,180 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_QlikRepository_N1.Script.GG_STOCK.qvs
+// TABLA:     	GG_STOCK
+// AUTOR:       CLGRUPOINDUSTRIAL
+// DESCRIPCIÓN: SD: Datos de stocks valorados de los centros de Marceliano Martín. Foto diaria. 
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ########## 	GG_STOCK_N1   	 ;
+TRACE ###############################;
+
+//Obtenemos todas las fechas que hay en el extractor
+Fechas:
+LOAD 
+	[0CALDAY] as [Fecha_Foto];
+    
+SELECT
+	[0CALDAY],	// Día natural
+FROM GG_STOCK;
+
+//Cargamos temporalmente el qvd a actualizar
+GG_STOCK_TMP:
+LOAD
+    *
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_GG_STOCK.qvd]
+(qvd);
+
+//Comprobamos las fechas que tiene extraídas y evaluamos con las que le faltan
+FechasQvd:
+NoConcatenate
+LOAD Distinct
+	[Día natural]														AS FechaQVD,
+    'X'																	AS Guardado
+Resident GG_STOCK_TMP;
+
+RIGHT JOIN LOAD 
+	[Fecha_Foto]														AS FechaQVD
+Resident Fechas;
+
+Drop Table Fechas;
+
+LET NumDias = NoOfRows('FechasQvd');
+
+//Empezamos a construir la tabla que guardaremos partiendo de la temporal
+// GG_STOCK:
+// NoConcatenate
+// LOAD
+// 	*
+// Resident GG_STOCK_TMP;
+
+// Drop Table GG_STOCK_TMP;
+
+//Concatenamos los días que le faltaban al qvd
+For i = 0 To $(NumDias) - 1;
+
+	LET Dia = Date(peek('FechaQVD',$(i),'FechasQvd'),'YYYYMMDD');
+    
+    SET Guardado = peek('Guardado',$(i),'FechasQvd');
+    
+    trace $(Dia);
+    
+    If $(Guardado) <> 'X' Then
+    
+      GG_STOCK_DIARIA:
+      NoConcatenate
+      LOAD //RowNum, 
+      [0BASE_UOM] as [Unidad de medida base], 
+      [0CALDAY] as [Día natural], 
+      [0DATAPAKID] as [Paquete de datos], 
+      [0LOC_CURRCY] as [Moneda local], 
+      [0RECORD] as [Número registro datos], 
+      [0RECORDMODE] as [BW procedimiento delta: Modo de actualización], 
+      [0REQTSN] as [Número de transacción consecutivo de solicitud], 
+      [0SOURSYSTEM] as [ID sistema fuente], 
+      [0STOCKCAT] as [Tipo de stocks], 
+      [0STOCKTYPE] as [Característica de stock], 
+      [0STOR_LOC] as [Almacén], 
+      DISPO as [Planif.necesidades], 
+      DSNAM as [Nombre-planificador], 
+      MAABC as [Indicador ABC], 
+      CLC_COMPC as Sociedad, 
+      CLC_MATER as Material, 
+      CLC_PLANT as Ctro, 
+      GGB_HIERH as [Jerarquía de productos], 
+      AJUS_COM_UNI, 
+      AJUS_COM_VAL, 
+      AJUS_SAL_UNI, 
+      AJUS_SAL_VAL, 
+      COMPRA_UNIDAD, 
+      COMPRA_VALOR, 
+      OTR_COM_UNI, 
+      OTR_COM_VAL, 
+      OTR_SAL_UNI, 
+      OTR_SAL_VAL, 
+      STOCK_TOTAL, 
+      TOT_COM_UNI, 
+      TOT_COM_VAL, 
+      TOT_SAL_UNI, 
+      TOT_SAL_VAL, 
+      TRAS_COM_UNI, 
+      TRAS_COM_VAL, 
+      TRAS_SAL_UNI, 
+      TRAS_SAL_VAL, 
+      VALOR_TOTAL, 
+      VENTA_UNIDAD, 
+      VENTA_VALOR;
+
+      SELECT		//[RowNum],	// RowNum
+      [0BASE_UOM],	// Unidad de medida base
+      [0CALDAY],	// Día natural
+      [0DATAPAKID],	// Paquete de datos
+      [0LOC_CURRCY],	// Moneda local
+      [0RECORD],	// Número registro datos
+      [0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+      [0REQTSN],	// Número de transacción consecutivo de solicitud
+      [0SOURSYSTEM],	// ID sistema fuente
+      [0STOCKCAT],	// Tipo de stocks
+      [0STOCKTYPE],	// Característica de stock
+      [0STOR_LOC],	// Almacén
+      [DISPO],	// Planif.necesidades
+      [DSNAM],	// Nombre-planificador
+      [MAABC],	// Indicador ABC
+      [CLC_COMPC],	// Sociedad
+      [CLC_MATER],	// Material
+      [CLC_PLANT],	// Ctro
+      [GGB_HIERH],	// Jerarquía de productos
+      [AJUS_COM_UNI],	// AJUS_COM_UNI
+      [AJUS_COM_VAL],	// AJUS_COM_VAL
+      [AJUS_SAL_UNI],	// AJUS_SAL_UNI
+      [AJUS_SAL_VAL],	// AJUS_SAL_VAL
+      [COMPRA_UNIDAD],	// COMPRA_UNIDAD
+      [COMPRA_VALOR],	// COMPRA_VALOR
+      [OTR_COM_UNI],	// OTR_COM_UNI
+      [OTR_COM_VAL],	// OTR_COM_VAL
+      [OTR_SAL_UNI],	// OTR_SAL_UNI
+      [OTR_SAL_VAL],	// OTR_SAL_VAL
+      [STOCK_TOTAL],	// STOCK_TOTAL
+      [TOT_COM_UNI],	// TOT_COM_UNI
+      [TOT_COM_VAL],	// TOT_COM_VAL
+      [TOT_SAL_UNI],	// TOT_SAL_UNI
+      [TOT_SAL_VAL],	// TOT_SAL_VAL
+      [TRAS_COM_UNI],	// TRAS_COM_UNI
+      [TRAS_COM_VAL],	// TRAS_COM_VAL
+      [TRAS_SAL_UNI],	// TRAS_SAL_UNI
+      [TRAS_SAL_VAL],	// TRAS_SAL_VAL
+      [VALOR_TOTAL],	// VALOR_TOTAL
+      [VENTA_UNIDAD],	// VENTA_UNIDAD
+      [VENTA_VALOR]	// VENTA_VALOR
+
+      FROM GG_STOCK
+      WHERE (
+      [0CALDAY] = $(Dia));
+ 
+      LEFT JOIN (GG_STOCK_DIARIA) LOAD
+      	//$(Dia) & '__' & CLC_MATER & '__' & CLC_PLANT																	AS KEYFecha,
+        Date(Date#($(Dia),'YYYYMMDD'))																					AS [Día natural],
+        CLC_MATER																										AS Material,
+        CLC_PLANT																										AS Ctro,
+    	If([RSPL_FCSTR] = '40', 'MTS', If([RSPL_FCSTR] = 'Z2', 'MTO', 'No Planificado'))								AS Liberación_diariaTMP,
+    	If(CLC_T460T = '40','Madrid', If(CLC_T460T = '41', 'Barcelona', 
+        If(CLC_T460T = '20', 'Descentralizado', 'Otro')))																AS Aprovisionamiento_diario
+      FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/CL_MARC.qvd] (qvd) 
+      Where SOURSYSTEM = 10 and WildMatch(CLC_PLANT,'C3*');  
+      
+      Concatenate (GG_STOCK_TMP)
+      LOAD
+      	*
+      Resident GG_STOCK_DIARIA;
+      
+      Drop Table GG_STOCK_DIARIA;   
+      
+	End If;
+    
+Next i;
+
+//Guardamos el qvd construido
+STORE GG_STOCK_TMP INTO 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_GG_STOCK.qvd' (qvd);
+
+//Y borramos la tabla construida y las que hemos utilizado
+DROP Tables GG_STOCK_TMP, FechasQvd;

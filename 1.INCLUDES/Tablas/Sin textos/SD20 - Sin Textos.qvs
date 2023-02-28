@@ -1,0 +1,154 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+SD20:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0CALDAY] as [CALDAY], 
+	[0CREATEDON] as [CREATEDON], 
+	[0CUST_GROUP] as [CUST_GROUP], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0DEL_TYPE] as [DEL_TYPE], 
+	[0DOC_CLASS] as [DOC_CLASS], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GI_DATE] as [GI_DATE], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0HEADER_DEL] as [HEADER_DEL], 
+	[0IMODOCCAT] as [IMODOCCAT], 
+	[0IMOINCOTM2] as [IMOINCOTM2], 
+	[0INCOTERMS] as [INCOTERMS], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0ROUTE] as [ROUTE], 
+	[0SALES_DIST] as [SALES_DIST], 
+	[0SHIP_DATE] as [SHIP_DATE], 
+	[0SHIP_POINT] as [SHIP_POINT], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CENVIO, 
+	CHOJAPAQ, 
+	Text(CLC_COMPC) as CLC_COMPC, 
+	CLC_SHIPT, 
+	CLC_SLEMP, 
+	CLC_SOLDT, 
+	CLC_VBELN, 
+	Text(CLC_VKORG) as CLC_VKORG, 
+	CPAISSAL, 
+	CPOSICION, 
+	CPRECINTO, 
+	CZZMONEDA, 
+	ZZCOMPA, 
+	ZZDEVOL1, 
+	ZZDEVOL2, 
+	ZZDEVOL3, 
+	ZZDIR, 
+	ZZDISTANC, 
+	ZZFUERAPO, 
+	ZZINCOTER, 
+	ZZPEDID1, 
+	ZZPEDID2, 
+	ZZPEDID3, 
+	ZZPEDID4, 
+	ZZPEDID5, 
+	ZZPEDID6, 
+	ZZPLATAF, 
+	ZZPOBDES, 
+	ZZPOBL, 
+	ZZPOBORIG, 
+	ZZPROV, 
+	ZZVALIJA1, 
+	ZZVALIJA2, 
+	ZZVALIJA3, 
+	ZZVEHICU, 
+	[0DEL_H_CNT] as [DEL_H_CNT], 
+	[0DLT_H_CNT] as [DLT_H_CNT], 
+	CZZBUFAC, 
+	CZZVALOR, 
+	ZZBULTOSD, 
+	ZZBULTOSP, 
+	ZZBULTOSV, 
+	ZZPESOTAS, 
+	ZZPESVOL, 
+	ZZPRECIO,
+    [0SOURSYSTEM]&CLC_VBELN as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0CALDAY],	// Día natural
+	[0CREATEDON],	// Fecha de creación del registro
+	[0CUST_GROUP],	// Grupo de clientes
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DEL_TYPE],	// Clase de entrega
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GI_DATE],	// Fecha de salida de mercancías
+	[0GN_CUSTOM],	// Cliente
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0HEADER_DEL],	// Cabecera borrada
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0IMOINCOTM2],	// Incoterms, parte 2
+	[0INCOTERMS],	// Incoterms, parte 1
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0ROUTE],	// Ruta
+	[0SALES_DIST],	// Zona de ventas
+	[0SHIP_DATE],	// Fecha de llegada de las mercancías al cliente
+	[0SHIP_POINT],	// Puesto de expedición
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UPD_DATE],	// Fecha de actualización
+	[CENVIO],	// Envío
+	[CHOJAPAQ],	// Hoja de paquetería
+	[CLC_COMPC],	// Sociedad
+	[CLC_SHIPT],	// Destinatario Mercancias
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_VBELN],	// Nº Document ventas
+	[CLC_VKORG],	// Organización de ventas
+	[CPAISSAL],	// País de salida
+	[CPOSICION],	// Posiciones
+	[CPRECINTO],	// Precinto
+	[CZZMONEDA],	// Moneda del valor
+	[ZZCOMPA],	// Compañía de transportes Ondupack
+	[ZZDEVOL1],	// Devoluciones 1
+	[ZZDEVOL2],	// Devoluciones 2
+	[ZZDEVOL3],	// Devoluciones 3
+	[ZZDIR],	// Direccion del cliente para  Ondupack
+	[ZZDISTANC],	// Distancia al cliente
+	[ZZFUERAPO],	// Check reparto fuera población Ondupack
+	[ZZINCOTER],	// Incoterm Ondupack
+	[ZZPEDID1],	// Pedidos 1
+	[ZZPEDID2],	// Pedidos 2
+	[ZZPEDID3],	// Pedidos 3
+	[ZZPEDID4],	// Pedidos 4
+	[ZZPEDID5],	// Pedidos 5
+	[ZZPEDID6],	// Pedidos 6
+	[ZZPLATAF],	// Check uso plataforma elevadora Ondupack
+	[ZZPOBDES],	// Población Destino Ondupack
+	[ZZPOBL],	// Población cliente Ondupack
+	[ZZPOBORIG],	// Población Origen Ondupack
+	[ZZPROV],	// Provincia cliente Ondupack
+	[ZZVALIJA1],	// Valijas 1
+	[ZZVALIJA2],	// Valijas 2
+	[ZZVALIJA3],	// Valijas 3
+	[ZZVEHICU],	// Tipo de vehículo Ondupack
+	[0DEL_H_CNT],	// Cantidad de documentos de entrega
+	[0DLT_H_CNT],	// Cantidad de documentos borrados
+	[CZZBUFAC],	// Factor de voluminosidad
+	[CZZVALOR],	// Valor Asegurado
+	[ZZBULTOSD],	// Bultos Devoluciones
+	[ZZBULTOSP],	// Bultos Pedidos
+	[ZZBULTOSV],	// Bultos Valijas
+	[ZZPESOTAS],	// Peso total tasable
+	[ZZPESVOL],	// Peso total
+	[ZZPRECIO]	// Precio Euros
+
+FROM /IMO/D_SD20;
+
+STORE SD20 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_SD20.qvd];

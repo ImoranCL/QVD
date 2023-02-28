@@ -1,0 +1,144 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+SD31:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BATCH] as [BATCH], 
+	[0BILL_ITEM] as [BILL_ITEM], 
+	[0BILL_NUM] as [BILL_NUM], 
+	[0BP_GRP] as [BP_GRP], 
+	[0CALDAY] as [CALDAY], 
+	[0COUNTRY] as [COUNTRY], 
+	[0CP_CATEG] as [CP_CATEG],
+	[0CREATEDON] as [CREATEDON], 
+	[0CRM_PROD] as [CRM_PROD], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0DOC_CLASS] as [DOC_CLASS], 
+	[0DOC_CURRCY] as [DOC_CURRCY], 
+	[0DOC_NUMBER] as [DOC_NUMBER], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_SAL] as [GN_CAT_SAL], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0IMODOCCAT] as [IMODOCCAT], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0PMNTTRMS] as [PMNTTRMS], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_CATEG] as [PROD_CATEG], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REFER_DOC] as [REFER_DOC], 
+	[0REFER_ITM] as [REFER_ITM], 
+	[0REGION] as [REGION], 
+	[0REQTSN] as [REQTSN], 
+	[0SHIP_POINT] as [SHIP_POINT], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STAT_CURR] as [STAT_CURR], 
+	[0S_ORD_ITEM] as [S_ORD_ITEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CLC_BILTO, 
+	CLC_COMPC, 
+	CLC_DIVIS, 
+	CLC_DTRCH, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_PAYER, 
+	CLC_PLANT, 
+	CLC_SHIPT, 
+	CLC_SLEMP, 
+	CLC_SLGRP, 
+	CLC_SLSOF, 
+	CLC_SOLDT, 
+	CLC_VKORG, 
+	[0BIL_I_CNT] as [BIL_I_CNT], 
+	[0COST] as [COST], 
+	[0COST_VAL_S] as [COST_VAL_S], 
+	[0GR_WT_KG] as [GR_WT_KG], 
+	[0NETVAL_INV] as [NETVAL_INV], 
+	[0NET_VAL_S] as [NET_VAL_S], 
+	[0NT_WT_KG] as [NT_WT_KG], 
+	[0QUANT_B] as [QUANT_B], 
+	[0SUBTOT_1S] as [SUBTOT_1S], 
+	[0SUBTOT_2S] as [SUBTOT_2S], 
+	[0SUBTOT_3S] as [SUBTOT_3S], 
+	[0SUBTOT_4S] as [SUBTOT_4S], 
+	[0SUBTOT_5S] as [SUBTOT_5S], 
+	[0SUBTOT_6S] as [SUBTOT_6S], 
+	[0VOLUME_CDM] as [VOLUME_CDM],
+    [0SOURSYSTEM]&[0BILL_NUM]&[0BILL_ITEM]&[0CALDAY] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+    [0BATCH],	// Número de lote
+	[0BILL_ITEM],	// Posición de factura
+	[0BILL_NUM],	// Factura
+	[0BP_GRP],	// IC: Grupo interlocutores comerciales (de jerarquía)
+	[0CALDAY],	// Día natural
+	[0COUNTRY],	// Clave de país
+	[0CP_CATEG],	// Categoría
+	[0CREATEDON],	// Fecha de creación del registro
+	[0CRM_PROD],	// Producto
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0DOC_CURRCY],	// Moneda del documento
+	[0DOC_NUMBER],	// Documento venta
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_SAL],	// Categoría venta
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0ITEM_DEL],	// Posición borrada
+	[0PMNTTRMS],	// Clave de condiciones de pago
+	[0PRODUCT],	// Producto_1
+	[0PROD_CATEG],	// Categoría de producto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REFER_DOC],	// Número del documento modelo
+	[0REFER_ITM],	// Número de la posición comercial modelo
+	[0REGION],	// Región (estado, estado federado, provincia, condado)
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SHIP_POINT],	// Puesto de expedición
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STAT_CURR],	// Moneda estadística
+	[0S_ORD_ITEM],	// Posición documento ventas
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_BILTO],	// Destinatario Factura
+	[CLC_COMPC],	// Sociedad
+	[CLC_DIVIS],	// Sector
+	[CLC_DTRCH],	// Canal de distribución
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[CLC_PAYER],	// Responsable de pago
+	[CLC_PLANT],	// Ctro
+	[CLC_SHIPT],	// Destinatario Mercancias
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SLGRP],	// Grupo de vendedores
+	[CLC_SLSOF],	// Oficina de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_VKORG],	// Organización de ventas
+	[0BIL_I_CNT],	// Cantidad posiciones facturación
+	[0COST],	// Precio de facturación en moneda del documento
+	[0COST_VAL_S],	// Precio de facturación en moneda estadística
+	[0GR_WT_KG],	// Peso bruto en kilogramos
+	[0NETVAL_INV],	// Valor neto de posición de factura en moneda de documento
+	[0NET_VAL_S],	// Valor neto en moneda estadística
+	[0NT_WT_KG],	// Peso neto en kilogramos
+	[0QUANT_B],	// Cantidad en unidades de medida base
+	[0SUBTOT_1S],	// Subtotal condiciones 1 de esquema cálculo en mon.estadística
+	[0SUBTOT_2S],	// Subtotal condiciones 2 de esquema cálculo en mon.estadística
+	[0SUBTOT_3S],	// Subtotal condiciones 3 de esquema cálculo en mon.estadística
+	[0SUBTOT_4S],	// Subtotal condiciones 4 de esquema cálculo en mon.estadística
+	[0SUBTOT_5S],	// Subtotal condiciones 5 de esquema cálculo en mon.estadística
+	[0SUBTOT_6S],	// Subtotal condiciones 6 de esquema cálculo en mon.estadística
+	[0VOLUME_CDM]	// Volumen en decímetros cúbicos
+
+FROM /IMO/D_SD31;
+
+STORE SD31 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_SD31.qvd;

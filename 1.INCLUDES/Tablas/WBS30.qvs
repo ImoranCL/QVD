@@ -1,0 +1,75 @@
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+WBS30:
+LOAD
+    RowNum,
+    "Clase de coste" as [COSTELMNT],
+    "Sociedad CO" as [CO_AREA],
+    "Texto del apunte contable de CO" as [CO_ITEM_TX],
+    "Jerarquía de gestión de proyectos" as [CPR_GUID],
+    "Número de cuenta del proveedor o acreedor" as [CREDITOR],
+    "Clave de moneda" as [CURRENCY],
+    "Tipo de moneda" as [CURTYPE],
+    "Paquete de datos" as [DATAPAKID],
+    "Indicador emisor/receptor" as [DB_CR_IND],
+    "Fecha del documento" as [DOC_DATE],
+    "Ejercicio/Período" as [FISCPER],
+    "Período contable" as [FISCPER3],
+    "Variante de ejercicio" as [FISCVARNT],
+    Ejercicio as [FISCYEAR],
+    "Entidad CP" as [FM_AREA],
+    "Área funcional" as [FUNC_AREA],
+    Fondos as [FUND],
+    "Sistema fuente de la entidad (2 posiciones)" as [GN_R3_SSY],
+    Subvención as [GRANT_NBR],
+    "Tipo de ratio" as [METYPE],
+    "Período de presupuesto de interlocutor" as [PBDGTID],
+    "División del interlocutor comercial" as [PBUS_AREA],
+    "Número de sociedad GL asociada" as [PCOMPANY],
+    "Área de funciones del interlocutor" as [PFUNC_AREA],
+    "Fondos de interlocutor" as [PFUND],
+    "Fomento de interlocutor" as [PGRANT_NBR],
+    "Definición del proyecto" as [PROJECT],
+    "UID de un objeto PS" as [PSGUID],
+    "Fecha de contabilización en el documento" as [PSTNG_DATE],
+    Per.presupuesto as [PU_BDGTID],
+    "Número registro datos" as [RECORD],
+    "BW procedimiento delta: Modo de actualización" as [RECORDMODE],
+    "Documento referencia: Número imputación" as [REF_DOC_AA],
+    "Documento de referencia: Tipo" as [REF_DOC_CT],
+    "Documento de referencia: Posición de fecha" as [REF_DOC_DI],
+    "Posición del documento de referencia" as [REF_DOC_IT],
+    "Número documento de referencia" as [REF_DOC_NR],
+    "Documento de referencia: Clase" as [REF_DOC_TY],
+    "Número de transacción consecutivo de solicitud" as [REQTSN],
+    "Indicador: Posición de documento borrada" as [RES_DEL],
+    "ID sistema fuente" as [SOURSYSTEM],
+    "Unidad medida" as [UNIT],
+    "Fecha de actualización" as [UPD_DATE],
+    "Nombre de usuario" as [USERNAME],
+    Vers. as [VERSION],
+    "Detalle del tipo de valor" as [VTDETAIL],
+    "Indicador estadística para tipo valor" as [VTSTAT],
+    "Tipo valor para informes" as [VTYPE],
+    Text(Sociedad) as CLC_COMPC,
+    Text(Material) as CLC_MATER,
+    Text("Grupo artículos") as CLC_MATLG,
+    "Elemento del plan de estructura de proyecto (elemento PEP)" as CLC_WBSP,
+    Importe as [AMOUNT],
+    Cantidad as [QUANTITY],
+    UniqueKey
+FROM [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_WBS30.qvd]
+(qvd);
+
+[COSTELMNT_TEXTS]: LEFT JOIN LOAD [CO_AREA], [COSTELMNT], [TXTMD] AS [COSTELMNT_TEXT], [TXTSH] AS [COSTELMNT_TEXT_S]; SELECT CO_AREA, COSTELMNT, TXTMD, TXTSH FROM /BI0/TCOSTELMNT WHERE LANGU = 'S' AND DATEFROM <= SY-DATUM AND DATETO >= SY-DATUM;
+[CO_AREA_TEXTS]: LEFT JOIN LOAD [CO_AREA], [TXTMD] AS [CO_AREA_TEXT]; SELECT CO_AREA, TXTMD FROM /BI0/TCO_AREA;
+[FM_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FM_AREA], [TXTMD] AS [FM_AREA_TEXT]; SELECT SOURSYSTEM, FM_AREA, TXTMD FROM /BI0/TFM_AREA WHERE LANGU = 'S';
+[FUNC_AREA_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [FUNC_AREA], [TXTMD] AS [FUNC_AREA_TEXT]; SELECT SOURSYSTEM, FUNC_AREA, TXTMD FROM /BI0/TFUNC_AREA WHERE LANGU = 'S';
+[PROJECT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [PROJECT], [TXTMD] AS [PROJECT_TEXT]; SELECT SOURSYSTEM, PROJECT, TXTMD FROM /BI0/TPROJECT WHERE LANGU = 'S';
+[CLC_COMPC_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_COMPC]) AS [CLC_COMPC], [TXTMD] AS [CLC_COMPC_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_COMPC, TXTMD FROM /BIC/TCLC_COMPC;
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATER]) AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_MATLG_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], Text([/BIC/CLC_MATLG]) AS [CLC_MATLG], [TXTSH] AS [CLC_MATLG_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATLG, TXTSH FROM /BIC/TCLC_MATLG WHERE LANGU = 'S';
+[CLC_WBSP_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_WBSP] AS [CLC_WBSP], [TXTMD] AS [CLC_WBSP_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_WBSP, TXTMD FROM /BIC/TCLC_WBSP WHERE LANGU = 'S';
+
+STORE WBS30 INTO  [lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/WBS30.qvd];
+
+// DROP Table WBS30;

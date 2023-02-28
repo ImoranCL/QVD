@@ -1,0 +1,79 @@
+LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+GG_MDPB:
+LOAD RowNum, 
+	[0CONF_DATE] as [CONF_DATE], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0FRE_PLNPUR] as [FRE_PLNPUR], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0UNIT] as [UNIT], 
+	BDZEI, 
+	BEDAE, 
+	CUOBJ, 
+	ENTLI, 
+	KDAUF, 
+	KDPOS, 
+	KNTTP, 
+	KZBWS, 
+	KZVBR, 
+	OPLKZ, 
+	PLNKZ, 
+	SERNR, 
+	SGT_RCAT, 
+	SOBKZ, 
+	TECHS, 
+	VERID, 
+	VERKZ, 
+	VERVS, 
+	ZUVKZ, 
+	CLC_MATER, 
+	CLC_PLANT, 
+	CLC_VERSB, 
+	CLC_WBSP, 
+	[0QUANTITY] as [QUANTITY],
+    [0SOURSYSTEM]&CLC_MATER&CLC_PLANT&BEDAE&CLC_VERSB&[0FRE_PLNPUR]&BDZEI&[0CONF_DATE] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0CONF_DATE],	// Fecha entrega confirmada
+	[0DATAPAKID],	// Paquete de datos
+	[0FRE_PLNPUR],	// Planificador necesidades
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0UNIT],	// Unidad medida
+	[BDZEI],	// Puntero nec.primar.
+	[BEDAE],	// Clase de necesidad
+	[CUOBJ],	// Nº objeto interno
+	[ENTLI],	// Tipo de fecha
+	[KDAUF],	// Pedido cliente
+	[KDPOS],	// Pos.pedido cliente
+	[KNTTP],	// Tipo de imputación
+	[KZBWS],	// Val.stock especial
+	[KZVBR],	// Consumo
+	[OPLKZ],	// No relev. p. MRP
+	[PLNKZ],	// Ind.planificación
+	[SERNR],	// Número de serie
+	[SGT_RCAT],	// Segmento necesidad
+	[SOBKZ],	// Stock especial
+	[TECHS],	// Valoración estándar
+	[VERID],	// Versión fabricación
+	[VERKZ],	// Compens.preplanif.
+	[VERVS],	// Activa
+	[ZUVKZ],	// Ind-compensación
+	[CLC_MATER],	// Material
+	[CLC_PLANT],	// Ctro
+	[CLC_VERSB],	// Versión
+	[CLC_WBSP],	// Elemento del plan de estructura de proyecto (elemento PEP)
+	[0QUANTITY]	// Cantidad
+
+FROM GG_MDPB;
+
+[CLC_MATER_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_MATER] AS [CLC_MATER], [TXTMD] AS [CLC_MATER_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_MATER, TXTMD FROM /BIC/TCLC_MATER WHERE LANGU = 'S';
+[CLC_PLANT_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_PLANT] AS [CLC_PLANT], [TXTMD] AS [CLC_PLANT_TEXT], [TXTSH] AS [CLC_PLANT_TEXT_S]; SELECT SOURSYSTEM, /BIC/CLC_PLANT, TXTMD, TXTSH FROM /BIC/TCLC_PLANT;
+[CLC_VERSB_TEXTS]: LEFT JOIN LOAD [/BIC/CLC_VERSB] AS [CLC_VERSB], [TXTLG] AS [CLC_VERSB_TEXT_L], [TXTMD] AS [CLC_VERSB_TEXT], [TXTSH] AS [CLC_VERSB_TEXT_S]; SELECT /BIC/CLC_VERSB, TXTLG, TXTMD, TXTSH FROM /BIC/TCLC_VERSB WHERE LANGU = 'S';
+[CLC_WBSP_TEXTS]: LEFT JOIN LOAD [SOURSYSTEM], [/BIC/CLC_WBSP] AS [CLC_WBSP], [TXTMD] AS [CLC_WBSP_TEXT]; SELECT SOURSYSTEM, /BIC/CLC_WBSP, TXTMD FROM /BIC/TCLC_WBSP WHERE LANGU = 'S';
+
+STORE GG_MDPB INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/GG_MDPB.qvd;

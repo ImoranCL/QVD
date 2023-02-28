@@ -1,0 +1,18 @@
+﻿//******************************************************************
+// CONEXIÓN A LA BBDD
+//******************************************************************
+
+LIB CONNECT TO 'Nombre conexion BBDD en QLIK';
+
+//******************************************************************
+// SCRIPT CARGA QVDs
+//******************************************************************
+
+
+TRACE CARGA NIVEL 1;
+//$(vL.EntornoFramework) es la conexion de QLIK al directorio de nivel 1
+
+$(Must_Include=$(vL.EntornoFramework)\1.NIVEL_1\RAW_DATA\origen\4.CONFIG\1.INCLUDES\QVD_MAKER_xxxxxxx_N1.Script.xxxxx.qvs);
+$$(Must_Include=$(vL.EntornoFramework)\1.NIVEL_1\RAW_DATA\origen\4.CONFIG\1.INCLUDES\QVD_MAKER_xxxxxxx_N1.Script.xxxxx.qvs);
+$$(Must_Include=$(vL.EntornoFramework)\1.NIVEL_1\RAW_DATA\origen\4.CONFIG\1.INCLUDES\QVD_MAKER_xxxxxxx_N1.Script.xxxxx.qvs);
+$$(Must_Include=$(vL.EntornoFramework)\1.NIVEL_1\RAW_DATA\origen\4.CONFIG\1.INCLUDES\QVD_MAKER_xxxxxxx_N1.Script.xxxxx.qvs);

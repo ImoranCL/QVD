@@ -1,0 +1,165 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+PUR12:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BATCH] as [BATCH], 
+	[0CALDAY] as [CALDAY], 
+	[0COMPL_DEL] as [COMPL_DEL], 
+	[0CONTRACT] as [CONTRACT], 
+	[0CONT_ITEM] as [CONT_ITEM], 
+	[0CT_FLAG] as [CT_FLAG], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DOCTYPE] as [DOCTYPE], 
+	[0DOC_CAT] as [DOC_CAT], 
+	[0ENTRY_DATE] as [ENTRY_DATE], 
+	[0EVAL_R_S] as [EVAL_R_S], 
+	[0FINAL_INV] as [FINAL_INV], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CAT_PUR] as [GN_CAT_PUR], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0GR_BASE_IV] as [GR_BASE_IV], 
+	[0GR_RE_IND] as [GR_RE_IND], 
+	[0INV_PARTY] as [INV_PARTY], 
+	[0ITEM_DEL] as [ITEM_DEL], 
+	[0ITM_CAT] as [ITM_CAT], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0LOG_SYS_BE] as [LOG_SYS_BE], 
+	[0MATERIAL] as [MATERIAL], 
+	[0MATL_GROUP] as [MATL_GROUP], 
+	[0OI_EBELN] as [OI_EBELN], 
+	[0OI_EBELP] as [OI_EBELP], 
+	[0ORDER_CURR] as [ORDER_CURR], 
+	[0PLANT] as [PLANT], 
+	[0PO_STATUS] as [PO_STATUS], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0PRODUCT] as [PRODUCT], 
+	[0PROD_DESCR] as [PROD_DESCR], 
+	[0PSTNG_DATE] as [PSTNG_DATE], 
+	[0PURCH_ORG] as [PURCH_ORG], 
+	[0PUR_GROUP] as [PUR_GROUP], 
+	[0PUR_REASON] as [PUR_REASON], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0REQUISIT] as [REQUISIT], 
+	[0RET_ITM] as [RET_ITM], 
+	[0SCHED_DATE] as [SCHED_DATE], 
+	[0SCHED_LINE] as [SCHED_LINE], 
+	[0SCL_DELDAT] as [SCL_DELDAT], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STAT_DATE] as [STAT_DATE], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0SUPP_PLANT] as [SUPP_PLANT], 
+	[0UPD_DATE] as [UPD_DATE], 
+	[0VAL_END] as [VAL_END], 
+	[0VAL_START] as [VAL_START], 
+	[0VENDOR] as [VENDOR], 
+	CLC_MATER, 
+	CLC_MATLG, 
+	CLC_NV_PA, 
+	CLC_PLANT, 
+	CLC_PROFG, 
+	CLC_UPP_P, 
+	CLC_VEND, 
+	[0PO_ITEMLNS] as [PO_ITEMLNS], 
+	[0SR_GRQBU] as [SR_GRQBU], 
+	[0SR_GRVLC] as [SR_GRVLC], 
+	[0SR_GRVOC] as [SR_GRVOC], 
+	[0SR_IVQBU] as [SR_IVQBU], 
+	[0SR_IVVLC] as [SR_IVVLC], 
+	[0SR_IVVOC] as [SR_IVVOC], 
+	[0SR_POQBU] as [SR_POQBU], 
+	[0SR_POVLC] as [SR_POVLC], 
+	[0SR_POVOC] as [SR_POVOC],
+    [0SOURSYSTEM]&[0OI_EBELN]&[0OI_EBELP]&[0SCHED_LINE] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0BATCH],	// Número de lote
+	[0CALDAY],	// Fecha de documento de compras
+	[0COMPL_DEL],	// Indicador de entrega final
+	[0CONTRACT],	// Número del contrato superior
+	[0CONT_ITEM],	// Posición del contrato superior
+	[0CT_FLAG],	// Indicador para pedidos abiertos
+	[0DATAPAKID],	// Paquete de datos
+	[0DOCTYPE],	// Clase de documento de compras
+	[0DOC_CAT],	// Tipo documento de compras
+	[0ENTRY_DATE],	// Fecha de registro del documento de compras
+	[0EVAL_R_S],	// Autofacturación
+	[0FINAL_INV],	// Indicador de factura final
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CAT_PUR],	// Categoría de compras
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0GN_VENDOR],	// Proveedor
+	[0GR_BASE_IV],	// Verific.de fact.referida a EM
+	[0GR_RE_IND],	// Indicador de entrada de mercancías
+	[0INV_PARTY],	// Emisor de la factura
+	[0ITEM_DEL],	// Posición borrada
+	[0ITM_CAT],	// Tipo de posición del documento de compras
+	[0LOC_CURRCY],	// Moneda local
+	[0LOG_SYS_BE],	// Sistema lógico back end
+	[0MATERIAL],	// Material
+	[0MATL_GROUP],	// Grupo artículos
+	[0OI_EBELN],	// Número del documento de compras
+	[0OI_EBELP],	// Número posición del doc.de compras
+	[0ORDER_CURR],	// Moneda de pedido
+	[0PLANT],	// Ctro
+	[0PO_STATUS],	// Status del documento de compras
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0PRODUCT],	// Producto
+	[0PROD_DESCR],	// Descripción de producto
+	[0PSTNG_DATE],	// Fecha de contabilización en el documento
+	[0PURCH_ORG],	// Organización de compras
+	[0PUR_GROUP],	// Grupo de compras
+	[0PUR_REASON],	// Motivo de pedido
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0REQUISIT],	// Nombre del solicitante
+	[0RET_ITM],	// Posición de devoluciones
+	[0SCHED_DATE],	// Fecha de reparto
+	[0SCHED_LINE],	// Número de reparto
+	[0SCL_DELDAT],	// Fecha de entrega planificada del reparto de documentos
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STAT_DATE],	// Fecha para estadísticas
+	[0STOR_LOC],	// Almacén
+	[0SUPP_PLANT],	// Centro suministrador
+	[0UPD_DATE],	// Fecha de actualización
+	[0VAL_END],	// Fin per.val.
+	[0VAL_START],	// Inicio del período de validez
+	[0VENDOR],	// Proveedor_1
+	[CLC_MATER],	// Material_1
+	[CLC_MATLG],	// Grupo artículos_1
+	[CLC_NV_PA],	// Emisor de la factura_1
+	[CLC_PLANT],	// Ctro_1
+	[CLC_PROFG],	// Grupo de compras_1
+	[CLC_UPP_P],	// Centro suministrador_1
+	[CLC_VEND],	// Proveedor_2
+	[0PO_ITEMLNS],	// Cantidad de repartos de pedido
+	[0SR_GRQBU],	// Cantidad de entrada de emrcancías en unidad de medida base
+	[0SR_GRVLC],	// Valor neto de entrada de mercancías en moneda local
+	[0SR_GRVOC],	// Valor neto de entrada de mercancías en moneda de pedido
+	[0SR_IVQBU],	// Cantidad de factura en unidad de medida base
+	[0SR_IVVLC],	// Valor factura neto en moneda local
+	[0SR_IVVOC],	// Valor factura neto en moneda de pedido
+	[0SR_POQBU],	// Cantidad de pedido en unidad de medida base
+	[0SR_POVLC],	// Valor pedido neto en moneda local
+	[0SR_POVOC]	// Valor pedido neto en moneda del pedido
+
+FROM /IMO/D_PUR12;
+
+STORE PUR12 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_PUR12.qvd;
+
+
+
+
+
+
+

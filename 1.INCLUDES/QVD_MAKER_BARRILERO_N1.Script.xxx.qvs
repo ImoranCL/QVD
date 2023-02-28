@@ -1,0 +1,18 @@
+﻿//==================================================================================================================================================================
+// DOCUMENTO:   QVD_MAKER_xxxxx_N1.Script.xxx.qvs
+// TABLA:     	BARRILERO: XXX - xxx
+// AUTOR:       TEKNEI
+// DESCRIPCIÓN: Contiene toda la información de la tabla que originará la generación del fichero XXX.qvd.
+//==================================================================================================================================================================
+
+TRACE ###############################;
+TRACE ##########    CLIENTE: XXX;
+TRACE ###############################;
+
+[XXX]:
+SELECT *
+FROM "xxx"."xxx";
+
+// Se almacena en QVD la tabla xxx y posteriormente se elimina
+STORE * FROM XXX INTO $(vL.EntornoFrameworkBarrilero)\1.QVD\XXX.QVD;
+DROP TABLE XXX;

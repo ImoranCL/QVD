@@ -1,0 +1,79 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+CL_MARA:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BASIC_MATL] as [BASIC_MATL], 
+	[0CHANGEDBY] as [CHANGEDBY], 
+	[0CH_ON] as [CH_ON], 
+	[0CREATEDON] as [CREATEDON], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEL_FLAG] as [DEL_FLAG], 
+	[0IND_SECTOR] as [IND_SECTOR], 
+	[0MATL_TYPE] as [MATL_TYPE], 
+	[0PH_CREATBY] as [PH_CREATBY], 
+	[0PO_UNIT] as [PO_UNIT], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0RT_PURCHAR] as [RT_PURCHAR], 
+	[0SIZE_DIM] as [SIZE_DIM], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STD_DESCR] as [STD_DESCR], 
+	[0UNIT_DIM] as [UNIT_DIM], 
+	[0UNIT_OF_WT] as [UNIT_OF_WT], 
+	[0VOLUMEUNIT] as [VOLUMEUNIT], 
+	PSTAT, 
+	VPSTA, 
+	CLC_BISMT, 
+	CLC_CLASE, 
+	CLC_HIERH, 
+	CLC_LABOR, 
+	CLC_MATER, 
+	CLC_MATLG, 
+	[0GROSS_WT] as [GROSS_WT], 
+	[0HEIGHT] as [HEIGHT], 
+	[0LENGHT] as [LENGHT], 
+	[0NET_WEIGHT] as [NET_WEIGHT], 
+	[0VOLUME] as [VOLUME], 
+	[0WIDTH] as [WIDTH];
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0BASIC_MATL],	// Materia
+	[0CHANGEDBY],	// Modificados por
+	[0CH_ON],	// Fecha última modificación
+	[0CREATEDON],	// Fecha de creación del registro
+	[0DATAPAKID],	// Paquete de datos
+	[0DEL_FLAG],	// Petición borrado para todos datos de materiales de un centro
+	[0IND_SECTOR],	// Ramo
+	[0MATL_TYPE],	// Tipo de material
+	[0PH_CREATBY],	// Creado por
+	[0PO_UNIT],	// Unidad de medida de pedido
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0RT_PURCHAR],	// Área de compras
+	[0SIZE_DIM],	// Tamaño/Dimensión
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STD_DESCR],	// Denominación estándar (p. ej., DIN)
+	[0UNIT_DIM],	// Unidad para longitud/ancho/altura
+	[0UNIT_OF_WT],	// Unidad de peso
+	[0VOLUMEUNIT],	// Unidad volumen
+	[PSTAT],	// Status actualización
+	[VPSTA],	// Status act.completo
+	[CLC_BISMT],	// Nº Antiguo Material
+	[CLC_CLASE],	// Clase perfil
+	[CLC_HIERH],	// Jerarquía de productos
+	[CLC_LABOR],	// Familia producción
+	[CLC_MATER],	// Material
+	[CLC_MATLG],	// Grupo artículos
+	[0GROSS_WT],	// Peso bruto
+	[0HEIGHT],	// Altura
+	[0LENGHT],	// Longitud
+	[0NET_WEIGHT],	// Peso neto de la posición
+	[0VOLUME],	// Volumen
+	[0WIDTH]	// Ancho
+
+FROM CL_MARA;
+
+STORE CL_MARA INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_CL_MARA.qvd;

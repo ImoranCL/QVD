@@ -1,0 +1,78 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+MMIM01:
+LOAD RowNum, 
+	[0BASE_UOM] as [BASE_UOM], 
+	[0BATCH] as [BATCH], 
+	[0CALDAY] as [CALDAY], 
+	[0CALMONTH] as [CALMONTH], 
+	[0CALQUARTER] as [CALQUARTER], 
+	[0CALWEEK] as [CALWEEK], 
+	[0CALYEAR] as [CALYEAR], 
+	[0CUSTOMER] as [CUSTOMER], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0PRODUCT] as [PRODUCT], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0RECORDTP] as [RECORDTP], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOCKCAT] as [STOCKCAT], 
+	[0STOCKTYPE] as [STOCKTYPE], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0UPD_DATE] as [UPD_DATE], 
+	Text(CLC_MATER) as CLC_MATER, 
+	Text(CLC_PLANT) as CLC_PLANT, 
+	CLC_VEND, 
+	[0CNSSTCKQTY] as [CNSSTCKQTY], 
+	[0ISSCNSSTCK] as [ISSCNSSTCK], 
+	[0ISSTOTSTCK] as [ISSTOTSTCK], 
+	[0ISSVALSTCK] as [ISSVALSTCK], 
+	[0RECCNSSTCK] as [RECCNSSTCK], 
+	[0RECTOTSTCK] as [RECTOTSTCK], 
+	[0RECVALSTCK] as [RECVALSTCK], 
+	[0TOTALSTCK] as [TOTALSTCK], 
+	[0VALSTCKQTY] as [VALSTCKQTY],
+	Trim(RowNum&[0SOURSYSTEM]&[0CALDAY]&[0UPD_DATE]&[CLC_MATER]&[CLC_PLANT]&[0STOR_LOC]&[0PRODUCT]&[CLC_VEND]&[0GN_LOCATIO]&[0BATCH]&[0STOCKTYPE]&[0STOCKCAT]&[0GN_VENDOR]&[0CUSTOMER]&[0GN_CUSTOM]) as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BASE_UOM],	// Unidad de medida base
+	[0BATCH],	// Número de lote
+	[0CALDAY],	// Día natural
+	[0CALMONTH],	// Año/Mes natural
+	[0CALQUARTER],	// Año natural/Trimestre
+	[0CALWEEK],	// Año/Semana natural
+	[0CALYEAR],	// Año natural
+	[0CUSTOMER],	// Número de cliente
+	[0DATAPAKID],	// Paquete de datos
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_VENDOR],	// Proveedor
+	[0PRODUCT],	// Producto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0RECORDTP],	// Tipo de registro
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOCKCAT],	// Tipo de stocks
+	[0STOCKTYPE],	// Característica de stock
+	[0STOR_LOC],	// Almacén
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_MATER],	// Material
+	[CLC_PLANT],	// Ctro
+	[CLC_VEND],	// Proveedor_1
+	[0CNSSTCKQTY],	// Cantidad stock artículos en consignación
+	[0ISSCNSSTCK],	// Cantidad de salida stock de artículos en consignación
+	[0ISSTOTSTCK],	// Cantidad de salida del stock total
+	[0ISSVALSTCK],	// Cantidad de salida de stock valorado
+	[0RECCNSSTCK],	// Cantidad de entrada stock artículos en consignación
+	[0RECTOTSTCK],	// Cantidad de entrada en el stock total
+	[0RECVALSTCK],	// Cantidad de entrada de stock valorado
+	[0TOTALSTCK],	// Cantidad stock total
+	[0VALSTCKQTY]	// Cantidad stock valorado
+
+FROM /IMO/D_MMIM01;
+
+STORE [MMIM01] INTO 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_MMIM01.qvd' (qvd);

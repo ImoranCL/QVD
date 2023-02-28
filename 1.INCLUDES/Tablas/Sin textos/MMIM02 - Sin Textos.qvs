@@ -1,0 +1,63 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+MMIM02:
+LOAD RowNum, 
+	[0CALDAY] as [CALDAY], 
+	[0CALMONTH] as [CALMONTH], 
+	[0CALQUARTER] as [CALQUARTER], 
+	[0CALWEEK] as [CALWEEK], 
+	[0CALYEAR] as [CALYEAR], 
+	[0CUSTOMER] as [CUSTOMER], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_LOCATIO] as [GN_LOCATIO], 
+	[0GN_VENDOR] as [GN_VENDOR], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0PRODUCT] as [PRODUCT], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0RECORDTP] as [RECORDTP], 
+	[0REQTSN] as [REQTSN], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STOCKCAT] as [STOCKCAT], 
+	[0STOR_LOC] as [STOR_LOC], 
+	[0UPD_DATE] as [UPD_DATE], 
+	Text(CLC_MATER) as CLC_MATER, 
+	Text(CLC_PLANT) as CLC_PLANT, 
+	CLC_VEND, 
+	[0ISSVS_VAL] as [ISSVS_VAL], 
+	[0RECVS_VAL] as [RECVS_VAL], 
+	[0VALSTCKVAL] as [VALSTCKVAL],
+    RowNum&[0CALDAY]&[0STOR_LOC]&[CLC_PLANT]&[CLC_VEND]&[0SOURSYSTEM]&[CLC_MATER]&[0PRODUCT]&[0GN_LOCATIO]&[0STOCKCAT]&[0GN_VENDOR]&[0CUSTOMER]&[0GN_CUSTOM]&[0UPD_DATE] as UniqueKey;
+
+
+SELECT		[RowNum],	// RowNum
+	[0CALDAY],	// Día natural
+	[0CALMONTH],	// Año/Mes natural
+	[0CALQUARTER],	// Año natural/Trimestre
+	[0CALWEEK],	// Año/Semana natural
+	[0CALYEAR],	// Año natural
+	[0CUSTOMER],	// Número de cliente
+	[0DATAPAKID],	// Paquete de datos
+	[0GN_CUSTOM],	// Cliente
+	[0GN_LOCATIO],	// Emplazamiento
+	[0GN_VENDOR],	// Proveedor
+	[0LOC_CURRCY],	// Moneda local
+	[0PRODUCT],	// Producto
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0RECORDTP],	// Tipo de registro
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STOCKCAT],	// Tipo de stocks
+	[0STOR_LOC],	// Almacén
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_MATER],	// Material
+	[CLC_PLANT],	// Ctro
+	[CLC_VEND],	// Proveedor_1
+	[0ISSVS_VAL],	// Valor de salida de stock valorado
+	[0RECVS_VAL],	// Valor de entrada de stock valorado
+	[0VALSTCKVAL]	// Valor stock valorado
+
+FROM /IMO/D_MMIM02;
+
+STORE [MMIM02] INTO 'lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_MMIM02.qvd' (qvd);

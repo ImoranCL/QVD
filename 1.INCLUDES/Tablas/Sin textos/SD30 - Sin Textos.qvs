@@ -1,0 +1,97 @@
+﻿LIB CONNECT TO 'SAP BW B62 - Producción (azurecl_vancin@gicl.es)';
+SD30:
+LOAD RowNum, 
+	[0BILL_CAT] as [BILL_CAT], 
+	[0BILL_NUM] as [BILL_NUM], 
+	[0BILL_TYPE] as [BILL_TYPE], 
+	[0BPO_STAT] as [BPO_STAT], 
+	[0CALDAY] as [CALDAY], 
+	[0CREATEDBY] as [CREATEDBY], 
+	[0CREATEDON] as [CREATEDON], 
+	[0CUST_GROUP] as [CUST_GROUP], 
+	[0DATAPAKID] as [DATAPAKID], 
+	[0DEB_CRED] as [DEB_CRED], 
+	[0DIVISION] as [DIVISION], 
+	[0DOC_CLASS] as [DOC_CLASS], 
+	[0DOC_CURRCY] as [DOC_CURRCY], 
+	[0DOC_NUMBER] as [DOC_NUMBER], 
+	[0FISCPER] as [FISCPER], 
+	[0FISCVARNT] as [FISCVARNT], 
+	[0FISCYEAR] as [FISCYEAR], 
+	[0GN_CUSTOM] as [GN_CUSTOM], 
+	[0GN_R3_SSY] as [GN_R3_SSY], 
+	[0HEADER_DEL] as [HEADER_DEL], 
+	[0IMODOCCAT] as [IMODOCCAT], 
+	[0IMOINCOTM2] as [IMOINCOTM2], 
+	[0INCOTERMS] as [INCOTERMS], 
+	[0LOC_CURRCY] as [LOC_CURRCY], 
+	[0PER_RESP] as [PER_RESP], 
+	[0PRO_STAT] as [PRO_STAT], 
+	[0RATE_TYPE] as [RATE_TYPE], 
+	[0RECORD] as [RECORD], 
+	[0RECORDMODE] as [RECORDMODE], 
+	[0REQTSN] as [REQTSN], 
+	[0SALES_DIST] as [SALES_DIST], 
+	[0SOURSYSTEM] as [SOURSYSTEM], 
+	[0STAT_CURR] as [STAT_CURR], 
+	[0S_ORD_ITEM] as [S_ORD_ITEM], 
+	[0UPD_DATE] as [UPD_DATE], 
+	CLC_COMPC, 
+	CLC_DTRCH, 
+	CLC_PAYER, 
+	CLC_SLEMP, 
+	CLC_SOLDT, 
+	CLC_VKORG, 
+	[0BIL_H_CNT] as [BIL_H_CNT], 
+	[0DLT_H_CNT] as [DLT_H_CNT], 
+	[0EXRATE_ACC] as [EXRATE_ACC],
+    [0SOURSYSTEM]&[0BILL_NUM] as UniqueKey;
+
+SELECT		[RowNum],	// RowNum
+	[0BILL_CAT],	// Tipo de factura
+	[0BILL_NUM],	// Factura
+	[0BILL_TYPE],	// Clase de factura
+	[0BPO_STAT],	// Status de contabilización de factura
+	[0CALDAY],	// Día natural
+	[0CREATEDBY],	// Nombre del responsable que ha añadido el objeto
+	[0CREATEDON],	// Fecha de creación del registro
+	[0CUST_GROUP],	// Grupo de clientes
+	[0DATAPAKID],	// Paquete de datos
+	[0DEB_CRED],	// Contabilización en el Haber/Debe (H/D)
+	[0DIVISION],	// Sector
+	[0DOC_CLASS],	// Clase de documento: Oferta/Pedido/Entrega/Factura
+	[0DOC_CURRCY],	// Moneda del documento
+	[0DOC_NUMBER],	// Documento venta
+	[0FISCPER],	// Ejercicio/Período
+	[0FISCVARNT],	// Variante de ejercicio
+	[0FISCYEAR],	// Ejercicio
+	[0GN_CUSTOM],	// Cliente
+	[0GN_R3_SSY],	// Sistema fuente de la entidad (2 posiciones)
+	[0HEADER_DEL],	// Cabecera borrada
+	[0IMODOCCAT],	// Tipo de documento comercial
+	[0IMOINCOTM2],	// Incoterms, parte 2
+	[0INCOTERMS],	// Incoterms, parte 1
+	[0LOC_CURRCY],	// Moneda local
+	[0PER_RESP],	// Persona responsable
+	[0PRO_STAT],	// Status global de tratamiento de documento
+	[0RATE_TYPE],	// Tp.cotiz.
+	[0RECORD],	// Número registro datos
+	[0RECORDMODE],	// BW procedimiento delta: Modo de actualización
+	[0REQTSN],	// Número de transacción consecutivo de solicitud
+	[0SALES_DIST],	// Zona de ventas
+	[0SOURSYSTEM],	// ID sistema fuente
+	[0STAT_CURR],	// Moneda estadística
+	[0S_ORD_ITEM],	// Posición documento ventas
+	[0UPD_DATE],	// Fecha de actualización
+	[CLC_COMPC],	// Sociedad
+	[CLC_DTRCH],	// Canal de distribución
+	[CLC_PAYER],	// Responsable de pago
+	[CLC_SLEMP],	// Representante de ventas
+	[CLC_SOLDT],	// Solicitante
+	[CLC_VKORG],	// Organización de ventas
+	[0BIL_H_CNT],	// Cantidad de documentos de facturación
+	[0DLT_H_CNT],	// Cantidad de documentos borrados
+	[0EXRATE_ACC]	// Tipo de cambio de la moneda para contabilizaciones FI
+
+FROM /IMO/D_SD30;
+STORE SD30 INTO lib://QlikRepository/1.DATOS_NIVEL_1/RAW_DATA/1.ORIGEN_1/1.QVD/0.QVD Sin textos/INI_SD30.qvd;
